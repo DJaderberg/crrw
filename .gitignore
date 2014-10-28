@@ -34,3 +34,8 @@ random-walk
 # Vim temporary files
 *.swp
 *.swo
+
+# Doxygen folders
+html/
+latex/
+
