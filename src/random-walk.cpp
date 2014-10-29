@@ -1,13 +1,14 @@
 #include <iostream>
+#include <memory>
 #include "random-walk.h"
 #include "node.h"
 
 int main() {
 	std::cout << "Hello World!\n";
-	Node* a = new Node();
-	std::list<Node*> bNeighbors = std::list<Node*>();
+	std::shared_ptr<Node> a(new Node());
+	std::list<std::shared_ptr<Node>> bNeighbors = std::list<std::shared_ptr<Node>>();
 	bNeighbors.push_back(a);
-	Node* b = new Node(bNeighbors);
+	std::shared_ptr<Node> b(new Node(bNeighbors));
 	return 0;
 }
 

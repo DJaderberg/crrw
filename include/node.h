@@ -2,6 +2,7 @@
  * Contains declarations of Node and its subclass Source
  */
 #include <list>
+#include <memory>
 
 /**
  * A node containing some number of elements
@@ -12,22 +13,22 @@ class Node {
 		 * Create a new Node with neighbors n
 		 * @param n Neighbors of the new Node
 		 */
-		Node(std::list<Node*> n) : neighbors(n) {};
+		Node(std::list<std::shared_ptr<Node>> n) : neighbors(n) {};
 		Node() {};
 		/**
 		 * Gets the neighbors
 		 *
 		 * @return A std::list of all neighbors to the Node.
 		 */
-		virtual std::list<Node*> getNeighbors();
+		virtual std::list<std::shared_ptr<Node>> getNeighbors();
 		/**
 		 * Add a new neighbor to the Node
 		 *
 		 * @param neighbor A Node that should be a neighbor to the current Node
 		 */
-		virtual void insertNeighbor(Node* neighbor);
+		virtual void insertNeighbor(std::shared_ptr<Node> neighbor);
 	private:
-		std::list<Node*> neighbors;
+		std::list<std::shared_ptr<Node>> neighbors;
 };
 
 /**
@@ -42,14 +43,14 @@ class Source : public Node {
 		 * @param n All neighbors to the Source
 		 * @param p The production rate of the Source
 		 */
-		Source(std::list<Node*> n, int p) : Node(n), productionRate(p) {};
+		Source(std::list<std::shared_ptr<Node>> n, int p) : Node(n), productionRate(p) {};
 		/**
 		 * Create a Source without neighbors
 		 *
 		 * @param p The production rate of the source
 		 */
 		Source(int p) : productionRate(p) {};
-		Source(std::list<Node*> n) : Node(n) {};
+		Source(std::list<std::shared_ptr<Node>> n) : Node(n) {};
 		Source() {};
 		/**
 		 * Get the production rate of this Source

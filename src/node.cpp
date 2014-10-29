@@ -1,10 +1,10 @@
 #include "node.h"
 
-std::list<Node*> Node::getNeighbors() {
-	return neighbors;
+std::list<std::shared_ptr<Node>> Node::getNeighbors() {
+	return this->neighbors;
 }
 
-void Node::insertNeighbor(Node* neighbor) {
+void Node::insertNeighbor(std::shared_ptr<Node> neighbor) {
 	this->neighbors.push_back(neighbor);
 }
 
