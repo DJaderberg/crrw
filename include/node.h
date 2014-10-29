@@ -8,6 +8,10 @@
  */
 class Node {
 	public:
+		/**
+		 * Create a new Node with neighbors n
+		 * @param n Neighbors of the new Node
+		 */
 		Node(std::list<Node*> n) : neighbors(n) {};
 		Node() {};
 		/**
@@ -16,19 +20,6 @@ class Node {
 		 * @return A std::list of all neighbors to the Node.
 		 */
 		virtual std::list<Node*> getNeighbors();
-		/**
-		 * Create a new node 
-		 *
-		 * @param neighbors List of neighbors to the new node
-		 * @return The new Node
-		 */
-		static Node* construct(std::list<Node*> neighbors);
-		/**
-		 * Create a new node without neighbors
-		 *
-		 * @return The new Node (no neighbors)
-		 */
-		virtual Node* construct();
 		/**
 		 * Add a new neighbor to the Node
 		 *
