@@ -115,6 +115,16 @@ class PositionedNode : public Node {
 		 * @param pos The position
 		 */
 		PositionedNode(std::array<double, dimension> pos) : position(pos) {};
+		/** Create a PositionedNode with neighbors
+		 *
+		 * @param pos The position of the node
+		 * @param n Neighbors to the node
+		 */
+		PositionedNode(std::array<double, dimension> pos, std::list<std::shared_ptr<PositionedNode>> n) : position(pos) {
+			for (auto& neighbor : n) {
+				this->insertNeighbor(neighbor);
+			}
+		};
 		/**
 		 * Create a new neighbor of the node
 		 *
