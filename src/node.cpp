@@ -8,8 +8,9 @@ std::list<std::shared_ptr<Node>> Node::getNeighbors() {
 	return this->neighbors;
 }
 
-void Node::insertNeighbor(std::shared_ptr<Node> neighbor) {
+void Node::insertNeighbor(std::shared_ptr<Node> neighbor, double distance) {
 	this->neighbors.push_front(neighbor);
+	this->length.push_front(distance);
 }
 
 int Source::getProductionRate() {
@@ -18,8 +19,7 @@ int Source::getProductionRate() {
 
 template<int dimension>
 void PositionedNode<dimension>::insertNeighbor(std::shared_ptr<PositionedNode<dimension>> n) {
-	this->neighbors.push_front(n);
-	this->length.push_front(this->distance(n));
+	this->insertNeighbor(n, this->distance(n));
 }
 
 template<int dimension>

@@ -14,9 +14,11 @@ class Node {
 	public:
 		/**
 		 * Create a new Node with neighbors n
+		 *
 		 * @param n Neighbors of the new Node
+		 * @param dist Distance to each neighbor, in same order as n
 		 */
-		Node(std::list<std::shared_ptr<Node>> n) : neighbors(n) {};
+		Node(std::list<std::shared_ptr<Node>> n, std::list<double> dist) : neighbors(n), length(dist) {};
 		Node() {};
 		/**
 		 * Gets the neighbors
@@ -29,7 +31,7 @@ class Node {
 		 *
 		 * @param neighbor A Node that should be a neighbor to the current Node
 		 */
-		virtual void insertNeighbor(std::shared_ptr<Node> neighbor); //TODO: Needs more information to be possible (distance, etc)
+		virtual void insertNeighbor(std::shared_ptr<Node> neighbor, double distance);
 		/**
 		 * Allow elements at node to move, if needed
 		 */
@@ -67,9 +69,10 @@ class Source : public Node {
 		/**
 		 * Create a Source with neighbors and a production rate
 		 * @param n All neighbors to the Source
+		 * @param dist Distance to all neighbors of the source
 		 * @param p The production rate of the Source
 		 */
-		Source(std::list<std::shared_ptr<Node>> n, int p) : Node(n), productionRate(p) {};
+		Source(std::list<std::shared_ptr<Node>> n, std::list<double> dist, int p) : Node(n, dist), productionRate(p) {};
 		/**
 		 * Create a Source without neighbors
 		 *
@@ -79,7 +82,7 @@ class Source : public Node {
 		/**
 		 * Create a new Source with neighbors n and production rate 0
 		 */
-		Source(std::list<std::shared_ptr<Node>> n) : Node(n) {};
+		Source(std::list<std::shared_ptr<Node>> n, std::list<double> dist) : Node(n, dist) {};
 		Source() {};
 		/**
 		 * Get the production rate of this Source
