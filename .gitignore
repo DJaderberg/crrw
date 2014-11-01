@@ -39,3 +39,6 @@ random-walk
 html/
 latex/
 
+# mac os files
+.DS_Store
+
