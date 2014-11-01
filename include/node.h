@@ -58,6 +58,8 @@ class Node {
 		constexpr static double q = 0.0001;
 		///Conductivity decrease rate
 		constexpr static double lambda = 0.001;
+        ///Road maintenance cost factor
+        constexpr static double mu = 1;
 };
 
 /**
