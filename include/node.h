@@ -20,8 +20,13 @@ class Node {
 		 * @param n Neighbors of the new Node
 		 * @param dist Distance to each neighbor, in same order as n
 		 */
-		Node(std::list<std::shared_ptr<Node>> n, std::list<double> dist, std::shared_ptr<Element> e) : neighbors(n), length(dist), element(e) {};
-		Node(std::shared_ptr<Element> e) : element(e) {};
+		Node(std::list<std::shared_ptr<Node>> n, std::list<double> dist, std::shared_ptr<Element> e) : Node(e) {
+			neighbors = n;
+			length = dist;
+		};
+		Node(std::shared_ptr<Element> e) : id(idCounter++), element(e) {
+			idCounter = 0;
+		};
 		/**
 		 * Gets the neighbors
 		 *
@@ -42,6 +47,16 @@ class Node {
 		virtual ~Node() {
 		}
 	private:
+		///Static ID counter
+		static unsigned int idCounter;
+		///Unique ID of the Node
+		unsigned int id;
+		///Helper function to update number of particles
+		void updateNumberOfParticles();
+		///Helper function to update conductivity
+		void updateConductivity();
+		///Helper function to calculate potential
+		double calculatePotential();
 		/**
 		 * A list containing all neighbors of the Node.
 		 */
@@ -51,7 +66,7 @@ class Node {
 		///The element of the Node
 		std::shared_ptr<Element> element;
 		///Number of elements at the node
-		double potential = 0; //TODO: Should this be unsigned int?
+		double numberOfParticles = 0; //TODO: Should this be unsigned int?
 		///Flow rate through the node
 		std::list<double> current;
 		///Conductivity of the node
