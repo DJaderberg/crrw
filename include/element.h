@@ -1,6 +1,7 @@
 /** @file element.h
  * Contains declarations of Element
  */
+#pragma once
 #include <list>
 #include <memory>
 #include <array>
@@ -13,8 +14,5 @@
 
 class Element {
 public:
-	virtual double getQ() = 0;
-	virtual double getLambda() = 0;
-	virtual double getMu() = 0;
 private:
 };

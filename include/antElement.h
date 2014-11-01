@@ -1,6 +1,7 @@
 /** @file antElement.h
  * Contains declarations of AntElement
  */
+#pragma once
 #include <list>
 #include <memory>
 #include <array>
@@ -15,10 +16,6 @@
 
 class AntElement : public Element {
 	public:
-		double getQ();
-		double getLambda();
-		double getMu();
-	private:
 		///Reinforcement intensity
 		constexpr static double q = 0.0001;
 		///Conductivity decrease rate

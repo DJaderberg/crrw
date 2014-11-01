@@ -1,3 +1,4 @@
+#pragma once
 #include "node.h"
 
 /**
@@ -13,18 +14,17 @@ class Source : public Node {
 		 * @param dist Distance to all neighbors of the source
 		 * @param p The production rate of the Source
 		 */
-		Source(std::list<std::shared_ptr<Node>> n, std::list<double> dist, int p) : Node(n, dist), productionRate(p) {};
+		Source(std::list<std::shared_ptr<Node>> n, std::list<double> dist, std::shared_ptr<Element> e, int p) : Node(n, dist, e), productionRate(p) {};
 		/**
 		 * Create a Source without neighbors
 		 *
 		 * @param p The production rate of the source
 		 */
-		Source(int p) : productionRate(p) {};
+		Source(int p, std::shared_ptr<Element> e) : Node(e), productionRate(p) {};
 		/**
 		 * Create a new Source with neighbors n and production rate 0
 		 */
-		Source(std::list<std::shared_ptr<Node>> n, std::list<double> dist) : Node(n, dist) {};
-		Source() {};
+		Source(std::list<std::shared_ptr<Node>> n, std::list<double> dist, std::shared_ptr<Element> e) : Node(n, dist, e) {};
 		/**
 		 * Get the production rate of this Source
 		 *
