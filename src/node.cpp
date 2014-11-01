@@ -13,10 +13,6 @@ void Node::insertNeighbor(std::shared_ptr<Node> neighbor, double distance) {
 	this->length.push_front(distance);
 }
 
-int Source::getProductionRate() {
-	return this->productionRate;
-}
-
 template<int dimension>
 void PositionedNode<dimension>::insertNeighbor(std::shared_ptr<PositionedNode<dimension>> n) {
 	this->insertNeighbor(n, this->distance(n));
