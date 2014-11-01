@@ -25,7 +25,6 @@ class Node {
 			length = dist;
 		};
 		Node(std::shared_ptr<Element> e) : id(idCounter++), element(e) {
-			idCounter = 0;
 		};
 		/**
 		 * Gets the neighbors
