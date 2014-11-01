@@ -11,12 +11,10 @@
  * @author Kristoffer Jonsson
  */
 
-
 class Element {
 public:
-    
-    
+	virtual double getQ() = 0;
+	virtual double getLambda() = 0;
+	virtual double getMu() = 0;
 private:
-    
-    
 };
