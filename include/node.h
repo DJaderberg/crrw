@@ -136,7 +136,7 @@ class PositionedNode : public Node {
 		void insertNeighbor(std::shared_ptr<PositionedNode> n);
 	private:
 		///Position of the node
-		std::array<PositionedNode, dimension> position;
+		std::array<double, dimension> position;
 		/**
 		 * Calculate the distance from this node to the other
 		 *
