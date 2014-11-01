@@ -30,6 +30,7 @@ class Node {
 		 * Add a new neighbor to the Node
 		 *
 		 * @param neighbor A Node that should be a neighbor to the current Node
+		 * @param distance The distance to the neighbor
 		 */
 		virtual void insertNeighbor(std::shared_ptr<Node> neighbor, double distance);
 		/**
@@ -142,3 +143,4 @@ class PositionedNode : public Node {
 		 */
 		double distance(PositionedNode<dimension> n);
 };
+
