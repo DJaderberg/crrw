@@ -5,13 +5,17 @@
 
 unsigned int Node::idCounter = 0;
 
-std::list<std::shared_ptr<Node>> Node::getNeighbors() {
-	return this->neighbors;
+std::unordered_map<unsigned int,std::shared_ptr<Node>> Node::getNeighbors() {
+    return this->neighborsMap;
 }
 
 void Node::insertNeighbor(std::shared_ptr<Node> neighbor, double distance) {
-	this->neighbors.push_front(neighbor);
-	this->length.push_front(distance);
+    unsigned int id = neighbor->getId();
+    neighborsMap[id] = neighbor;
+    lengthMap[id] = distance;
+    
+    //this->neighbors.push_front(neighbor);
+    //this->length.push_front(distance);
 }
 
 unsigned int Node::getId() {
@@ -20,21 +24,23 @@ unsigned int Node::getId() {
 
 
 void Node::takeStep() {
-	this->updateNumberOfParticles();
-	this->updateConductivity();
+    this->updateNumberOfParticles();
+    this->updateConductivity();
 }
 
 void Node::updateNumberOfParticles() {
-	
+    this->calculatePotential();
 }
 
 double Node::calculatePotential() {
-	int size = this->neighbors.size();
-	double sum = 0;
-	for (int i = 0; i < size; ++i) {
-		sum += conductivity.front();
-	}
-	return 3;
+    double sum = 0;
+    
+    for ( auto it = neighborsMap.begin(); it != neighborsMap.end(); ++it ) {
+        std::cout << " " << it->first << ":" << it->second;
+        // TODO: Caculate the potential
+    }
+    
+    return sum;
 }
 
 void Node::updateConductivity() {

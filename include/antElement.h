@@ -15,6 +15,6 @@
 
 
 class AntElement : public Element {
-	public:
-		AntElement() : Element(0.0001, 0.001, 1.1) {};
+public:
+    AntElement() : Element(0.0001, 0.001, 1.1) {};
 };
