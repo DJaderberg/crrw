@@ -14,6 +14,11 @@ void Node::insertNeighbor(std::shared_ptr<Node> neighbor, double distance) {
 	this->length.push_front(distance);
 }
 
+unsigned int Node::getId() {
+    return this->id;
+}
+
+
 void Node::takeStep() {
 	this->updateNumberOfParticles();
 	this->updateConductivity();

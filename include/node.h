@@ -5,6 +5,7 @@
 #include <list>
 #include <memory>
 #include <array>
+#include <unordered_map>
 #include "element.h"
 
 /**
@@ -39,10 +40,18 @@ class Node {
 		 * @param distance The distance to the neighbor
 		 */
 		virtual void insertNeighbor(std::shared_ptr<Node> neighbor, double distance);
-		/**
+        /**
+         * Returns the id of the Node
+         *
+         * @return An unsigned int of the nodes id.
+         */
+        unsigned int getId();
+    
+        /**
 		 * Allow elements at node to move, if needed
 		 */
 		void takeStep();
+    
 		virtual ~Node() {
 		}
 	private:
@@ -59,6 +68,7 @@ class Node {
 		/**
 		 * A list containing all neighbors of the Node.
 		 */
+        std::unordered_map<unsigned int,std::shared_ptr<Node>> mymap; // Perhaps a way to solve the neighbor problem?
 		std::list<std::shared_ptr<Node>> neighbors;
 		///The 'length in space' to all neighbors of the node
 		std::list<double> length;
