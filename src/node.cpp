@@ -55,5 +55,10 @@ std::string Node::toString() {
     std::string str = "ID: " + std::to_string(this->id) + "\n";
     str = str + "Number of particles: " + std::to_string(this->numberOfParticles) + "\n";
     str = str + "Capacitance: " + std::to_string(this->capacitance) + "\n";
+	str += "Neighbors: ";
+	for (auto n : neighborsMap) {
+		str += std::to_string(n.first) + ", ";
+	}
+	str += "\n";
     return str;
 }
