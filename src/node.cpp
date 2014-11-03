@@ -13,9 +13,6 @@ void Node::insertNeighbor(std::shared_ptr<Node> neighbor, double distance) {
     unsigned int id = neighbor->getId();
     neighborsMap[id] = neighbor;
     lengthMap[id] = distance;
-    
-    //this->neighbors.push_front(neighbor);
-    //this->length.push_front(distance);
 }
 
 unsigned int Node::getId() {
@@ -34,11 +31,10 @@ void Node::updateNumberOfParticles() {
 
 double Node::calculatePotential() {
     double sum = 0;
-    
     for ( auto it = neighborsMap.begin(); it != neighborsMap.end(); ++it ) {
-        std::cout << " " << it->first << ":" << it->second;
-        // TODO: Caculate the potential
+        sum += (this->conductivityMap[it->second->getId()])/(this->lengthMap[it->second->getId()]);
     }
+    sum = this->numberOfParticles/sum;
     
     return sum;
 }

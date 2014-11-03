@@ -19,4 +19,3 @@ int main() {
     b->takeStep();
     return 0;
 }
-
