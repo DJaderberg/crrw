@@ -8,3 +8,9 @@ void Source::takeStep() {
 	this->numberOfParticles += this->productionRate;
 	Node::takeStep();
 }
+
+std::string Source::toString() {
+	std::string prod = "Production rate: " + std::to_string(this->productionRate) + "\n";
+	return Node::toString() + prod;
+}
+

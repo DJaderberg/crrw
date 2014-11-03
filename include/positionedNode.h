@@ -31,6 +31,7 @@ public:
      * @param n The PositionedNode to be the new neighbor
      */
     void insertNeighbor(std::shared_ptr<PositionedNode> n);
+	virtual std::string toString();
 private:
     ///Position of the node
     std::array<double, dimension> position;

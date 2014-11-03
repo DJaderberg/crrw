@@ -32,6 +32,7 @@ public:
      */
     int getProductionRate();
 	void takeStep();
+	virtual std::string toString();
 private:
     /**
      * The production rate of the Source

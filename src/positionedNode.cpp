@@ -17,3 +17,15 @@ double PositionedNode<dimension>::distance(PositionedNode<dimension> n) {
 	return sqrt(dist);
 }
 
+template<int dimension>
+std::string PositionedNode<dimension>::toString() {
+	std::string pos = "Position: (";
+	for (auto p : position) {
+		pos += std::to_string(p) + ",";
+	}
+	pos.pop_back();
+	pos += ")\n";
+	return Node::toString() + pos;
+}
+
+
