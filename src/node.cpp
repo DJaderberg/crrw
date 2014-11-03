@@ -20,14 +20,6 @@ unsigned int Node::getId() {
 }
 
 void Node::prepareStep(double dt) {
-    double capacitance = 0;
-    for ( auto it : neighborsMap) {
-        capacitance += (this->conductivityMap[it.first])/(this->lengthMap[it.first]);
-    }
-	
-	for (auto it : neighborsMap) {
-
-	}
 }
 
 void Node::takeStep(double dt) {
