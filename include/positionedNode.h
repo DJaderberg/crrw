@@ -14,13 +14,13 @@ public:
      *
      * @param pos The position
      */
-    PositionedNode(std::array<double, dimension> pos) : position(pos) {};
+    PositionedNode(std::shared_ptr<Element> e, std::array<double, dimension> pos) : Node(e), position(pos) {};
     /** Create a PositionedNode with neighbors
      *
      * @param pos The position of the node
      * @param n Neighbors to the node
      */
-    PositionedNode(std::array<double, dimension> pos, std::unordered_map<unsigned int,std::shared_ptr<PositionedNode>> n) : position(pos) {
+    PositionedNode(std::shared_ptr<Element> e, std::array<double, dimension> pos, std::unordered_map<unsigned int,std::shared_ptr<PositionedNode>> n) : Node(e), position(pos) {
         for (auto& neighbor : n) {
             this->insertNeighbor(neighbor);
         }
