@@ -3,7 +3,7 @@
 int main() {
 	std::cout << "Hello World!\n";
 	std::shared_ptr<AntElement> e(new AntElement());
-	std::shared_ptr<Node> a1(new Node(e));
+	std::shared_ptr<Source> a1(new Source(1,e));
     std::shared_ptr<Node> a2(new Node(e));
     
 	std::unordered_map<unsigned int,std::shared_ptr<Node>> bNeighbors;
@@ -16,6 +16,12 @@ int main() {
     bDistances[a2->getId()] = 5;
     
     std::shared_ptr<Node> b(new Node(bNeighbors, bDistances, e));
-    b->takeStep();
+
+    for (int i = 0; i < 3; i++) {
+        std::cout << i << "\n";
+        a1->takeStep();
+        a2->takeStep();
+        b->takeStep();
+    }
     return 0;
 }

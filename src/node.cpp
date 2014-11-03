@@ -21,6 +21,7 @@ unsigned int Node::getId() {
 
 
 void Node::takeStep() {
+    this->updateCapacitance();
     this->updateNumberOfParticles();
     this->updateConductivity();
 }
@@ -30,15 +31,23 @@ void Node::updateNumberOfParticles() {
 }
 
 double Node::calculatePotential() {
+    return this->numberOfParticles/this->capacitance;
+}
+
+void Node::updateCapacitance() {
     double sum = 0;
     for ( auto it = neighborsMap.begin(); it != neighborsMap.end(); ++it ) {
-        sum += (this->conductivityMap[it->second->getId()])/(this->lengthMap[it->second->getId()]);
+        sum += (this->conductivityMap[it->first] + it->second->conductivityMap[this->id])/(this->lengthMap[it->first]);
     }
-    sum = this->numberOfParticles/sum;
-    
-    return sum;
+    this->capacitance = sum;
 }
 
 void Node::updateConductivity() {
 }
 
+std::string Node::toString() {
+    std::string str = "ID: " + std::to_string(this->id) + "\n";
+    str = str + "Number of particles: " + std::to_string(this->numberOfParticles) + "\n";
+    str = str + "Capacitance: " + std::to_string(this->capacitance) + "\n";
+    return str;
+}

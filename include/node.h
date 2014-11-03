@@ -52,7 +52,12 @@ public:
     /**
      * Allow elements at node to move, if needed
      */
-    void takeStep();
+    virtual void takeStep();
+    
+    /**
+     * Standard toString method
+     */
+    virtual std::string toString();
     
     virtual ~Node() {
     }
@@ -65,8 +70,11 @@ protected:
     void updateNumberOfParticles();
     ///Helper function to update conductivity
     void updateConductivity();
+    ///Helper function to update capacitance
+    void updateCapacitance();
     ///Helper function to calculate potential
     double calculatePotential();
+    
     /**
      * An unordered map containing all neighbors of the Node.
      */
@@ -81,7 +89,6 @@ protected:
     std::unordered_map<unsigned int,double> currentMap;
     ///Conductivity of the node
     std::unordered_map<unsigned int,double> conductivityMap;
-    std::list<double> conductivity;
     ///Capacitance of the node
     double capacitance = 0;
 };
