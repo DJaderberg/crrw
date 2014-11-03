@@ -56,7 +56,7 @@ public:
     
     virtual ~Node() {
     }
-private:
+protected:
     ///Static ID counter
     static unsigned int idCounter;
     ///Unique ID of the Node

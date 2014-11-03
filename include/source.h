@@ -31,6 +31,7 @@ public:
      * @return How many elements are produced by this Source during one time unit
      */
     int getProductionRate();
+	void takeStep();
 private:
     /**
      * The production rate of the Source
