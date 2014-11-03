@@ -53,7 +53,7 @@ public:
     /**
      * Allow elements at node to move, if needed
      */
-    virtual void takeStep();
+    virtual void takeStep(double dt);
     
     /**
      * Standard toString method
@@ -79,13 +79,13 @@ protected:
     /**
      * An unordered map containing all neighbors of the Node.
      */
-    std::unordered_map<unsigned int,std::shared_ptr<Node>> neighborsMap; // Perhaps a way to solve the neighbor id problem?
+    std::unordered_map<unsigned int,std::shared_ptr<Node>> neighborsMap;
     ///The 'length in space' to all neighbors of the node
     std::unordered_map<unsigned int,double> lengthMap;
     ///The element of the Node
     std::shared_ptr<Element> element;
     ///Number of elements at the node
-    double numberOfParticles = 0; //TODO: Should this be unsigned int?
+    unsigned int numberOfParticles = 0;
     ///Flow rate through the node
     std::unordered_map<unsigned int,double> currentMap;
     ///Conductivity of the node

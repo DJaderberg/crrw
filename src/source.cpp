@@ -4,9 +4,9 @@ int Source::getProductionRate() {
 	return this->productionRate;
 }
 
-void Source::takeStep() {
+void Source::takeStep(double dt) {
 	this->numberOfParticles += this->productionRate;
-	Node::takeStep();
+	Node::takeStep(dt);
 }
 
 std::string Source::toString() {

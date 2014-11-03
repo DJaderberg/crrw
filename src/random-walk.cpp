@@ -19,9 +19,10 @@ int main() {
 
     for (int i = 0; i < 3; i++) {
         std::cout << i << "\n";
-        a1->takeStep();
-        a2->takeStep();
-        b->takeStep();
+        std::cout << a1->toString();
+        a1->takeStep(1);
+        a2->takeStep(1);
+        b->takeStep(1);
     }
     return 0;
 }

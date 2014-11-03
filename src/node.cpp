@@ -20,7 +20,7 @@ unsigned int Node::getId() {
 }
 
 
-void Node::takeStep() {
+void Node::takeStep(double dt) {
     this->updateCapacitance();
     this->updateNumberOfParticles();
     this->updateConductivity();
