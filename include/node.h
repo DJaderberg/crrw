@@ -22,11 +22,16 @@ public:
      *
      * @param n Neighbors of the new Node
      * @param dist Distance to each neighbor, in same order as n
+	 * @param e The Element of the Node
      */
     Node(std::unordered_map<unsigned int,std::shared_ptr<Node>> n, std::unordered_map<unsigned int,double> dist, std::shared_ptr<Element> e) : Node(e) {
         neighborsMap = n;
         lengthMap = dist;
     };
+	/** Create a Node with only an element
+	 *
+	 * @param e The Element of the Node
+	 */
     Node(std::shared_ptr<Element> e) : id(idCounter++), element(e) {
     };
     /**
