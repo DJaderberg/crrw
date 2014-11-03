@@ -56,3 +56,12 @@ void NodeSet::parseTGF(std::istream& input, std::shared_ptr<Element> e) {
 		}
 	}
 }
+
+void NodeSet::takeStep(double dt) {
+	for (auto node : nodes) {
+		node->prepareStep(dt);
+	}
+	for (auto node : nodes) {
+		node->takeStep(dt);
+	}
+}

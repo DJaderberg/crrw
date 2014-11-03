@@ -6,5 +6,9 @@ int main() {
 	std::string filename = "test/nodes.txt";
 	NodeSet set = NodeSet(filename, e);
 	std::cout << set.toString();
+	for (int i = 0; i < 30; ++i) {
+		set.takeStep(1);
+	}
+	std::cout << set.toString();
     return 0;
 }

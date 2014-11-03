@@ -50,6 +50,12 @@ public:
 		}
 		return ret;
 	}
+	/**
+	 * Make one time step
+	 *
+	 * @param dt Length of the time step
+	 */
+	void takeStep(double dt);
 private:
 	/**
 	 * Read a stream containing a TGF NodeSet and store it in the member nodes.
