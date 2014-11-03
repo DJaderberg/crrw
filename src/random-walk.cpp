@@ -14,12 +14,17 @@ int main() {
     
     bNeighbors[a2->getId()] = a2;
     bDistances[a2->getId()] = 5;
-    
-    std::shared_ptr<Node> b(new Node(bNeighbors, bDistances, e));
 
-    for (int i = 0; i < 3; i++) {
-        std::cout << i << "\n";
-        std::cout << a1->toString();
+    std::shared_ptr<Node> b(new Node(bNeighbors, bDistances, e));
+	a1->insertNeighbor(b, 3);
+	a2->insertNeighbor(b, 5);
+
+    for (int i = 0; i < 30; i++) {
+        //std::cout << i << "\n";
+        std::cout << b->toString();
+        a1->prepareStep(1);
+        a2->prepareStep(1);
+        b->prepareStep(1);
         a1->takeStep(1);
         a2->takeStep(1);
         b->takeStep(1);
