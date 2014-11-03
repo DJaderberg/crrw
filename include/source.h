@@ -1,5 +1,6 @@
 #pragma once
 #include "node.h"
+#include <random>
 
 /**
  * A node that produces a number of elements during each time step
@@ -41,6 +42,7 @@ private:
      * a sink.
      */
     int productionRate = 0;
+	std::random_device rd;
 };
 
 
