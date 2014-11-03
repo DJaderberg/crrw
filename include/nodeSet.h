@@ -10,6 +10,9 @@
 #include <fstream>
 #include <vector>
 
+/**
+ * A class that holds and manipulates a set of Nodes
+ */
 class NodeSet {
 public:
 	/**
@@ -25,7 +28,7 @@ public:
 	 * the second Node with the distance given by the floating point number.
 	 *
 	 * @param input A stream with containing a set fo Nodes specified by TGF.
-	 * @param element The Element to assign to all created Nodes
+	 * @param e The Element to assign to all created Nodes
 	 */
     NodeSet(std::istream input, std::shared_ptr<Element> e) {
 		this->parseTGF(input, e);
@@ -36,7 +39,7 @@ public:
 	 * stream had been supplied
 	 *
 	 * @param filename The name of the file to use as input
-	 * @param element The Element to assign to all created Nodes
+	 * @param e The Element to assign to all created Nodes
 	 */
 	NodeSet(const std::string& filename, std::shared_ptr<Element> e) {
 		std::ifstream stream(filename);
@@ -70,7 +73,7 @@ private:
 	 * the second Node with the distance given by the floating point number.
 	 *
 	 * @param input A stream with containing a set fo Nodes specified by TGF.
-	 * @param element The Element to assign to all created Nodes
+	 * @param e The Element to assign to all created Nodes
 	 *
 	 * @author David Jäderberg
 	 */

@@ -14,12 +14,14 @@ public:
      * @param n All neighbors to the Source
      * @param dist Distance to all neighbors of the source
      * @param p The production rate of the Source
+	 * @param e The Element of the Node
      */
     Source(std::unordered_map<unsigned int,std::shared_ptr<Node>> n, std::unordered_map<unsigned int,double> dist, std::shared_ptr<Element> e, int p) : Node(n, dist, e), productionRate(p) {};
     /**
      * Create a Source without neighbors
      *
      * @param p The production rate of the source
+	 * @param e The Element of the Node
      */
     Source(int p, std::shared_ptr<Element> e) : Node(e), productionRate(p) {};
     /**
@@ -42,6 +44,7 @@ private:
      * a sink.
      */
     int productionRate = 0;
+	///Random number generation state
 	std::random_device rd;
 };
 
