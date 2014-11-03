@@ -50,6 +50,10 @@ public:
      */
     unsigned int getId();
     
+	/**
+	 * Prepare a step by filling the changeMap
+	 */
+	virtual void prepareStep(double dt);
     /**
      * Allow elements at node to move, if needed
      */
@@ -86,12 +90,14 @@ protected:
     std::shared_ptr<Element> element;
     ///Number of elements at the node
     unsigned int numberOfParticles = 0;
-    ///Flow rate through the node
-    std::unordered_map<unsigned int,double> currentMap;
+    ///Mean flow rate through the node
+    std::unordered_map<unsigned int,double> meanFlowMap;
     ///Conductivity of the node
     std::unordered_map<unsigned int,double> conductivityMap;
     ///Capacitance of the node
     double capacitance = 0;
+	///How many elements will move from this Node to each neighbor in the next time step
+	std::unordered_map<unsigned int, unsigned int> changeMap;
 };
 
 

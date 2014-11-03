@@ -19,6 +19,16 @@ unsigned int Node::getId() {
     return this->id;
 }
 
+void Node::prepareStep(double dt) {
+    double capacitance = 0;
+    for ( auto it : neighborsMap) {
+        capacitance += (this->conductivityMap[it.first])/(this->lengthMap[it.first]);
+    }
+	
+	for (auto it : neighborsMap) {
+
+	}
+}
 
 void Node::takeStep(double dt) {
     this->updateCapacitance();
@@ -35,11 +45,6 @@ double Node::calculatePotential() {
 }
 
 void Node::updateCapacitance() {
-    double sum = 0;
-    for ( auto it = neighborsMap.begin(); it != neighborsMap.end(); ++it ) {
-        sum += (this->conductivityMap[it->first] + it->second->conductivityMap[this->id])/(this->lengthMap[it->first]);
-    }
-    this->capacitance = sum;
 }
 
 void Node::updateConductivity() {
