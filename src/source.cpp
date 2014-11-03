@@ -5,7 +5,7 @@ int Source::getProductionRate() {
 }
 
 void Source::takeStep(double dt) {
-	std::poisson_distribution<int> rngDist(productionRate*dt);
+	std::poisson_distribution<unsigned int> rngDist(productionRate*dt);
 	double randomValue = rngDist(rd);
 	this->numberOfParticles += randomValue;
 	Node::takeStep(dt);

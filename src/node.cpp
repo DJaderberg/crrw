@@ -20,6 +20,13 @@ unsigned int Node::getId() {
 }
 
 void Node::prepareStep(double dt) {
+	std::poisson_distribution<unsigned int> rngDist(dt);
+	double randomValue;
+	for (auto n : neighborsMap) {
+		randomValue = std::min<unsigned int>(numberOfParticles, rngDist(rd));
+		numberOfParticles -= randomValue;
+		changeMap[n.first] = randomValue;
+	}
 }
 
 void Node::takeStep(double dt) {
@@ -29,7 +36,9 @@ void Node::takeStep(double dt) {
 }
 
 void Node::updateNumberOfParticles() {
-    this->calculatePotential();
+	for (auto n : neighborsMap) {
+		numberOfParticles += n.second->changeMap[id];
+	}
 }
 
 double Node::calculatePotential() {

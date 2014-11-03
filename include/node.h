@@ -9,6 +9,7 @@
 #include <unordered_map>
 #include "element.h"
 #include <string>
+#include <random>
 
 /**
  * A node containing some number of elements
@@ -98,6 +99,8 @@ protected:
     double capacitance = 0;
 	///How many elements will move from this Node to each neighbor in the next time step
 	std::unordered_map<unsigned int, unsigned int> changeMap;
+	//Seed for RNG
+	std::random_device rd;
 };
 
 
