@@ -8,6 +8,7 @@
 #include <array>
 #include <unordered_map>
 #include "element.h"
+#include <string>
 
 /**
  * A node containing some number of elements
