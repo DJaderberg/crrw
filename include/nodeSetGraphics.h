@@ -7,6 +7,12 @@
 
 #pragma once
 #include "nodeSet.h"
+#include <string>
+#include <iostream>
+#include <cairommconfig.h>
+#include <cairomm/context.h>
+#include <cairomm/surface.h>
+#include <cmath>
 
 class NodeSetGraphics {
 public:
@@ -14,27 +20,16 @@ public:
     /**
      * Create a new NodeSetGraphics object.
      */
-    NodeSetGraphics();
+    NodeSetGraphics() {};
     
     /**
      * Draws all the connections and nodes the NodeSet n
      *
      * @param a NodeSet
+     * @param the name of the file
      */
-    void draw(NodeSet n);
+    void writeToFile(NodeSet n, std::string filename);
+    
     
 private:
-    /** GLUT display callback function.  Every time the window needs to be drawn,
-     glut will call this function.  This includes when the window size
-     changes, or when another window covering part of this window is
-     moved so this window is uncovered.
-     */
-    void display(void);
-    
-    /** GLUT reshape callback function.  GLUT calls this function whenever
-     the window is resized, including the first time it is created.
-     You can use variables to keep track the current window size.
-     */
-    void reshape(int, int);
-    
 };

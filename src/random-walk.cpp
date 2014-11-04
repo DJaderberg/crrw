@@ -1,69 +1,49 @@
 #include "random-walk.h"
 
-/*
+
 int main() {
     
-	std::cout << "Hello World!\n";
-	std::shared_ptr<AntElement> e(new AntElement());
-	std::string filename = "test/nodes.txt";
-	NodeSet set = NodeSet(filename, e);
-	std::cout << set.toString();
-	for (int i = 0; i < 30; ++i) {
-		set.takeStep(1);
-	}
-	std::cout << set.toString();
+    std::cout << "Hello World!\n";
+    std::shared_ptr<AntElement> e(new AntElement());
+    std::string filename = "test/nodes.txt";
+    NodeSet set = NodeSet(filename, e);
+    std::cout << set.toString();
+    for (int i = 0; i < 30; ++i) {
+        set.takeStep(1);
+    }
+    std::cout << set.toString();
+    
+    NodeSetGraphics graphics_set = NodeSetGraphics();
+    
+    graphics_set.writeToFile(set, "image.png");
+    
     return 0;
     
-}*/
-
-#include <string>
-#include <iostream>
-#include <cairommconfig.h>
-#include <cairomm/context.h>
-#include <cairomm/surface.h>
-
-#include <cmath>
-
-int main()
-{
-    Cairo::RefPtr<Cairo::ImageSurface> surface =
-    Cairo::ImageSurface::create(Cairo::FORMAT_ARGB32, 600, 400);
-    
-    Cairo::RefPtr<Cairo::Context> cr = Cairo::Context::create(surface);
-    
-    cr->save(); // save the state of the context
-    cr->set_source_rgb(0.86, 0.85, 0.47);
-    cr->paint(); // fill image with the color
-    cr->restore(); // color is back to black now
-    
-    cr->save();
-    // draw a border around the image
-    cr->set_line_width(20.0); // make the line wider
-    cr->rectangle(0.0, 0.0, surface->get_width(), surface->get_height());
-    cr->stroke();
-    
-    cr->set_source_rgba(0.0, 0.0, 0.0, 0.7);
-    // draw a circle in the center of the image
-    cr->arc(surface->get_width() / 2.0, surface->get_height() / 2.0,             surface->get_height() / 4.0, 0.0, 2.0 * M_PI);
-    cr->stroke();
-    
-    // draw a diagonal line
-    cr->move_to(surface->get_width() / 4.0, surface->get_height() / 4.0);
-    cr->line_to(surface->get_width() * 3.0 / 4.0, surface->get_height() * 3.0 / 4.0);
-    cr->stroke();
-    cr->restore();
-    
-#ifdef CAIRO_HAS_PNG_FUNCTIONS
-    
-    std::string filename = "image.png";
-    surface->write_to_png(filename);
-    
-    std::cout << "Wrote png file \"" << filename << "\"" << std::endl;
-    
-#else
-    
-    std::cout << "You must compile cairo with PNG support for this example to work."
-    << std::endl;
-    
-#endif
 }
+
+/*
+ #include <cairo.h>
+ 
+ int
+ main (int argc, char *argv[])
+ {
+ cairo_surface_t *surface =
+ cairo_image_surface_create (CAIRO_FORMAT_ARGB32, 240, 80);
+ cairo_t *cr =
+ cairo_create (surface);
+ 
+ cairo_select_font_face (cr, "serif", CAIRO_FONT_SLANT_NORMAL, CAIRO_FONT_WEIGHT_BOLD);
+ cairo_set_font_size (cr, 32.0);
+ cairo_set_source_rgb (cr, 0.0, 0.0, 1.0);
+ cairo_move_to (cr, 10.0, 50.0);
+ cairo_show_text (cr, "Hello, world");
+ 
+ cairo_destroy (cr);
+ cairo_surface_write_to_png (surface, "hello.png");
+ cairo_surface_destroy (surface);
+ return 0;
+ }
+ */
+
+
+
