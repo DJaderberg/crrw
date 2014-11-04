@@ -7,7 +7,7 @@ int main() {
 	NodeSet set = NodeSet(filename, e);
 	std::cout << set.toString();
 	for (int i = 0; i < 10000; ++i) {
-		set.takeStep(1);
+		set.takeStep(0.01);
 	}
 	std::vector<unsigned int> numPart = set.numberOfParticles();
 	for (auto val : numPart) {

@@ -26,7 +26,8 @@ unsigned int Node::getNumberOfParticles() {
 void Node::prepareStep(double dt) {
 	double randomValue;
 	for (auto n : neighborsMap) {
-		std::poisson_distribution<unsigned int> rngDist(dt/lengthMap[n.first]);
+		double mean = numberOfParticles*dt/lengthMap[n.first]/lengthMap.size();
+		std::poisson_distribution<unsigned int> rngDist(mean);
 		randomValue = rngDist(rd);
 		randomValue = std::min<unsigned int>(numberOfParticles, randomValue);
 		numberOfParticles -= randomValue;
