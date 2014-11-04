@@ -14,7 +14,6 @@
 //TODO: Make this throw exceptions when file is incorrectly formatted
 void NodeSet::parseTGF(std::istream& input, std::shared_ptr<Element> e) {
 	std::string line;
-	std::unordered_map<int, int> idMap;
 	while (std::getline(input, line)) {
 		std::istringstream iss(line);
 		int number, productionRate;
@@ -55,6 +54,23 @@ void NodeSet::parseTGF(std::istream& input, std::shared_ptr<Element> e) {
 			nodes[idMap[from]]->insertNeighbor(nodes[idMap[to]], distance);
 		}
 	}
+}
+
+std::string NodeSet::toString() {
+	std::string ret = "";
+	for (auto node : nodes) {
+		ret += node->toString();
+	}
+	return ret;
+}
+
+std::vector<unsigned int> NodeSet::numberOfParticles() {
+	std::vector<unsigned int> ret = std::vector<unsigned int>();
+	ret.reserve(nodes.size()); //Alloc space for as many elements as are in nodes
+	for (auto n : nodes) {
+		ret.push_back(n->getNumberOfParticles());
+	}
+	return ret;
 }
 
 void NodeSet::takeStep(double dt) {
