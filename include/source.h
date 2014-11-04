@@ -7,7 +7,7 @@
  *
  * @author David Jäderberg
  */
-class Source : public Node {
+class Source : public virtual Node {
 public:
     /**
      * Create a Source with neighbors and a production rate

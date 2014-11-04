@@ -7,7 +7,7 @@
  * @tparam dimension Dimensionality of the Euclidean space that the node exists in
  */
 template<int dimension>
-class PositionedNode : public Node {
+class PositionedNode : public virtual Node {
 public:
     /**
      * Create a PositionedNode
