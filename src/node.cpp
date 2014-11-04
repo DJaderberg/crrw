@@ -19,6 +19,10 @@ unsigned int Node::getId() {
     return this->id;
 }
 
+unsigned int Node::getNumberOfParticles() {
+	return this->numberOfParticles;
+}
+
 void Node::prepareStep(double dt) {
 	std::poisson_distribution<unsigned int> rngDist(dt);
 	double randomValue;

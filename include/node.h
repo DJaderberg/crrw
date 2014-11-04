@@ -57,6 +57,13 @@ public:
     unsigned int getId();
     
 	/**
+	 * Returns the number of particles in the Node
+	 *
+	 * @return The number of particles in the Node
+	 */
+	unsigned int getNumberOfParticles();
+
+	/**
 	 * Prepare a step by filling the changeMap
 	 */
 	virtual void prepareStep(double dt);

@@ -9,6 +9,10 @@ int main() {
 	for (int i = 0; i < 3000; ++i) {
 		set.takeStep(1);
 	}
-	std::cout << set.toString();
+	std::vector<unsigned int> numPart = set.numberOfParticles();
+	for (auto val : numPart) {
+		std::cout << val << ", ";
+	}
+	std::cout << "\n";
     return 0;
 }

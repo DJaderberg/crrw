@@ -46,13 +46,9 @@ public:
 		this->parseTGF(stream, e);
 	};
 	/// Return a string representation of the NodeSet
-	std::string toString() {
-		std::string ret = "";
-		for (auto node : nodes) {
-			ret += node->toString();
-		}
-		return ret;
-	}
+	std::string toString();
+	/// Return the number of particles at each Node in the NodeSet
+	std::vector<unsigned int> numberOfParticles();
 	/**
 	 * Make one time step
 	 *
@@ -80,5 +76,7 @@ private:
     void parseTGF(std::istream& input, std::shared_ptr<Element> e);
 	///A vector containing all nodes in the set
 	std::vector<std::shared_ptr<Node>> nodes;
+	///Map from the ids in the input stream to the actual ids of the Nodes
+	std::unordered_map<int, unsigned int> idMap;
 };
 
