@@ -6,7 +6,7 @@ int main() {
 	std::string filename = "test/nodes.txt";
 	NodeSet set = NodeSet(filename, e);
 	std::cout << set.toString();
-	for (int i = 0; i < 3000; ++i) {
+	for (int i = 0; i < 10000; ++i) {
 		set.takeStep(1);
 	}
 	std::vector<unsigned int> numPart = set.numberOfParticles();

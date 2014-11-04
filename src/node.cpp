@@ -24,10 +24,11 @@ unsigned int Node::getNumberOfParticles() {
 }
 
 void Node::prepareStep(double dt) {
-	std::poisson_distribution<unsigned int> rngDist(dt);
 	double randomValue;
 	for (auto n : neighborsMap) {
-		randomValue = std::min<unsigned int>(numberOfParticles, rngDist(rd));
+		std::poisson_distribution<unsigned int> rngDist(dt/lengthMap[n.first]);
+		randomValue = rngDist(rd);
+		randomValue = std::min<unsigned int>(numberOfParticles, randomValue);
 		numberOfParticles -= randomValue;
 		changeMap[n.first] = randomValue;
 	}
