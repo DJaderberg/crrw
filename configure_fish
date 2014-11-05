@@ -1,2 +1,2 @@
 #!/usr/local/bin/fish
-set PKG_CONFIG_PATH $PKG_CONFIG_PATH /usr/local/opt/cairomm/lib /opt/X11/lib/pkgconfig
+set -g -x PKG_CONFIG_PATH /usr/local/opt/cairomm/lib /opt/X11/lib/pkgconfig /usr/X11/lib/pkgconfig
