@@ -38,6 +38,10 @@ public:
 	 * @param dt Length of the time step
 	 */
 	void takeStep(double dt);
+	///Get positions
+	std::unordered_map<unsigned int, std::array<double, 2>> getPositions();
+	//Get PositionedNodes
+	std::vector<std::shared_ptr<PositionedNode<2>>> getNodes();
 private:
 	/**
 	 * Read a stream containing a TGF NodeSet and store it in the member nodes.

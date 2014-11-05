@@ -82,3 +82,15 @@ void PositionedNodeSet::takeStep(double dt) {
 		node->takeStep(dt);
 	}
 }
+
+std::unordered_map<unsigned int, std::array<double, 2>> PositionedNodeSet::getPositions() {
+	std::unordered_map<unsigned int, std::array<double, 2>> positions;
+	for (auto n : positionedNodes) {
+		positions[n->getId()] = n->getPosition();
+	}
+	return positions;
+}
+
+std::vector<std::shared_ptr<PositionedNode<2>>> PositionedNodeSet::getNodes() {
+	return positionedNodes;
+}

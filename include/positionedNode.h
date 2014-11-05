@@ -34,6 +34,10 @@ public:
      */
     void insertNeighbor(std::shared_ptr<PositionedNode<dimension>> n);
 	virtual std::string toString();
+	///Get position
+	std::array<double, dimension> getPosition() {
+		return position;
+	}
 private:
     ///Position of the node
     std::array<double, dimension> position;
