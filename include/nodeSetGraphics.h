@@ -6,7 +6,7 @@
 //
 
 #pragma once
-#include "nodeSet.h"
+#include "positionedNodeSet.h"
 #include <string>
 #include <iostream>
 #include <cairommconfig.h>
@@ -28,7 +28,7 @@ public:
      * @param a NodeSet
      * @param the name of the file
      */
-    void writeToFile(NodeSet n, std::string filename);
+    void writeToFile(PositionedNodeSet n, std::string filename);
     
     
 private:

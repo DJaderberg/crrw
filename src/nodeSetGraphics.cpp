@@ -10,7 +10,7 @@
 #include <stdlib.h>
 
 
-void NodeSetGraphics::writeToFile(NodeSet n, std::string filename) {
+void NodeSetGraphics::writeToFile(PositionedNodeSet n, std::string filename) {
     
     /// Size configurations in px
     unsigned int windowHeight = 800;
@@ -30,17 +30,18 @@ void NodeSetGraphics::writeToFile(NodeSet n, std::string filename) {
     cr->arc(surface->get_width() / 4.0, surface->get_height() / 4.0,nodeRadius,0,2.0*M_PI);
     cr->stroke();
     
-    /*
-    // Find min and max coordinates
-    int minX, maxX, minY, maxY;
     
-    minX = NodeSet.getNodes().front().getX();
-    minY = NodeSet.getNodes().front().getY();
+    // Find min and max coordinates
+    double minX, maxX, minY, maxY;
+    
+    minX = n.getNodes().front()->getPosition()[0];
+    minY = n.getNodes().front()->getPosition()[1];
     
     maxX = minX;
     maxY = minY;
     
-    for (auto node: NodeSet.getNodes()) {
+    /*
+    for (auto node: n.getNodes()) {
         double temp = node.getX();
         if (temp < minX) {
             minX = temp;
@@ -58,7 +59,7 @@ void NodeSetGraphics::writeToFile(NodeSet n, std::string filename) {
     
     /*
      // Draw lines
-     for (auto node: NodeSet.getNodes()) {
+     for (auto node: n.getNodes()) {
         cr->arc(surface->get_width() / 4.0, surface->get_height() / 4.0,nodeRadius,0,2.0*M_PI);
         cr->stroke();
         for (auto neighbor: node.getNeighborsMap()) {
