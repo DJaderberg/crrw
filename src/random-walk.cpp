@@ -5,6 +5,10 @@ int main() {
 	std::shared_ptr<AntElement> e(new AntElement());
 	std::string filename = "test/nodes.txt";
 	PositionedNodeSet set = PositionedNodeSet(filename, e);
+    
+    NodeSetGraphics graphics_set = NodeSetGraphics();
+    graphics_set.writeToFile(set, "image.png");
+    /*
 	std::cout << set.toString();
 	for (int i = 0; i < 3000; ++i) {
 		set.takeStep(0.01);
@@ -14,6 +18,7 @@ int main() {
 		std::cout << val << ", ";
 	}
 	std::cout << "\n";
+    */
     return 0;
 }
 

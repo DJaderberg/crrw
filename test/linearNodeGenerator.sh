@@ -1,36 +1,34 @@
 #!/bin/bash
 # Argument order: filename, number of nodes, distance, production rate
-if [ $# > 4 ]
+if [ $# > 3 ]
 then
 	filename=$1
 	size=$2
-	distance=$3
-	prodRate=$4
+	prodRate=$3
 else
-	filename="nodes.txt"
+	filename="test/nodes.txt"
 	size=1000
-	distance=1
 	prodRate=10
 fi
 
 `rm "$filename"`
 
-echo "0 -1" >> $filename
+echo "0 0.0 0.0 -1" >> $filename
 for i in $(seq 1 $(($size-1)));
 do
 	if [ $i -eq $(($size/2)) ]
 	then
-		echo ""$i" "$prodRate"" >> $filename
+		echo ""$i" "$i".0 "$i".0" "$prodRate" >> $filename
 	else
-		echo "$i" >> $filename
+		echo ""$i" "$i".0 "$i".0" >> $filename
 	fi
 done
-echo ""$size" -1" >> $filename
+echo ""$size"  "$i".0 "$size".0 -1" >> $filename
 echo "#" >> $filename
-echo "0 1 "$distance"" >> $filename
+echo "0 1" >> $filename
 for i in $(seq 1 $(($size-1)));
 do
-	echo ""$i" "$(($i+1))" "$distance"" >> $filename
-	echo ""$i" "$(($i-1))" "$distance"" >> $filename
+	echo ""$i" "$(($i+1))"">> $filename
+	echo ""$i" "$(($i-1))"" >> $filename
 done
-echo ""$size" "$(($size-1))" "$distance"" >> $filename
+echo ""$size" "$(($size-1))"" >> $filename

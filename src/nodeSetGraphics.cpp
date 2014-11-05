@@ -27,52 +27,56 @@ void NodeSetGraphics::writeToFile(PositionedNodeSet n, std::string filename) {
     cr->paint(); // fill image with the color
     cr->restore(); // color is back to black now
     
+    /*
     cr->arc(surface->get_width() / 4.0, surface->get_height() / 4.0,nodeRadius,0,2.0*M_PI);
     cr->stroke();
+    
+    */
     
     
     // Find min and max coordinates
     double minX, maxX, minY, maxY;
-    
-    minX = n.getNodes().front()->getPosition()[0];
-    minY = n.getNodes().front()->getPosition()[1];
+    std::array<double, 2> pos = n.getNodes().front()->getPosition();
+    minX = pos[0];
+    minY = pos[1];
     
     maxX = minX;
     maxY = minY;
     
-    /*
+    std::cout << "minX:" << minX << " minY:" << minY << " maxX:" << maxX << " maxY:" << maxY << "\n";
+    
+    double temp;
     for (auto node: n.getNodes()) {
-        double temp = node.getX();
+        pos =node->getPosition();
+        temp = pos[0];
         if (temp < minX) {
             minX = temp;
         } else if (temp > maxX) {
             maxX = temp;
         }
-        double temp = node.getY();
+        temp = pos[1];
         if (temp < minY) {
             minY = temp;
         } else if (temp > maxY) {
             maxY = temp;
         }
     }
-    */
     
-    /*
-     // Draw lines
-     for (auto node: n.getNodes()) {
-        cr->arc(surface->get_width() / 4.0, surface->get_height() / 4.0,nodeRadius,0,2.0*M_PI);
+    std::cout << "minX:" << minX << " minY:" << minY << " maxX:" << maxX << " maxY:" << maxY << "\n";
+    
+    // TODO: draw the edges + handel the one dim case
+    // Draw lines
+    for (auto node: n.getNodes()) {
+        pos =node->getPosition();
+        //cr->arc(surface->get_width() / 4.0, surface->get_height() / 4.0,nodeRadius,0,2.0*M_PI);
         cr->stroke();
-        for (auto neighbor: node.getNeighborsMap()) {
-            cr->move_to((node.getX() - minX)/maxX*windowWidth, (node.getY() - minY)/maxY*windowHeight);
-            cr->line_to((neighbor.getX() - minX)/maxX*windowWidth, (neighbor.getY() - minY)/maxY*windowHeight);
+        for (auto neighbor: node->getNeighbors()) {
+            cr->move_to((pos[0] - minX)/maxX*windowWidth, (pos[1] - minY)/maxY*windowHeight);
+            cr->arc((pos[0] - minX)/maxX*(double)windowWidth, (pos[1] - minY)/maxY*(double)windowHeight,nodeRadius,0,2.0*M_PI);
+            std::cout << (pos[0] - minX)/maxX*(double)windowWidth << (pos[1] - minY)/maxY*(double)windowHeight << "\n";
+            //cr->line_to((neighbor.getPosition()[0] - minX)/maxX*windowWidth, (neighbor.getPosition()[1] - minY)/maxY*windowHeight);
             cr->stroke();
         }
-     }
-     */
-    for (int i = 0; i < 1; i++) {
-        
-        cr->line_to(surface->get_width() * 3.0 / 4.0, surface->get_height() * 3.0 / 4.0);
-        cr->stroke();
     }
     
     /*
