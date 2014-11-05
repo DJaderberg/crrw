@@ -12,7 +12,8 @@
  * @tparam dimension Dimensionality of the Euclidean space that the node exists in
  */
 template<int dimension>
-class PositionedSource : public Source, public PositionedNode<dimension> {
+class PositionedSource : public PositionedNode<dimension> {
+public:
 	/**
 	 * Create a PositionedSource
 	 *
@@ -20,6 +21,29 @@ class PositionedSource : public Source, public PositionedNode<dimension> {
 	 * @param e The Element of the Source
 	 * @param p The production rate of the Source
 	 */
-	PositionedSource(std::shared_ptr<Element> e, std::array<double, dimension> pos, int p) : Node(e), PositionedNode<dimension>(e, pos), Source(p, e) {
+	PositionedSource(std::shared_ptr<Element> e, std::array<double, dimension> pos, int p) : PositionedNode<dimension>(e, pos), productionRate(p) {
 	};
+	///Return the id of the Source
+	unsigned int getId() {
+		return ((PositionedNode<dimension> *) this)->getId();
+	};
+	/**
+     * Get the production rate of this Source
+     *
+     * @return How many elements are produced by this Source during one time unit
+     */
+    int getProductionRate();
+	void takeStep(double dt);
+	virtual std::string toString();
+private:
+    /**
+     * The production rate of the Source
+     *
+     * Any source with a negative production rate can be considered as
+     * a sink.
+     */
+    int productionRate = 0;
+	///Random number generation state
+	std::random_device rd;
+
 };

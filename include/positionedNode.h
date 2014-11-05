@@ -7,7 +7,7 @@
  * @tparam dimension Dimensionality of the Euclidean space that the node exists in
  */
 template<int dimension>
-class PositionedNode : public virtual Node {
+class PositionedNode : public Node {
 public:
     /**
      * Create a PositionedNode
@@ -32,7 +32,7 @@ public:
      *
      * @param n The PositionedNode to be the new neighbor
      */
-    void insertNeighbor(std::shared_ptr<PositionedNode> n);
+    void insertNeighbor(std::shared_ptr<PositionedNode<dimension>> n);
 	virtual std::string toString();
 private:
     ///Position of the node

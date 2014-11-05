@@ -12,13 +12,20 @@
  * @tparam dimension Dimensionality of the Euclidean space that the node exists in
  */
 template<int dimension>
-class PositionedSink : public Sink, public PositionedNode<dimension> {
+class PositionedSink : public PositionedNode<dimension> {
+public:
 	/**
 	 * Create a PositionedSink
 	 *
 	 * @param pos The position of the Sink
 	 * @param e The Element of the Sink
 	 */
-	PositionedSink(std::shared_ptr<Element> e, std::array<double, dimension> pos) : Node(e), PositionedNode<dimension>(e, pos), Sink(e) {
+	PositionedSink(std::shared_ptr<Element> e, std::array<double, dimension> pos) : PositionedNode<dimension>(e, pos) {
 	};
+	///Return the id of the Sink
+	unsigned int getId() {
+		return ((PositionedNode<dimension> *) this)->getId();
+	};
+	///Take a time step
+	void takeStep(double dt);
 };
