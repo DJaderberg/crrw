@@ -32,8 +32,22 @@ public:
      *
      * @param n The PositionedNode to be the new neighbor
      */
-    void insertNeighbor(std::shared_ptr<PositionedNode> n);
-	virtual std::string toString();
+    void insertNeighbor(std::shared_ptr<PositionedNode<dimension>> n) {
+		Node::insertNeighbor(n, this->distance(n));
+	}
+	std::string toString() {
+		std::string pos = "Position: (";
+		for (auto p : position) {
+			pos += std::to_string(p) + ",";
+		}
+		pos.pop_back();
+		pos += ")\n";
+		return Node::toString() + pos;
+	}
+	///Get position
+	std::array<double, dimension> getPosition() {
+		return position;
+	}
 private:
     ///Position of the node
     std::array<double, dimension> position;
@@ -43,5 +57,13 @@ private:
      * @param n The other node
      * @return The Euclidean distance between the nodes
      */
-    double distance(PositionedNode<dimension> n);
+    double distance(std::shared_ptr<PositionedNode<dimension>> n) {
+		double dist = 0;
+		double temp;
+		for (int i = 0; i < dimension; ++i) {
+			temp = (this->position[i] - n->position[i]);
+			dist += temp*temp;
+		}
+		return sqrt(dist);
+	}
 };
