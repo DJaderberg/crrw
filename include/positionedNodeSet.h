@@ -1,27 +1,19 @@
-/** @file nodeSet.h
- * Contains the declaration of NodeSet.
+/** @file positionedNodeSet.h
+ * Contains the declaration of PositionedNodeSet.
  */
-//
-//  Created by Kristoffer Jonsson on 03/11/14.
-//
 #pragma once
-#include "node.h"
-#include <istream>
-#include <fstream>
-#include <vector>
+#include "nodeSet.h"
+#include "positionedNode.h"
 
-/**
- * A class that holds and manipulates a set of Nodes
- */
-class NodeSet {
+class PositionedNodeSet : public NodeSet {
 public:
 	/**
 	 * Create a NodeSet from a stream
 	 *
 	 * @param input A stream with containing a set fo Nodes specified by TGF.
-	 * @param e The Element to assign to all created Nodes
+	 * @param element The Element to assign to all created Nodes
 	 */
-    NodeSet(std::istream input, std::shared_ptr<Element> e) {
+	PositionedNodeSet(std::istream input, std::shared_ptr<Element> e) {
 		this->parseTGF(input, e);
 	}
 	/** Create a NodeSet from a filename
@@ -30,26 +22,26 @@ public:
 	 * stream had been supplied
 	 *
 	 * @param filename The name of the file to use as input
-	 * @param e The Element to assign to all created Nodes
+	 * @param element The Element to assign to all created Nodes
 	 */
-	NodeSet(const std::string& filename, std::shared_ptr<Element> e) {
+	PositionedNodeSet(const std::string& filename, std::shared_ptr<Element> e) {
 		std::ifstream stream(filename);
 		this->parseTGF(stream, e);
 	};
 	/// Return a string representation of the NodeSet
-	virtual std::string toString();
+	std::string toString();
 	/// Return the number of particles at each Node in the NodeSet
-	virtual std::vector<unsigned int> numberOfParticles();
+	std::vector<unsigned int> numberOfParticles();
 	/**
 	 * Make one time step
 	 *
 	 * @param dt Length of the time step
 	 */
 	void takeStep(double dt);
-protected:
-	/** Create a dummy NodeSet, which shouldn't be used
-	 */
-	NodeSet() {};
+	///Get positions
+	std::unordered_map<unsigned int, std::array<double, 2>> getPositions();
+	//Get PositionedNodes
+	std::vector<std::shared_ptr<PositionedNode<2>>> getNodes();
 private:
 	/**
 	 * Read a stream containing a TGF NodeSet and store it in the member nodes.
@@ -70,7 +62,7 @@ private:
 	 */
     void parseTGF(std::istream& input, std::shared_ptr<Element> e);
 	///A vector containing all nodes in the set
-	std::vector<std::shared_ptr<Node>> nodes;
+	std::vector<std::shared_ptr<PositionedNode<2>>> positionedNodes;
 	///Map from the ids in the input stream to the actual ids of the Nodes
 	std::unordered_map<int, unsigned int> idMap;
 };
