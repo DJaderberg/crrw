@@ -27,5 +27,12 @@ public:
 		return ((PositionedNode<dimension> *) this)->getId();
 	};
 	///Take a time step
-	void takeStep(double dt);
+	void takeStep(double dt) {
+		Node::takeStep(dt); //TODO: Is this necessary?
+		this->numberOfParticles = 0;
+	}
+	//Return string representation of the Sink
+	std::string toString() {
+		return PositionedNode<dimension>::toString();
+	}
 };

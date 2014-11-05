@@ -32,9 +32,19 @@ public:
      *
      * @return How many elements are produced by this Source during one time unit
      */
-    int getProductionRate();
-	void takeStep(double dt);
-	virtual std::string toString();
+    int getProductionRate() {
+		return this->productionRate;
+	}
+	void takeStep(double dt) {
+		std::poisson_distribution<int> rngDist(productionRate*dt);
+		double randomValue = rngDist(rd);
+		this->numberOfParticles += randomValue;
+		Node::takeStep(dt);
+	}
+	virtual std::string toString() {
+		std::string prod = "Production rate: " + std::to_string(this->productionRate) + "\n";
+		return PositionedNode<dimension>::toString() + prod;
+	}
 private:
     /**
      * The production rate of the Source
