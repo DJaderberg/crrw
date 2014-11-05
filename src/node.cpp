@@ -25,6 +25,8 @@ unsigned int Node::getNumberOfParticles() {
 
 void Node::prepareStep(double dt) {
     double capacitance = 0;
+	this->updateMeanFlow();
+	this->updateFlow(); //This depends on updateMeanFlow having already been done for the Node
     for ( auto it : neighborsMap) {
         capacitance += (this->conductivityMap[it.first])/(this->lengthMap[it.first]);
     }
@@ -38,14 +40,28 @@ void Node::takeStep(double dt) {
     this->updateCapacitance();
     this->updateNumberOfParticles();
     this->updateConductivity();
+	this->updatePotential();
+}
+
+//Calculate the mean flow according to eq 2.16
+void Node::updateMeanFlow() {
+	unsigned int neighborNumberOfParticles;
+	double flow;
+	for (auto n : neighborsMap) {
+		neighborNumberOfParticles = n.second->getNumberOfParticles();
+		flow = (this->potential - n.second->potential)*conductivityMap[n.first]/lengthMap[n.first];
+		meanFlowMap[n.first] = flow;
+	}
+}
+
+void Node::updateFlow() {
 }
 
 void Node::updateNumberOfParticles() {
-    this->calculatePotential();
 }
 
-double Node::calculatePotential() {
-    return this->numberOfParticles/this->capacitance;
+void Node::updatePotential() {
+    this->potential = this->numberOfParticles/this->capacitance;
 }
 
 void Node::updateCapacitance() {

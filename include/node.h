@@ -7,6 +7,7 @@
 #include <memory>
 #include <array>
 #include <unordered_map>
+#include <random>
 #include "element.h"
 #include <string>
 
@@ -83,6 +84,10 @@ protected:
     static unsigned int idCounter;
     ///Unique ID of the Node
     unsigned int id;
+	///Helper function to update the meanFlowMap
+    void updateMeanFlow();
+	//Helper function to randomise and update the flowMap
+	void updateFlow();
     ///Helper function to update number of particles
     void updateNumberOfParticles();
     ///Helper function to update conductivity
@@ -90,7 +95,7 @@ protected:
     ///Helper function to update capacitance
     void updateCapacitance();
     ///Helper function to calculate potential
-    double calculatePotential();
+    void updatePotential();
     
     /**
      * An unordered map containing all neighbors of the Node.
@@ -102,14 +107,18 @@ protected:
     std::shared_ptr<Element> element;
     ///Number of elements at the node
     unsigned int numberOfParticles = 0;
+	///The potential at the node
+	double potential = 0;
     ///Mean flow rate through the node
     std::unordered_map<unsigned int,double> meanFlowMap;
+	//Actual flow rate (probabilistic) through the node
+	std::unordered_map<unsigned int, double> flowMap;
     ///Conductivity of the node
     std::unordered_map<unsigned int,double> conductivityMap;
     ///Capacitance of the node
     double capacitance = 0;
-	///How many elements will move from this Node to each neighbor in the next time step
-	std::unordered_map<unsigned int, unsigned int> changeMap;
+	///Random number generation state
+	std::random_device rd;
 };
 
 
