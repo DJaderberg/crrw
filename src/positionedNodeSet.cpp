@@ -9,7 +9,6 @@
 #include <string>
 
 //TODO: Make this throw exceptions when file is incorrectly formatted
-/*
 void PositionedNodeSet::parseTGF(std::istream& input, std::shared_ptr<Element> e) {
 	std::string line;
 	while (std::getline(input, line)) {
@@ -55,7 +54,7 @@ void PositionedNodeSet::parseTGF(std::istream& input, std::shared_ptr<Element> e
 			positionedNodes[idMap[from]]->insertNeighbor(positionedNodes[idMap[to]]);
 		}
 	}
-}*/
+}
 
 std::string PositionedNodeSet::toString() {
 	std::string ret = "";
