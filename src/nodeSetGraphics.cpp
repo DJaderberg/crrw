@@ -23,7 +23,8 @@ void NodeSetGraphics::writeToFile(PositionedNodeSet n, std::string filename) {
     Cairo::RefPtr<Cairo::Context> cr = Cairo::Context::create(surface);
     
     cr->save(); // save the state of the context
-    cr->set_source_rgb(0.86, 0.85, 0.47);
+    //cr->set_source_rgb(0.86, 0.85, 0.47); // Greenish color
+    cr->set_source_rgb(1, 01, 0.95); // Warm white color
     cr->paint(); // fill image with the color
     cr->restore(); // color is back to black now
     
@@ -68,39 +69,19 @@ void NodeSetGraphics::writeToFile(PositionedNodeSet n, std::string filename) {
     // Draw lines
     for (auto node: n.getNodes()) {
         pos =node->getPosition();
-        //cr->arc(surface->get_width() / 4.0, surface->get_height() / 4.0,nodeRadius,0,2.0*M_PI);
+        cr->save();
+        cr->arc((pos[0] - minX)/maxX*(double)windowWidth, (pos[1] - minY)/maxY*(double)windowHeight,nodeRadius,0,2.0*M_PI);
         cr->stroke();
         for (auto neighbor: node->getNeighbors()) {
             cr->move_to((pos[0] - minX)/maxX*windowWidth, (pos[1] - minY)/maxY*windowHeight);
-            cr->arc((pos[0] - minX)/maxX*(double)windowWidth, (pos[1] - minY)/maxY*(double)windowHeight,nodeRadius,0,2.0*M_PI);
-            std::cout << (pos[0] - minX)/maxX*(double)windowWidth << (pos[1] - minY)/maxY*(double)windowHeight << "\n";
-            //cr->line_to((neighbor.getPosition()[0] - minX)/maxX*windowWidth, (neighbor.getPosition()[1] - minY)/maxY*windowHeight);
+            cr->set_line_width(0.1);
+            cr->line_to((dynamic_cast<PositionedNode<2>*>(neighbor.second.get())->getPosition()[0] - minX)/maxX*(double)windowWidth, (dynamic_cast<PositionedNode<2>*>(neighbor.second.get())->getPosition()[1] - minY)/maxY*(double)windowHeight);
             cr->stroke();
         }
+        cr->restore();
     }
     
-    /*
-     cr->save();
-     // draw a border around the image
-     cr->set_line_width(20.0); // make the line wider
-     cr->rectangle(0.0, 0.0, surface->get_width(), surface->get_height());
-     cr->stroke();
-     
-     cr->set_source_rgba(0.0, 0.0, 0.0, 0.7);
-     // draw a circle in the center of the image
-     cr->arc(surface->get_width() / 2.0, surface->get_height() / 2.0, surface->get_height() / 4.0, 0.0, 2.0 * M_PI);
-     cr->stroke();
-     
-     // draw a diagonal line
-     cr->move_to(surface->get_width() / 4.0, surface->get_height() / 4.0);
-     cr->line_to(surface->get_width() * 3.0 / 4.0, surface->get_height() * 3.0 / 4.0);
-     cr->stroke();
-     cr->restore();
-     
-     */
-    
     surface->write_to_png(filename);
-    
     std::cout << "Wrote png file \"" << filename << "\"" << std::endl;
 }
 

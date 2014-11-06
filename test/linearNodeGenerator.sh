@@ -23,7 +23,7 @@ do
 		echo ""$i" "$i".0 "$i".0" >> $filename
 	fi
 done
-echo ""$size"  "$i".0 "$size".0 -1" >> $filename
+echo ""$size" "$size".0 "$size".0 -1" >> $filename
 echo "#" >> $filename
 echo "0 1" >> $filename
 for i in $(seq 1 $(($size-1)));

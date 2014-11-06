@@ -1,24 +1,27 @@
 #include "random-walk.h"
 
 int main() {
-	std::cout << "Hello World!\n";
-	std::shared_ptr<AntElement> e(new AntElement());
-	std::string filename = "test/nodes.txt";
-	PositionedNodeSet set = PositionedNodeSet(filename, e);
+    std::cout << "Hello World!\n";
+    std::shared_ptr<AntElement> e(new AntElement());
+    std::string filename = "test/nodes.txt";
+    PositionedNodeSet set = PositionedNodeSet(filename, e);
     
     NodeSetGraphics graphics_set = NodeSetGraphics();
+    
+    std::cout << set.toString();
+    for (int i = 0; i < 300; ++i) {
+        set.takeStep(0.01);
+    }
+    
     graphics_set.writeToFile(set, "image.png");
+    
     /*
-	std::cout << set.toString();
-	for (int i = 0; i < 3000; ++i) {
-		set.takeStep(0.01);
-	}
-	std::vector<unsigned int> numPart = set.numberOfParticles();
-	for (auto val : numPart) {
-		std::cout << val << ", ";
-	}
-	std::cout << "\n";
-    */
+     std::vector<unsigned int> numPart = set.numberOfParticles();
+     for (auto val : numPart) {
+     std::cout << val << ", ";
+     }
+     std::cout << "\n";
+     */
     return 0;
 }
 
