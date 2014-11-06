@@ -76,6 +76,9 @@ public:
      * Standard toString method
      */
     virtual std::string toString();
+	///Get mean flow to some neighbor
+	///@param id Id of the neighbor the get the flow from
+	double getMeanFlow(unsigned int id);
     
     virtual ~Node() {
     }
