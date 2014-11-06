@@ -33,6 +33,6 @@ public:
 	}
 	//Return string representation of the Sink
 	std::string toString() {
-		return PositionedNode<dimension>::toString();
+		return PositionedNode<dimension>::toString() + "Sink\n";
 	}
 };
