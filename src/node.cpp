@@ -14,6 +14,7 @@ void Node::insertNeighbor(std::shared_ptr<Node> neighbor, double distance) {
     unsigned int id = neighbor->getId();
     neighborsMap[id] = neighbor;
     lengthMap[id] = distance;
+	conductivityMap[id] = element->Dmin;
 }
 
 unsigned int Node::getId() {
@@ -29,13 +30,15 @@ double Node::getMeanFlow(unsigned int id) {
 }
 
 void Node::prepareStep(double dt) {
-    double capacitance = 0;
+    //double capacitance = 0;
 	this->updateMeanFlow();
 	this->updateFlow(dt); //This depends on updateMeanFlow having already been done for the local Node
 	//TODO: Do we need the capacitance for anything?
+	/*
     for ( auto it : neighborsMap) {
         capacitance += (this->conductivityMap[it.first])/(this->lengthMap[it.first]);
     }
+	*/
 }
 
 void Node::takeStep(double dt) {
@@ -47,10 +50,8 @@ void Node::takeStep(double dt) {
 
 //Calculate the mean flow according to eq 2.16
 void Node::updateMeanFlow() {
-	unsigned int neighborNumberOfParticles;
 	double flow;
 	for (auto n : neighborsMap) {
-		neighborNumberOfParticles = n.second->getNumberOfParticles();
 		flow = (this->potential - n.second->potential)*conductivityMap[n.first]/lengthMap[n.first];
 		meanFlowMap[n.first] = flow;
 	}
@@ -73,11 +74,17 @@ void Node::updatePotential() {
 }
 
 void Node::updateCapacitance() {
+	capacitance = 0;
+	for (auto n : lengthMap) {
+		capacitance += conductivityMap[n.first]/n.second;
+	}
 }
 
 void Node::updateConductivity(double dt) {
+	double value;
 	for (auto n : conductivityMap) {
-		conductivityMap[n.first] = n.second + element->q*std::pow(abs(meanFlowMap[n.first]), element->mu) - element->lambda*n.second*dt;
+		value = n.second + element->q*std::pow(abs(meanFlowMap[n.first]), element->mu) - element->lambda*n.second*dt;
+		conductivityMap[n.first] = std::max(value, element->Dmin);
 	}
 }
 
