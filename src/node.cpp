@@ -3,6 +3,7 @@
  */
 #include "node.h"
 #include <cmath>
+#include <algorithm>
 
 unsigned int Node::idCounter = 0;
 
@@ -58,15 +59,23 @@ void Node::updateMeanFlow() {
 }
 
 void Node::updateFlow(double dt) {
+	int value;
+	int tempNumberOfParticles = numberOfParticles;
 	for (auto n : meanFlowMap) {
 		double sign = signbit(n.second);
 		double mean = abs(n.second)*dt;
 		std::poisson_distribution<unsigned int> rngDist(mean);
-		flowMap[n.first] = sign*rngDist(rd);
+		value = sign*rngDist(rd);
+		tempNumberOfParticles -= value;
+		flowMap[n.first] = std::min(tempNumberOfParticles, std::max(0, value));
 	}
 }
 
 void Node::updateNumberOfParticles() {
+	for (auto n : neighborsMap) {
+		numberOfParticles -= flowMap[n.first];
+		//numberOfParticles += n.second->flowMap[id];
+	}
 }
 
 void Node::updatePotential() {

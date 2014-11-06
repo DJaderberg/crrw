@@ -6,7 +6,7 @@ int main() {
 	std::string filename = "test/nodes.txt";
 	PositionedNodeSet set = PositionedNodeSet(filename, e);
 	std::cout << set.toString();
-	for (int i = 0; i < 3000; ++i) {
+	for (int i = 0; i < 9000; ++i) {
 		set.takeStep(0.1);
 	}
 	std::vector<unsigned int> numPart = set.numberOfParticles();
