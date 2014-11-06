@@ -74,7 +74,8 @@ void NodeSetGraphics::writeToFile(PositionedNodeSet n, std::string filename) {
         cr->stroke();
         for (auto neighbor: node->getNeighbors()) {
             cr->move_to((pos[0] - minX)/maxX*windowWidth, (pos[1] - minY)/maxY*windowHeight);
-            cr->set_line_width(0.1);
+            cr->set_line_width(node->getMeanFlow(neighbor.first));
+            std::cout << node->getMeanFlow(neighbor.first);
             cr->line_to((dynamic_cast<PositionedNode<2>*>(neighbor.second.get())->getPosition()[0] - minX)/maxX*(double)windowWidth, (dynamic_cast<PositionedNode<2>*>(neighbor.second.get())->getPosition()[1] - minY)/maxY*(double)windowHeight);
             cr->stroke();
         }

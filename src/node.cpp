@@ -23,6 +23,10 @@ unsigned int Node::getNumberOfParticles() {
 	return this->numberOfParticles;
 }
 
+double Node::getMeanFlow(unsigned int id) {
+    return this->meanFlowMap[id];
+}
+
 void Node::prepareStep(double dt) {
 	double randomValue;
 	for (auto n : neighborsMap) {
