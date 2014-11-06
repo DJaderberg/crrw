@@ -87,11 +87,11 @@ protected:
 	///Helper function to update the meanFlowMap
     void updateMeanFlow();
 	//Helper function to randomise and update the flowMap
-	void updateFlow();
+	void updateFlow(double dt);
     ///Helper function to update number of particles
     void updateNumberOfParticles();
     ///Helper function to update conductivity
-    void updateConductivity();
+    void updateConductivity(double dt);
     ///Helper function to update capacitance
     void updateCapacitance();
     ///Helper function to calculate potential

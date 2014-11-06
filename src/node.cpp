@@ -2,6 +2,7 @@
  * Contains definitions of functions in Node and Source classes.
  */
 #include "node.h"
+#include <cmath>
 
 unsigned int Node::idCounter = 0;
 
@@ -26,20 +27,17 @@ unsigned int Node::getNumberOfParticles() {
 void Node::prepareStep(double dt) {
     double capacitance = 0;
 	this->updateMeanFlow();
-	this->updateFlow(); //This depends on updateMeanFlow having already been done for the Node
+	this->updateFlow(dt); //This depends on updateMeanFlow having already been done for the local Node
+	//TODO: Do we need the capacitance for anything?
     for ( auto it : neighborsMap) {
         capacitance += (this->conductivityMap[it.first])/(this->lengthMap[it.first]);
     }
-	
-	for (auto it : neighborsMap) {
-
-	}
 }
 
 void Node::takeStep(double dt) {
     this->updateCapacitance();
+	this->updateConductivity(dt);
     this->updateNumberOfParticles();
-    this->updateConductivity();
 	this->updatePotential();
 }
 
@@ -54,7 +52,13 @@ void Node::updateMeanFlow() {
 	}
 }
 
-void Node::updateFlow() {
+void Node::updateFlow(double dt) {
+	for (auto n : meanFlowMap) {
+		double sign = signbit(n.second);
+		double mean = abs(n.second)*dt;
+		std::poisson_distribution<unsigned int> rngDist(mean);
+		flowMap[n.first] = sign*rngDist(rd);
+	}
 }
 
 void Node::updateNumberOfParticles() {
@@ -67,7 +71,10 @@ void Node::updatePotential() {
 void Node::updateCapacitance() {
 }
 
-void Node::updateConductivity() {
+void Node::updateConductivity(double dt) {
+	for (auto n : conductivityMap) {
+		conductivityMap[n.first] = n.second + element->q*std::pow(abs(meanFlowMap[n.first]), element->mu) - element->lambda*n.second*dt;
+	}
 }
 
 std::string Node::toString() {
