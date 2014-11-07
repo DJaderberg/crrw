@@ -7,6 +7,8 @@
 
 #pragma once
 #include "positionedNodeSet.h"
+#include "positionedSource.h"
+#include "positionedSink.h"
 #include <string>
 #include <iostream>
 #include <cairommconfig.h>

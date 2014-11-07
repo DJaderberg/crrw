@@ -31,4 +31,8 @@ do
 	echo ""$i" "$(($i+1))"">> $filename
 	echo ""$i" "$(($i-1))"" >> $filename
 done
+<<<<<<< HEAD
 echo ""$size" "$(($size-1))"" >> $filename
+=======
+echo ""$size" "$(($size-1))"" >> $filename
+>>>>>>> master

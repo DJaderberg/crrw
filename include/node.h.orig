@@ -10,6 +10,7 @@
 #include <random>
 #include "element.h"
 #include <string>
+#include <random>
 
 /**
  * A node containing some number of elements
@@ -76,9 +77,15 @@ public:
      * Standard toString method
      */
     virtual std::string toString();
+<<<<<<< HEAD
+    ///Get mean flow to some neighbor
+    ///@param id Id of the neighbor the get the flow from
+    double getMeanFlow(unsigned int id);
+=======
 	///Get mean flow to some neighbor
 	///@param id Id of the neighbor the get the flow from
 	double getMeanFlow(unsigned int id);
+>>>>>>> master
     
     virtual ~Node() {
     }
@@ -120,7 +127,13 @@ protected:
     std::unordered_map<unsigned int,double> conductivityMap;
     ///Capacitance of the node
     double capacitance = 0;
+<<<<<<< HEAD
+	///How many elements will move from this Node to each neighbor in the next time step
+	std::unordered_map<unsigned int, unsigned int> changeMap;
+	//Seed for RNG
+=======
 	///Random number generation state
+>>>>>>> master
 	std::random_device rd;
 };
 

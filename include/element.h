@@ -20,6 +20,8 @@ public:
     const double lambda;
     ///Road maintenance cost factor
     const double mu;
+	///Minimal conductivity
+	const double Dmin;
     /**
      * Construct an element with certain parameters
      *
@@ -31,6 +33,7 @@ public:
      * @param q Reinforcement intensity
      * @param lambda Conductivity decrease rate
      * @param mu Road maintenance cost factor
+	 * @param Dmin Minimum possible conductivity on an edge
      */
-    Element(const double q, const double lambda, const double mu) : q(q), lambda(lambda), mu(mu) {};
+    Element(const double q, const double lambda, const double mu, const double Dmin) : q(q), lambda(lambda), mu(mu), Dmin(Dmin) {};
 };

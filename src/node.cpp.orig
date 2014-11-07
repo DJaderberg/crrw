@@ -27,6 +27,21 @@ unsigned int Node::getNumberOfParticles() {
 }
 
 double Node::getMeanFlow(unsigned int id) {
+<<<<<<< HEAD
+    return this->meanFlowMap[id];
+}
+
+void Node::prepareStep(double dt) {
+	double randomValue;
+	for (auto n : neighborsMap) {
+		double mean = numberOfParticles*dt/lengthMap[n.first]/lengthMap.size();
+		std::poisson_distribution<unsigned int> rngDist(mean);
+		randomValue = rngDist(rd);
+		randomValue = std::min<unsigned int>(numberOfParticles, randomValue);
+		numberOfParticles -= randomValue;
+		changeMap[n.first] = randomValue;
+	}
+=======
 	return this->meanFlowMap[id];
 }
 
@@ -40,6 +55,7 @@ void Node::prepareStep(double dt) {
         capacitance += (this->conductivityMap[it.first])/(this->lengthMap[it.first]);
     }
 	*/
+>>>>>>> master
 }
 
 void Node::takeStep(double dt) {
@@ -73,8 +89,12 @@ void Node::updateFlow(double dt) {
 
 void Node::updateNumberOfParticles() {
 	for (auto n : neighborsMap) {
+<<<<<<< HEAD
+		numberOfParticles += n.second->changeMap[id];
+=======
 		numberOfParticles -= flowMap[n.first];
-		numberOfParticles += n.second->flowMap[id];
+		//numberOfParticles += n.second->flowMap[id];
+>>>>>>> master
 	}
 }
 
