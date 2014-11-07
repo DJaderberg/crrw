@@ -62,12 +62,16 @@ void Node::updateFlow(double dt) {
 	int value;
 	int tempNumberOfParticles = numberOfParticles;
 	for (auto n : meanFlowMap) {
-		double sign = signbit(n.second);
-		double mean = abs(n.second)*dt;
-		std::poisson_distribution<unsigned int> rngDist(mean);
-		value = sign*rngDist(rd);
-		tempNumberOfParticles -= value;
-		flowMap[n.first] = std::min(tempNumberOfParticles, std::max(0, value));
+		if (n.second > 0) {
+			double mean = n.second*dt;
+			std::poisson_distribution<int> rngDist(mean);
+			value = rngDist(rd);
+			flowMap[n.first] = std::min(tempNumberOfParticles, value);
+			tempNumberOfParticles -= value;
+			tempNumberOfParticles = std::max(0, tempNumberOfParticles);
+		} else {
+			flowMap[n.first] = 0;
+		}
 	}
 }
 

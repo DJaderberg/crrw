@@ -9,7 +9,7 @@ int main() {
 	
     NodeSetGraphics graphics = NodeSetGraphics();
     
-    for (int i = 0; i < 1000; ++i) {
+    for (int i = 0; i < 100000; ++i) {
 		set.takeStep(0.1);
 		std::vector<unsigned int> numPart = set.numberOfParticles();
 		for (auto val : numPart) {
