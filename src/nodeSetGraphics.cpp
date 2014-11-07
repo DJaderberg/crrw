@@ -87,7 +87,7 @@ void NodeSetGraphics::writeToFile(PositionedNodeSet n, std::string filename) {
         pos =node->getPosition();
         cr->save();
         for (auto neighbor: node->getNeighbors()) {
-            cr->move_to((pos[0] - Xmin)/Xmax*(double)(windowWidth-2*borderWidth) + borderWidth, (pos[1] - Ymin)/Ymax*(double)(windowHeight-2*borderWidth) + borderWidth);
+            cr->move_to((pos[0] - Xmin)/(Xmax - Xmin)*(double)(windowWidth-2*borderWidth) + borderWidth, (pos[1] - Ymin)/(Ymax - Ymin)*(double)(windowHeight-2*borderWidth) + borderWidth);
             flow = abs(node->getMeanFlow(neighbor.first));
             // in no flow set different color for edge
             if (flow == 0) {
@@ -96,10 +96,10 @@ void NodeSetGraphics::writeToFile(PositionedNodeSet n, std::string filename) {
                 cr->set_source_rgba(0.2, 0.2, 0.2, ((flow - flowMin)/(flowMax - flowMin))*(1 - lineOpacMin) + lineOpacMin);
             }
             
-            cr->set_line_width((flow - flowMin)/flowMax*lineWidthMax + lineWidthMin);
+            cr->set_line_width(((flow - flowMin)/(flowMax-flowMin))*(lineWidthMax - lineWidthMin) + lineWidthMin);
             //cr->set_line_width(1);
             //std::cout << node->getMeanFlow(neighbor.first) << "\n";
-            cr->line_to((dynamic_cast<PositionedNode<2>*>(neighbor.second.get())->getPosition()[0] - Xmin)/Xmax*(double)(windowWidth-2*borderWidth) + borderWidth, (dynamic_cast<PositionedNode<2>*>(neighbor.second.get())->getPosition()[1] - Ymin)/Ymax*(double)(windowHeight-2*borderWidth) + borderWidth);
+            cr->line_to((dynamic_cast<PositionedNode<2>*>(neighbor.second.get())->getPosition()[0] - Xmin)/(Xmax - Xmin)*(double)(windowWidth-2*borderWidth) + borderWidth, (dynamic_cast<PositionedNode<2>*>(neighbor.second.get())->getPosition()[1] - Ymin)/(Ymax - Ymin)*(double)(windowHeight-2*borderWidth) + borderWidth);
             cr->stroke();
         }
         cr->restore();
@@ -113,23 +113,23 @@ void NodeSetGraphics::writeToFile(PositionedNodeSet n, std::string filename) {
         if (dynamic_cast<PositionedSource<2>*>(node.get())) {
             std::cout << "SOURCE\n";
             cr->set_source_rgb(0, 0, 0);
-            cr->arc((pos[0] - Xmin)/Xmax*(double)(windowWidth-2*borderWidth) + borderWidth, (pos[1] - Ymin)/Ymax*(double)(windowHeight-2*borderWidth) + borderWidth,1+sourceRadius,0,2.0*M_PI);
+            cr->arc((pos[0] - Xmin)/(Xmax - Xmin)*(double)(windowWidth-2*borderWidth) + borderWidth, (pos[1] - Ymin)/(Ymax - Ymin)*(double)(windowHeight-2*borderWidth) + borderWidth,1+sourceRadius,0,2.0*M_PI);
             cr->stroke();
             cr->set_source_rgb(1, 0, 0);
-            cr->arc((pos[0] - Xmin)/Xmax*(double)(windowWidth-2*borderWidth) + borderWidth, (pos[1] - Ymin)/Ymax*(double)(windowHeight-2*borderWidth) + borderWidth,sourceRadius,0,2.0*M_PI);
+            cr->arc((pos[0] - Xmin)/(Xmax - Xmin)*(double)(windowWidth-2*borderWidth) + borderWidth, (pos[1] - Ymin)/(Ymax - Ymin)*(double)(windowHeight-2*borderWidth) + borderWidth,sourceRadius,0,2.0*M_PI);
         } else if (dynamic_cast<PositionedSink<2>*>(node.get())) {
             std::cout << "SINK\n";
             cr->set_source_rgb(0, 0, 0);
-            cr->arc((pos[0] - Xmin)/Xmax*(double)(windowWidth-2*borderWidth) + borderWidth, (pos[1] - Ymin)/Ymax*(double)(windowHeight-2*borderWidth) + borderWidth,1+sinkRadius,0,2.0*M_PI);
+            cr->arc((pos[0] - Xmin)/(Xmax - Xmin)*(double)(windowWidth-2*borderWidth) + borderWidth, (pos[1] - Ymin)/(Ymax - Ymin)*(double)(windowHeight-2*borderWidth) + borderWidth,1+sinkRadius,0,2.0*M_PI);
             cr->stroke();
             cr->set_source_rgb(0.4, 0.4, 1);
-            cr->arc((pos[0] - Xmin)/Xmax*(double)(windowWidth-2*borderWidth) + borderWidth, (pos[1] - Ymin)/Ymax*(double)(windowHeight-2*borderWidth) + borderWidth,sinkRadius,0,2.0*M_PI);
+            cr->arc((pos[0] - Xmin)/(Xmax - Xmin)*(double)(windowWidth-2*borderWidth) + borderWidth, (pos[1] - Ymin)/(Ymax - Ymin)*(double)(windowHeight-2*borderWidth) + borderWidth,sinkRadius,0,2.0*M_PI);
         } else {
             cr->set_source_rgb(0, 0, 0);
-            cr->arc((pos[0] - Xmin)/Xmax*(double)(windowWidth-2*borderWidth) + borderWidth, (pos[1] - Ymin)/Ymax*(double)(windowHeight-2*borderWidth) + borderWidth,1+nodeRadius,0,2.0*M_PI);
+            cr->arc((pos[0] - Xmin)/(Xmax - Xmin)*(double)(windowWidth-2*borderWidth) + borderWidth, (pos[1] - Ymin)/(Ymax - Ymin)*(double)(windowHeight-2*borderWidth) + borderWidth,1+nodeRadius,0,2.0*M_PI);
             cr->stroke();
             cr->set_source_rgb(0.1, 0.9, 0.7);
-            cr->arc((pos[0] - Xmin)/Xmax*(double)(windowWidth-2*borderWidth) + borderWidth, (pos[1] - Ymin)/Ymax*(double)(windowHeight-2*borderWidth) + borderWidth,nodeRadius,0,2.0*M_PI);
+            cr->arc((pos[0] - Xmin)/(Xmax - Xmin)*(double)(windowWidth-2*borderWidth) + borderWidth, (pos[1] - Ymin)/(Ymax - Ymin)*(double)(windowHeight-2*borderWidth) + borderWidth,nodeRadius,0,2.0*M_PI);
         }
         cr->stroke_preserve();
         cr->fill();

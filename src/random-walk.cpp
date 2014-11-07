@@ -11,18 +11,7 @@ int main() {
     
     for (int i = 0; i < 10000; ++i) {
 		set.takeStep(0.1);
-		std::vector<unsigned int> numPart = set.numberOfParticles();
-		for (auto val : numPart) {
-			//std::cout << val << ", ";
-		}
-		//std::cout << "\n";
 	}
-	std::vector<unsigned int> numPart = set.numberOfParticles();
-	
-    for (auto val : numPart) {
-		std::cout << val << ", ";
-	}
-	std::cout << "\n";
     
     graphics.writeToFile(set, "image.png");
     
