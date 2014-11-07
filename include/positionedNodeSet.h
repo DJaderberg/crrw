@@ -57,7 +57,7 @@ private:
 	 * number and a new-line. This specifies a connection from the first Node to 
 	 * the second Node with the distance given by the floating point number.
 	 *
-	 * @param input A stream with containing a set fo Nodes specified by TGF.
+	 * @param input A stream with containing a set of Nodes specified by TGF.
 	 * @param e The Element to assign to all created Nodes
 	 *
 	 * @author David Jäderberg
@@ -74,8 +74,7 @@ private:
 	///@param element The Element that the Algorithm should have
 	void initializeAlgorithms(algorithmCreator create, std::shared_ptr<Element> element) {
 		for (auto n : positionedNodes) {
-			auto temp = create();
-			temp->initialize(n, element);
+			auto temp = create(n, element);
 			algorithms.push_back(temp);
 		}
 	}

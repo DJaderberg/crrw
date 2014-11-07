@@ -42,8 +42,7 @@ public:
 
 	void initializeAlgorithms(algorithmCreator create, std::shared_ptr<Element> element) {
 		for (auto n : nodes) {
-			auto temp = create();
-			temp->initialize(n, element);
+			auto temp = create(n, element);
 			algorithms.push_back(temp);
 		}
 	}

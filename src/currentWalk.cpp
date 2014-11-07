@@ -69,3 +69,16 @@ void CurrentWalk::updateConductivity(double dt) {
 	}
 }
 
+std::shared_ptr<Algorithm> CurrentWalk::create(std::shared_ptr<Node> n, std::shared_ptr<Element> element) {
+	std::shared_ptr<CurrentWalk> a;
+	//TODO: Also check for non-positioned Sink/Source
+	if (dynamic_cast<PositionedSource<2>*>(&*n)) {
+		a.reset(new CurrentWalkSource());
+	} else if (dynamic_cast<PositionedSink<2>*>(&*n)) {
+		a.reset(new CurrentWalkSink());
+	} else {
+		a.reset(new CurrentWalk());
+	}
+	a->initialize(n, element);
+	return a;
+}

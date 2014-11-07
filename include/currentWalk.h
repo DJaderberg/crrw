@@ -5,6 +5,11 @@
 #include <memory>
 #include "algorithm.h"
 #include "antElement.h"
+#include "positionedSource.h"
+#include "positionedSink.h"
+
+class CurrentWalkSource;
+class CurrentWalkSink;
 
 class CurrentWalk : public Algorithm {
 public:
@@ -17,16 +22,14 @@ public:
 			conductivityMap[i.second->getId()] = element->Dmin;
 		}
 	}
-	static std::shared_ptr<Algorithm> create() {
-		std::shared_ptr<Algorithm> a(new CurrentWalk());
-		return a;
-	}
-private:
+	static std::shared_ptr<Algorithm> create(std::shared_ptr<Node> n, std::shared_ptr<Element> element);
+protected:
 	void updateMeanFlow();
 	void updateFlow(double dt);
 	void updateConductivity(double dt);
 	void updateCapacitance();
-	void updateNumberOfParticles();
+	virtual void updateNumberOfParticles();
+	void (*updateFunction)();
 	void updatePotential();
 	std::shared_ptr<Node> node;
     ///Mean flow rate through the Node
@@ -41,3 +44,17 @@ private:
     std::shared_ptr<Element> element;
 };
 
+class CurrentWalkSource : public CurrentWalk {
+public:
+	void updateNumberOfParticles() {
+		CurrentWalk::updateNumberOfParticles();
+		node->setNumberOfParticles(element->productionRate + node->getNumberOfParticles());
+	}
+};
+
+class CurrentWalkSink : public CurrentWalk {
+public:
+	void updateNumberOfParticles() {
+		node->setNumberOfParticles(0);
+	}
+};
