@@ -25,7 +25,7 @@ public:
      * @param dist Distance to each neighbor, in same order as n
 	 * @param e The Element of the Node
      */
-    Node(std::unordered_map<unsigned int,std::shared_ptr<Node>> n, std::unordered_map<unsigned int,double> dist, std::shared_ptr<Element> e) : Node(e) {
+    Node(std::unordered_map<unsigned int,std::shared_ptr<Node>> n, std::unordered_map<unsigned int,double> dist) {
         neighborsMap = n;
         lengthMap = dist;
     };
@@ -33,7 +33,7 @@ public:
 	 *
 	 * @param e The Element of the Node
 	 */
-    Node(std::shared_ptr<Element> e) : id(idCounter++), element(e) {
+    Node() : id(idCounter++) {
     };
     /**
      * Gets the neighbors
@@ -64,41 +64,45 @@ public:
 	unsigned int getNumberOfParticles();
 
 	/**
-	 * Prepare a step by filling the changeMap
+	 * Sets the number of particles in the Node
+	 *
+	 * @param value The new value of the number of particles at the Node
 	 */
-	virtual void prepareStep(double dt);
-    /**
-     * Allow elements at node to move, if needed
-     */
-    virtual void takeStep(double dt);
-    
+	void setNumberOfParticles(unsigned int value) {
+		this->numberOfParticles = value;
+	}
+
+	///Gets a map of the distances to the neighbors of the Node
+	std::unordered_map<unsigned int, double> getDistanceMap() {
+		return lengthMap;
+	}
+
+	///Gets the flow map from the Node
+	double getFlow(unsigned int id) {
+		return flowMap[id];
+	}
+
+	///Gets the potential, which is defined by the algorithm, of the Node
+	double getPotential() {
+		return potential;
+	}
+
     /**
      * Standard toString method
      */
     virtual std::string toString();
-	///Get mean flow to some neighbor
-	///@param id Id of the neighbor the get the flow from
-	double getMeanFlow(unsigned int id);
     
     virtual ~Node() {
     }
+	///The potential at the node
+	double potential = 0;
+	//Actual flow rate (probabilistic) through the node
+	std::unordered_map<unsigned int, double> flowMap;
 protected:
     ///Static ID counter
     static unsigned int idCounter;
     ///Unique ID of the Node
     unsigned int id;
-	///Helper function to update the meanFlowMap
-    void updateMeanFlow();
-	//Helper function to randomise and update the flowMap
-	void updateFlow(double dt);
-    ///Helper function to update number of particles
-    void updateNumberOfParticles();
-    ///Helper function to update conductivity
-    void updateConductivity(double dt);
-    ///Helper function to update capacitance
-    void updateCapacitance();
-    ///Helper function to calculate potential
-    void updatePotential();
     
     /**
      * An unordered map containing all neighbors of the Node.
@@ -106,22 +110,8 @@ protected:
     std::unordered_map<unsigned int,std::shared_ptr<Node>> neighborsMap;
     ///The 'length in space' to all neighbors of the node
     std::unordered_map<unsigned int,double> lengthMap;
-    ///The element of the Node
-    std::shared_ptr<Element> element;
     ///Number of elements at the node
     unsigned int numberOfParticles = 0;
-	///The potential at the node
-	double potential = 0;
-    ///Mean flow rate through the node
-    std::unordered_map<unsigned int,double> meanFlowMap;
-	//Actual flow rate (probabilistic) through the node
-	std::unordered_map<unsigned int, double> flowMap;
-    ///Conductivity of the node
-    std::unordered_map<unsigned int,double> conductivityMap;
-    ///Capacitance of the node
-    double capacitance = 0;
-	///Random number generation state
-	std::random_device rd;
 };
 
 

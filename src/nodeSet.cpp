@@ -12,7 +12,7 @@
 #include <string>
 
 //TODO: Make this throw exceptions when file is incorrectly formatted
-void NodeSet::parseTGF(std::istream& input, std::shared_ptr<Element> e) {
+void NodeSet::parseTGF(std::istream& input) {
 	std::string line;
 	while (std::getline(input, line)) {
 		std::istringstream iss(line);
@@ -22,20 +22,20 @@ void NodeSet::parseTGF(std::istream& input, std::shared_ptr<Element> e) {
 			//If we can get another int, it could be a Source or a drain
 			if (iss >> productionRate) {
 				if (productionRate > 0) {
-					std::shared_ptr<Source> tempNode(new Source(productionRate, e));
+					std::shared_ptr<Source> tempNode(new Source(productionRate));
 					this->nodes.push_back(tempNode);
 					idMap[number] = tempNode->getId();
 				} else if (productionRate < 0) {
-					std::shared_ptr<Sink> tempNode(new Sink(e));
+					std::shared_ptr<Sink> tempNode(new Sink());
 					this->nodes.push_back(tempNode);
 					idMap[number] = tempNode->getId();
 				} else {
-					std::shared_ptr<Node> tempNode(new Node(e));
+					std::shared_ptr<Node> tempNode(new Node());
 					this->nodes.push_back(tempNode);
 					idMap[number] = tempNode->getId();
 				}
 			} else {
-				std::shared_ptr<Node> tempNode(new Node(e));
+				std::shared_ptr<Node> tempNode(new Node());
 				this->nodes.push_back(tempNode);
 				idMap[number] = tempNode->getId();
 			}
@@ -74,10 +74,10 @@ std::vector<unsigned int> NodeSet::numberOfParticles() {
 }
 
 void NodeSet::takeStep(double dt) {
-	for (auto node : nodes) {
-		node->prepareStep(dt);
+	for (auto algo : algorithms) {
+		algo->prepareStep(dt);
 	}
-	for (auto node : nodes) {
-		node->takeStep(dt);
+	for (auto algo : algorithms) {
+		algo->takeStep(dt);
 	}
 }

@@ -9,7 +9,7 @@
 #include <string>
 
 //TODO: Make this throw exceptions when file is incorrectly formatted
-void PositionedNodeSet::parseTGF(std::istream& input, std::shared_ptr<Element> e) {
+void PositionedNodeSet::parseTGF(std::istream& input) {
 	std::string line;
 	while (std::getline(input, line)) {
 		std::istringstream iss(line);
@@ -23,20 +23,20 @@ void PositionedNodeSet::parseTGF(std::istream& input, std::shared_ptr<Element> e
 			//If we can get another int, it could be a Source or a sink
 			if (iss >> productionRate) {
 				if (productionRate > 0) {
-					std::shared_ptr<PositionedSource<2>> tempNode(new PositionedSource<2>(e, pos, productionRate));
+					std::shared_ptr<PositionedSource<2>> tempNode(new PositionedSource<2>(pos, productionRate));
 					this->positionedNodes.push_back(tempNode);
 					idMap[number] = tempNode->getId();
 				} else if (productionRate < 0) {
-					std::shared_ptr<PositionedSink<2>> tempNode(new PositionedSink<2>(e, pos));
+					std::shared_ptr<PositionedSink<2>> tempNode(new PositionedSink<2>(pos));
 					this->positionedNodes.push_back(tempNode);
 					idMap[number] = tempNode->getId();
 				} else {
-					std::shared_ptr<PositionedNode<2>> tempNode(new PositionedNode<2>(e, pos));
+					std::shared_ptr<PositionedNode<2>> tempNode(new PositionedNode<2>(pos));
 					this->positionedNodes.push_back(tempNode);
 					idMap[number] = tempNode->getId();
 				}
 			} else {
-				std::shared_ptr<PositionedNode<2>> tempNode(new PositionedNode<2>(e, pos));
+				std::shared_ptr<PositionedNode<2>> tempNode(new PositionedNode<2>(pos));
 				this->positionedNodes.push_back(tempNode);
 				idMap[number] = tempNode->getId();
 			}
@@ -74,11 +74,11 @@ std::vector<unsigned int> PositionedNodeSet::numberOfParticles() {
 }
 
 void PositionedNodeSet::takeStep(double dt) {
-	for (auto node : positionedNodes) {
-		node->prepareStep(dt);
+	for (auto algo : algorithms) {
+		algo->prepareStep(dt);
 	}
-	for (auto node : positionedNodes) {
-		node->takeStep(dt);
+	for (auto algo : algorithms) {
+		algo->takeStep(dt);
 	}
 }
 

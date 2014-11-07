@@ -18,10 +18,9 @@ public:
 	 * Create a PositionedSource
 	 *
 	 * @param pos The position of the Source
-	 * @param e The Element of the Source
 	 * @param p The production rate of the Source
 	 */
-	PositionedSource(std::shared_ptr<Element> e, std::array<double, dimension> pos, int p) : PositionedNode<dimension>(e, pos), productionRate(p) {
+	PositionedSource(std::array<double, dimension> pos, int p) : PositionedNode<dimension>(pos), productionRate(p) {
 	};
 	///Return the id of the Source
 	unsigned int getId() {
@@ -34,12 +33,6 @@ public:
      */
     int getProductionRate() {
 		return this->productionRate;
-	}
-	void takeStep(double dt) {
-		std::poisson_distribution<int> rngDist(productionRate*dt);
-		double randomValue = rngDist(rd);
-		this->numberOfParticles += randomValue;
-		Node::takeStep(dt);
 	}
 	virtual std::string toString() {
 		std::string prod = "Production rate: " + std::to_string(this->productionRate) + "\n";

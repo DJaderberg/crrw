@@ -20,17 +20,12 @@ public:
 	 * @param pos The position of the Sink
 	 * @param e The Element of the Sink
 	 */
-	PositionedSink(std::shared_ptr<Element> e, std::array<double, dimension> pos) : PositionedNode<dimension>(e, pos) {
+	PositionedSink(std::array<double, dimension> pos) : PositionedNode<dimension>(pos) {
 	};
 	///Return the id of the Sink
 	unsigned int getId() {
 		return ((PositionedNode<dimension> *) this)->getId();
 	};
-	///Take a time step
-	void takeStep(double dt) {
-		Node::takeStep(dt); //TODO: Is this necessary?
-		this->numberOfParticles = 0;
-	}
 	//Return string representation of the Sink
 	std::string toString() {
 		return PositionedNode<dimension>::toString() + "Sink\n";
