@@ -15,7 +15,7 @@ void PositionedNodeSet::parseTGF(std::istream& input, std::shared_ptr<Element> e
 		std::istringstream iss(line);
 		int number, productionRate;
 		double x, y;
-		//If we can extract an int, create a new Node
+		//If we can extract an int and two doubles, create a new Node
 		if (iss >> number >> x >> y) {
 			std::array<double, 2> pos;
 			pos[0] = x;

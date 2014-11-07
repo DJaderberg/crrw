@@ -6,14 +6,21 @@ int main() {
 	std::string filename = "test/nodes.txt";
 	PositionedNodeSet set = PositionedNodeSet(filename, e);
 	std::cout << set.toString();
-	for (int i = 0; i < 50000; ++i) {
+	
+    NodeSetGraphics graphics = NodeSetGraphics();
+    
+    for (int i = 0; i < 100; ++i) {
 		set.takeStep(0.1);
 		std::vector<unsigned int> numPart = set.numberOfParticles();
 	}
 	std::vector<unsigned int> numPart = set.numberOfParticles();
-	for (auto val : numPart) {
+	
+    for (auto val : numPart) {
 		std::cout << val << ", ";
 	}
 	std::cout << "\n";
+    
+    graphics.writeToFile(set, "image.png");
+    
     return 0;
 }
