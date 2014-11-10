@@ -36,28 +36,28 @@ fn gen_matrix(size: uint, prod_rate: int, mut out: Box<Writer>) {
     let mut id_range = std::iter::range(0, size*size);
     for id in id_range {
         //Up
-        if (id > size) {
+        if id >= size {
             out.write(id.to_string().as_bytes());
             out.write(b" ");
             out.write((id-size).to_string().as_bytes());
             out.write(b"\n");
         }
         //Down
-        if (id+size < size*size) {
+        if id+size < size*size {
             out.write(id.to_string().as_bytes());
             out.write(b" ");
             out.write((id+size).to_string().as_bytes());
             out.write(b"\n");
         }
         //Left
-        if (id%size > 0) {
+        if id%size > 0 {
             out.write(id.to_string().as_bytes());
             out.write(b" ");
             out.write((id-1).to_string().as_bytes());
             out.write(b"\n");
         }
         //Right
-        if (id%size < size-1) {
+        if id%size < size-1 {
             out.write(id.to_string().as_bytes());
             out.write(b" ");
             out.write((id+1).to_string().as_bytes());
