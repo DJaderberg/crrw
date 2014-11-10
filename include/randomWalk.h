@@ -16,6 +16,12 @@ public:
 		this->element = element;
 		this->node = n;
 	}
+	/**
+	 * Create a RandomWalk object that is initialized with n and element.
+	 *
+	 * @param n The Node to initialize the RandomWalk with
+	 * @param element The Element to initialize the Node with
+	 */
 	static std::shared_ptr<Algorithm> create(std::shared_ptr<Node> n, std::shared_ptr<Element> element);
 	virtual ~RandomWalk() {}
 protected:
