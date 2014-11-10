@@ -5,6 +5,7 @@
 #include "source.h"
 #include "antElement.h"
 #include "currentWalk.h"
+#include "randomWalk.h"
 #include "nodeSetGraphics.h"
 #include "positionedNodeSet.h"
 

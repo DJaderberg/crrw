@@ -23,6 +23,7 @@ public:
 		}
 	}
 	static std::shared_ptr<Algorithm> create(std::shared_ptr<Node> n, std::shared_ptr<Element> element);
+	virtual ~CurrentWalk() {}
 protected:
 	void updateMeanFlow();
 	void updateFlow(double dt);

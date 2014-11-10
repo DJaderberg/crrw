@@ -16,7 +16,26 @@ public:
 		this->element = element;
 		this->node = n;
 	}
-private:
+	static std::shared_ptr<Algorithm> create(std::shared_ptr<Node> n, std::shared_ptr<Element> element);
+	virtual ~RandomWalk() {}
+protected:
+	virtual void updateNumberOfParticles();
 	std::shared_ptr<Element> element;
 	std::shared_ptr<Node> node;
+	std::random_device rd;
+};
+
+class RandomWalkSource : public RandomWalk {
+public:
+	void updateNumberOfParticles() {
+		RandomWalk::updateNumberOfParticles();
+		node->setNumberOfParticles(element->productionRate + node->getNumberOfParticles());
+	}
+};
+
+class RandomWalkSink : public RandomWalk {
+public:
+	void updateNumberOfParticles() {
+		node->setNumberOfParticles(0);
+	}
 };
