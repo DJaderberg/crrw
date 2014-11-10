@@ -5,15 +5,14 @@ then
 	input=$1
 	output=$2
 else
-	input="test/nodes.node"
+	input="test/nodes2d.node"
 	output="test/full.txt"
 fi
 
-`rm "$output"`
-
 `sed 1d $input > $output`
+`head -n 1 "$input" > "$input.tmp"`
+`awk '{print $2, $3}' $output >> "$input".tmp`
 echo "#" >> "$output"
-`awk '{print $1, $2, "\n"$2, $1}' $input > "$input".tmp`
 `dct/dct < "$input".tmp > "$output".tmp`
 `./dct-doubler.awk "$output".tmp >> "$output"`
 `rm "$input".tmp`
