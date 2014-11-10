@@ -10,18 +10,21 @@ int main() {
 	PositionedNodeSet set = PositionedNodeSet(filename, create, e);
 	std::cout << set.toString();
     NodeSetGraphics graphics = NodeSetGraphics();
+    graphics.init();
     
 	int j = 0;
-    for (int i = 0; i < 10000; ++i) {
+    for (int i = 0; i < 1000; ++i) {
 		set.takeStep(0.1);
 		std::vector<unsigned int> numPart = set.numberOfParticles();
-		if (i % 10 == 0) {
+		if (i % 1 == 0) {
 			std::cout << "Iteration: " << i << "\n";
 			std::stringstream imgFilename("img/a", std::ios_base::in|std::ios_base::out);
 			imgFilename << "img/a";
 			imgFilename << std::setfill('0') << std::setw(5) << j++ << ".png";
 			std::string imgFilenameStr = imgFilename.str();
-			graphics.writeToFile(set, imgFilenameStr);
+            graphics.drawEdges(set, 0);
+            graphics.drawNodes(set);
+			graphics.writeToFile(imgFilenameStr);
 		}
 	}
 	std::vector<unsigned int> numPart = set.numberOfParticles();
@@ -30,8 +33,6 @@ int main() {
 		std::cout << val << ", ";
 	}
 	std::cout << "\n";
-    
-    graphics.writeToFile(set, "image.png");
     
     return 0;
 }
