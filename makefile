@@ -17,4 +17,4 @@ clean:
 	rm bin/*.o
 
 cleanest: clean
-	rm random-walk
+	rm random-walk img/*

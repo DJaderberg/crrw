@@ -5,12 +5,13 @@
 
 int main() {
 	std::shared_ptr<AntElement> e(new AntElement());
-	std::string filename = "test/nodes2D.txt";
+	std::string filename = "test/nodes.txt";
 	algorithmCreator create = CurrentWalk::create;
 	PositionedNodeSet set = PositionedNodeSet(filename, create, e);
 	std::cout << set.toString();
     NodeSetGraphics graphics = NodeSetGraphics();
     graphics.init();
+    graphics.nodesMinMax(set);
     
 	int j = 0;
     for (int i = 0; i < 5000; ++i) {
@@ -23,8 +24,9 @@ int main() {
 			imgFilename << std::setfill('0') << std::setw(5) << j++ << ".png";
 			std::string imgFilenameStr = imgFilename.str();
             graphics.drawEdges(set, 0);
-            graphics.drawNodes(set);
+            graphics.drawNodes(set, 0);
 			graphics.writeToFile(imgFilenameStr);
+            graphics.reset();
 		}
 	}
 	std::vector<unsigned int> numPart = set.numberOfParticles();

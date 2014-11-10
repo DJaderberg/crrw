@@ -37,11 +37,19 @@ public:
     void init(struct parameters p);
     
     /**
-     * Draws all the Nodes in the NodeSet n to cr
+     * Finds the minimum and maximum x- and y-coordinates
      *
      * @param a NodeSet
      */
-    void drawNodes(PositionedNodeSet n);
+    void nodesMinMax(PositionedNodeSet n);
+    
+    /**
+     * Draws all the Nodes in the NodeSet n to cr
+     *
+     * @param a NodeSet
+     * @param boolean to tell if the node size should be statically drawn or of it should be normalized in every frame.
+     */
+    void drawNodes(PositionedNodeSet n, bool changeSize);
     
     /**
      * Draws all the edges in the NodeSet n to cr
@@ -50,6 +58,12 @@ public:
      * @param boolean to tell if the flow should be statically drawn or of it should be normalized in every frame.
      */
     void drawEdges(PositionedNodeSet n, bool changeFlow);
+    
+    /**
+     * Resets the surface and cr to its original empty state
+     *
+     */
+    void reset();
     
     /**
      * Writes cr to file
@@ -72,18 +86,20 @@ private:
     /// The active Cairomm context
     Cairo::RefPtr<Cairo::Context> cr;
     
-    /// Parameters for keeping track of the coordinates and flows
-    double Xmin, Xmax, Ymin, Ymax, flowMin = 0, flowMax = 70;
+    /// Help parameters for keeping track of the coordinates and flows
+    double Xmin, Xmax, Ymin, Ymax, flowMin, flowMax, Nmin, Nmax;
     
     /// Size configurations in px
     unsigned int windowHeight = 800;
     unsigned int windowWidth = 1024;
     unsigned int borderWidth = 100;
-    double nodeRadius = 2;
+    double nodeMinRadius = 1;
+    double nodeMaxRadius = 10;
+    double nodeBorder = 2;
     double sourceRadius = 4;
     double sinkRadius = 4;
     double lineWidthMin = 1;
     double lineWidthMax = 80;
-    double lineOpacMin = 0.5;
+    double lineOpacMin = 1;
     
 };
