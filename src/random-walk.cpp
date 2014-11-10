@@ -9,11 +9,11 @@ int main() {
 	
     NodeSetGraphics graphics = NodeSetGraphics();
     
-    for (int i = 0; i < 10000; ++i) {
+    for (int i = 0; i < 100000; ++i) {
 		set.takeStep(0.1);
 	}
     
-    graphics.writeToFile(set, "image.png");
+    graphics.writeToFile(set, "images/image.png");
     
     return 0;
 }
