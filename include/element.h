@@ -22,6 +22,8 @@ public:
     const double mu;
 	///Minimal conductivity
 	const double Dmin;
+	///Production rate of each Source
+	const unsigned int productionRate;
     /**
      * Construct an element with certain parameters
      *
@@ -34,6 +36,7 @@ public:
      * @param lambda Conductivity decrease rate
      * @param mu Road maintenance cost factor
 	 * @param Dmin Minimum possible conductivity on an edge
+	 * @param productionRate Production rate of each Source
      */
-    Element(const double q, const double lambda, const double mu, const double Dmin) : q(q), lambda(lambda), mu(mu), Dmin(Dmin) {};
+    Element(const double q, const double lambda, const double mu, const double Dmin, unsigned int productionRate) : q(q), lambda(lambda), mu(mu), Dmin(Dmin), productionRate(productionRate) {};
 };

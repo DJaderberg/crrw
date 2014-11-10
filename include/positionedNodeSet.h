@@ -11,10 +11,11 @@ public:
 	 * Create a NodeSet from a stream
 	 *
 	 * @param input A stream with containing a set fo Nodes specified by TGF.
-	 * @param element The Element to assign to all created Nodes
+	 * @param create The function with which to create the Algorithm for each Node
 	 */
-	PositionedNodeSet(std::istream input, std::shared_ptr<Element> e) {
-		this->parseTGF(input, e);
+	PositionedNodeSet(std::istream input, algorithmCreator create, std::shared_ptr<Element> element) {
+		this->parseTGF(input);
+		this->initializeAlgorithms(create, element);
 	}
 	/** Create a NodeSet from a filename
 	 *
@@ -22,11 +23,12 @@ public:
 	 * stream had been supplied
 	 *
 	 * @param filename The name of the file to use as input
-	 * @param element The Element to assign to all created Nodes
+	 * @param create The function with which to create the Algorithm for each Node
 	 */
-	PositionedNodeSet(const std::string& filename, std::shared_ptr<Element> e) {
+	PositionedNodeSet(const std::string& filename, algorithmCreator create, std::shared_ptr<Element> element) {
 		std::ifstream stream(filename);
-		this->parseTGF(stream, e);
+		this->parseTGF(stream);
+		this->initializeAlgorithms(create, element);
 	};
 	/// Return a string representation of the NodeSet
 	std::string toString();
@@ -55,15 +57,26 @@ private:
 	 * number and a new-line. This specifies a connection from the first Node to 
 	 * the second Node with the distance given by the floating point number.
 	 *
-	 * @param input A stream with containing a set fo Nodes specified by TGF.
+	 * @param input A stream with containing a set of Nodes specified by TGF.
 	 * @param e The Element to assign to all created Nodes
 	 *
 	 * @author David Jäderberg
 	 */
-    void parseTGF(std::istream& input, std::shared_ptr<Element> e);
-	///A vector containing all nodes in the set
+    void parseTGF(std::istream& input);
+	///A vector containing all Nodes in the set
 	std::vector<std::shared_ptr<PositionedNode<2>>> positionedNodes;
+	///A vector containing all Algorithms in the set
+	std::vector<std::shared_ptr<Algorithm>> algorithms;
 	///Map from the ids in the input stream to the actual ids of the Nodes
 	std::unordered_map<int, unsigned int> idMap;
+	///Helper function to initialize algorithms
+	///@param create The function with which to create the Algorithm for each Node
+	///@param element The Element that the Algorithm should have
+	void initializeAlgorithms(algorithmCreator create, std::shared_ptr<Element> element) {
+		for (auto n : positionedNodes) {
+			auto temp = create(n, element);
+			algorithms.push_back(temp);
+		}
+	}
 };
 

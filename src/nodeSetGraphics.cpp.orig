@@ -21,7 +21,11 @@ void NodeSetGraphics::writeToFile(PositionedNodeSet n, std::string filename) {
     double sourceRadius = 4;
     double sinkRadius = 4;
     double lineWidthMin = 1;
+<<<<<<< Updated upstream
+    double lineWidthMax = 15;
+=======
     double lineWidthMax = 80;
+>>>>>>> Stashed changes
     double lineOpacMin = 0.5;
     
     Cairo::RefPtr<Cairo::ImageSurface> surface = Cairo::ImageSurface::create(Cairo::FORMAT_ARGB32, windowWidth, windowHeight);
@@ -42,7 +46,11 @@ void NodeSetGraphics::writeToFile(PositionedNodeSet n, std::string filename) {
     Xmax = Xmin;
     Ymax = Ymin;
     
+<<<<<<< Updated upstream
+    std::cout << "Xmin:" << Xmin << " Ymin:" << Ymin << " Xmax:" << Xmax << " Ymax:" << Ymax << "\n";
+=======
     //std::cout << "Xmin:" << Xmin << " Ymin:" << Ymin << " Xmax:" << Xmax << " Ymax:" << Ymax << "\n";
+>>>>>>> Stashed changes
     
     double temp;
     for (auto node: n.getNodes()) {
@@ -61,17 +69,26 @@ void NodeSetGraphics::writeToFile(PositionedNodeSet n, std::string filename) {
         }
     }
     
+<<<<<<< Updated upstream
+    std::cout << "Xmin:" << Xmin << " Ymin:" << Ymin << " Xmax:" << Xmax << " Ymax:" << Ymax << "\n";
+    
+=======
     //std::cout << "Xmin:" << Xmin << " Ymin:" << Ymin << " Xmax:" << Xmax << " Ymax:" << Ymax << "\n";
     
     double flow;
     flowMax = 80;
     flowMin = 0;
     /*
+>>>>>>> Stashed changes
     // Find min and max Mean Flow
     flowMin = abs(n.getNodes().front()->getMeanFlow(n.getNodes().front()->getNeighbors().begin()->first));
     flowMax = flowMin;
     
+<<<<<<< Updated upstream
+    double flow;
+=======
     
+>>>>>>> Stashed changes
     for (auto node: n.getNodes()) {
         for (auto neighbor: node->getNeighbors()) {
             flow = abs(node->getMeanFlow(neighbor.first));
@@ -82,12 +99,17 @@ void NodeSetGraphics::writeToFile(PositionedNodeSet n, std::string filename) {
             }
         }
     }
+<<<<<<< Updated upstream
+    
+    std::cout << "flowMin:" << flowMin << " flowMax:" << flowMax << "\n";
+=======
     */
     
 
     
     
     //std::cout << "flowMin:" << flowMin << " flowMax:" << flowMax << "\n";
+>>>>>>> Stashed changes
     
     // TODO:handle the one dim case
     // Draw lines
@@ -119,14 +141,22 @@ void NodeSetGraphics::writeToFile(PositionedNodeSet n, std::string filename) {
         
         // Determine if the node is a Source, Sink or an ordinary Node
         if (dynamic_cast<PositionedSource<2>*>(node.get())) {
+<<<<<<< Updated upstream
+            std::cout << "SOURCE\n";
+=======
             //std::cout << "SOURCE\n";
+>>>>>>> Stashed changes
             cr->set_source_rgb(0, 0, 0);
             cr->arc((pos[0] - Xmin)/(Xmax - Xmin)*(double)(windowWidth-2*borderWidth) + borderWidth, (pos[1] - Ymin)/(Ymax - Ymin)*(double)(windowHeight-2*borderWidth) + borderWidth,1+sourceRadius,0,2.0*M_PI);
             cr->stroke();
             cr->set_source_rgb(1, 0, 0);
             cr->arc((pos[0] - Xmin)/(Xmax - Xmin)*(double)(windowWidth-2*borderWidth) + borderWidth, (pos[1] - Ymin)/(Ymax - Ymin)*(double)(windowHeight-2*borderWidth) + borderWidth,sourceRadius,0,2.0*M_PI);
         } else if (dynamic_cast<PositionedSink<2>*>(node.get())) {
+<<<<<<< Updated upstream
+            std::cout << "SINK\n";
+=======
             //std::cout << "SINK\n";
+>>>>>>> Stashed changes
             cr->set_source_rgb(0, 0, 0);
             cr->arc((pos[0] - Xmin)/(Xmax - Xmin)*(double)(windowWidth-2*borderWidth) + borderWidth, (pos[1] - Ymin)/(Ymax - Ymin)*(double)(windowHeight-2*borderWidth) + borderWidth,1+sinkRadius,0,2.0*M_PI);
             cr->stroke();

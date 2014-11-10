@@ -14,27 +14,25 @@ public:
      * @param n All neighbors to the Source
      * @param dist Distance to all neighbors of the source
      * @param p The production rate of the Source
-	 * @param e The Element of the Node
      */
-    Source(std::unordered_map<unsigned int,std::shared_ptr<Node>> n, std::unordered_map<unsigned int,double> dist, std::shared_ptr<Element> e, int p) : Node(n, dist, e), productionRate(p) {};
+    Source(std::unordered_map<unsigned int,std::shared_ptr<Node>> n, std::unordered_map<unsigned int,double> dist, int p) : Node(n, dist), productionRate(p) {};
     /**
      * Create a Source without neighbors
      *
      * @param p The production rate of the source
 	 * @param e The Element of the Node
      */
-    Source(int p, std::shared_ptr<Element> e) : Node(e), productionRate(p) {};
+    Source(int p) : Node(), productionRate(p) {};
     /**
      * Create a new Source with neighbors n and production rate 0
      */
-    Source(std::unordered_map<unsigned int,std::shared_ptr<Node>> n, std::unordered_map<unsigned int,double> dist, std::shared_ptr<Element> e) : Node(n, dist, e) {};
+    Source(std::unordered_map<unsigned int,std::shared_ptr<Node>> n, std::unordered_map<unsigned int,double> dist) : Node(n, dist) {};
     /**
      * Get the production rate of this Source
      *
      * @return How many elements are produced by this Source during one time unit
      */
     int getProductionRate();
-	void takeStep(double dt);
 	virtual std::string toString();
 private:
     /**
