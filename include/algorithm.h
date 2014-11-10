@@ -15,8 +15,24 @@
  */
 class Algorithm {
 public:
+	/**
+	 * Prepare to take a step
+	 *
+	 * @param dt The size of the step to take
+	 */
 	virtual void prepareStep(double dt) = 0;
+	/**
+	 * Take a step
+	 *
+	 * @param dt The size of the step to take
+	 */
 	virtual void takeStep(double dt) = 0;
+	/*
+	 * Initialize an Algorithm object
+	 *
+	 * @param node The Node that the Algorithm should hold
+	 * @param e The Element of the Node that the Algorithm should hold
+	 */
 	virtual void initialize(std::shared_ptr<Node> node, std::shared_ptr<Element> element) = 0;
 };
 

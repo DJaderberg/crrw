@@ -42,3 +42,14 @@ latex/
 # mac os files
 .DS_Store
 
+# Image files
+img/
+image.png
+
+# Movie files
+movie.*
+
+# Rust files
+rust-tgf/target/*
+rust-tgf/Cargo.lock
+

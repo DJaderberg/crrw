@@ -22,7 +22,14 @@ public:
 			conductivityMap[i.second->getId()] = element->Dmin;
 		}
 	}
+	/**
+	 * Create a CurrentWalk object that is initialized with n and element.
+	 *
+	 * @param n The Node to initialize the CurrentWalk with
+	 * @param element The Element to initialize the Node with
+	 */
 	static std::shared_ptr<Algorithm> create(std::shared_ptr<Node> n, std::shared_ptr<Element> element);
+	virtual ~CurrentWalk() {}
 protected:
 	void updateMeanFlow();
 	void updateFlow(double dt);

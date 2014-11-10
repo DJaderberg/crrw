@@ -1,0 +1,11 @@
+
+[package]
+
+name = "TGF generator"
+version = "0.0.1"
+authors = [ "David Jäderberg <david@jaderberg.net>" ]
+
+[[bin]]
+
+name = "tgf-gen"
+
