@@ -21,6 +21,7 @@ void CurrentWalk::updateMeanFlow() {
 	for (auto n : node->getNeighbors()) {
 		flow = (node->potential - n.second->potential)*conductivityMap[n.first]/node->getDistanceMap()[n.first];
 		meanFlowMap[n.first] = flow;
+		node->meanFlowMap[n.first] = flow; //TODO: Only leave one of these
 	}
 }
 

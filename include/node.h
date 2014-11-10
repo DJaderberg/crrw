@@ -79,7 +79,7 @@ public:
 
 	///Gets the flow map from the Node
 	double getFlow(unsigned int id) {
-		return flowMap[id];
+		return meanFlowMap[id];
 	}
 
 	///Gets the potential, which is defined by the algorithm, of the Node
@@ -98,6 +98,8 @@ public:
 	double potential = 0;
 	//Actual flow rate (probabilistic) through the node
 	std::unordered_map<unsigned int, double> flowMap;
+    ///Mean flow rate through the Node
+    std::unordered_map<unsigned int,double> meanFlowMap;
 protected:
     ///Static ID counter
     static unsigned int idCounter;
