@@ -42,3 +42,7 @@ latex/
 # mac os files
 .DS_Store
 
+# Image files
+img/
+image.png
+

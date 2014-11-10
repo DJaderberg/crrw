@@ -20,5 +20,5 @@ public:
 	virtual void initialize(std::shared_ptr<Node> node, std::shared_ptr<Element> element) = 0;
 };
 
-typedef std::shared_ptr<Algorithm> (*algorithmCreator)(std::shared_ptr<Node>n, std::shared_ptr<Element>);
+typedef std::shared_ptr<Algorithm> (*algorithmCreator)(std::shared_ptr<Node>, std::shared_ptr<Element>);
 
