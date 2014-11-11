@@ -11,6 +11,7 @@
 //TODO: Make this throw exceptions when file is incorrectly formatted
 void PositionedNodeSet::parseTGF(std::istream& input) {
 	std::string line;
+	int inty = 0;
 	while (std::getline(input, line)) {
 		std::istringstream iss(line);
 		int number, productionRate;
@@ -51,7 +52,7 @@ void PositionedNodeSet::parseTGF(std::istream& input) {
 		std::istringstream iss(line);
 		int from, to;
 		if (iss >> from >> to) {
-			positionedNodes[idMap[from]]->insertNeighbor(positionedNodes[idMap[to]]);
+			positionedNodes[from]->insertNeighbor(positionedNodes[to]);
 		}
 	}
 }
