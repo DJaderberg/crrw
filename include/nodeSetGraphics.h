@@ -102,10 +102,10 @@ private:
     double nodeMinRadius = 1;
     double nodeMaxRadius = 10;
     double nodeBorder = 2;
-    double sourceRadius = 4;
-    double sinkRadius = 4;
+    double sourceRadius = 10;
+    double sinkRadius = 10;
     double lineWidthMin = 1;
-    double lineWidthMax = 80;
+    double lineWidthMax = 30;
     double lineOpacMin = 1;
     
 };

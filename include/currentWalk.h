@@ -15,7 +15,7 @@ class CurrentWalk : public Algorithm {
 public:
 	void prepareStep(double dt);
 	void takeStep(double dt);
-	void initialize(std::shared_ptr<Node> n, std::shared_ptr<Element> element) {
+	virtual void initialize(std::shared_ptr<Node> n, std::shared_ptr<Element> element) {
 		this->element = element;
 		this->node = n;
 		for (auto i : n->getNeighbors()) {
@@ -53,15 +53,41 @@ protected:
 
 class CurrentWalkSource : public CurrentWalk {
 public:
+    void initialize(std::shared_ptr<Node> n, std::shared_ptr<Element> element) {
+        CurrentWalk::initialize(n,element);
+        if (auto a = dynamic_cast<PositionedSource<2>*>(&*n)) {
+            productionRate = a->getProductionRate();
+        }
+    }
+    
 	void updateNumberOfParticles() {
 		CurrentWalk::updateNumberOfParticles();
-		node->setNumberOfParticles(element->productionRate + node->getNumberOfParticles());
+		node->setNumberOfParticles(productionRate + node->getNumberOfParticles());
 	}
+private:
+    int productionRate = 0;
 };
 
 class CurrentWalkSink : public CurrentWalk {
 public:
+    void initialize(std::shared_ptr<Node> n, std::shared_ptr<Element> element) {
+        CurrentWalk::initialize(n,element);
+        if (auto a = dynamic_cast<PositionedSink<2>*>(&*n)) {
+            removalRate = a->getRemovalRate();
+        }
+    }
+    
 	void updateNumberOfParticles() {
-		node->setNumberOfParticles(0);
+        CurrentWalk::updateNumberOfParticles();
+        
+        if (node->getNumberOfParticles() <= abs(removalRate)) {
+            node->setNumberOfParticles(0);
+        } else {
+            node->setNumberOfParticles(removalRate + node->getNumberOfParticles());
+        }
+        
+        
 	}
+private:
+    int removalRate = 0;
 };
