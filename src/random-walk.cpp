@@ -26,7 +26,7 @@ int main() {
             graphics.drawEdges(set, 0);
             graphics.drawNodes(set, 0);
 			graphics.writeToFile(imgFilenameStr);
-            graphics.reset();
+            graphics.repaint();
 		}
 	}
 	std::vector<unsigned int> numPart = set.numberOfParticles();

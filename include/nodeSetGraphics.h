@@ -60,6 +60,12 @@ public:
     void drawEdges(PositionedNodeSet n, bool changeFlow);
     
     /**
+     * Repaints the surface to its original empty state
+     *
+     */
+    void repaint();
+    
+    /**
      * Resets the surface and cr to its original empty state
      *
      */

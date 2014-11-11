@@ -41,7 +41,10 @@ void NodeSetGraphics::init() {
     Nmin = d.Nmin;
     Nmax = d.Nmax;
     
-    this->reset();
+    surface = Cairo::ImageSurface::create(Cairo::FORMAT_ARGB32, windowWidth, windowHeight);
+    cr = Cairo::Context::create(surface);
+    
+    this->repaint();
 }
 
 void NodeSetGraphics::init(struct parameters p) {
@@ -65,7 +68,10 @@ void NodeSetGraphics::init(struct parameters p) {
     lineWidthMax = p.lineWidthMax;
     lineOpacMin = p.lineOpacMin;
     
-    this->reset();
+    surface = Cairo::ImageSurface::create(Cairo::FORMAT_ARGB32, windowWidth, windowHeight);
+    cr = Cairo::Context::create(surface);
+    
+    this->repaint();
 }
 
 void NodeSetGraphics::nodesMinMax(PositionedNodeSet n) {
@@ -125,7 +131,7 @@ void NodeSetGraphics::drawNodes(PositionedNodeSet n, bool changeSize) {
     for (auto node: n.getNodes()) {
         pos =node->getPosition();
         N = node->getNumberOfParticles();
-        r = ((N - Nmin)/(Nmax-Nmin))*(nodeMaxRadius - nodeMinRadius) + nodeMinRadius;
+        r = sqrt((N - Nmin)/(Nmax-Nmin))*(nodeMaxRadius - nodeMinRadius) + nodeMinRadius;
         //std::cout << "N:" << N << " r:" << r << "\n";
         // Determine if the node is a Source, Sink or an ordinary Node
         if (dynamic_cast<PositionedSource<2>*>(node.get())) {
@@ -203,14 +209,17 @@ void NodeSetGraphics::drawEdges(PositionedNodeSet n, bool changeFlow) {
     cr->restore();
 }
 
-void NodeSetGraphics::reset() {
-    surface = Cairo::ImageSurface::create(Cairo::FORMAT_ARGB32, windowWidth, windowHeight);
-    cr = Cairo::Context::create(surface);
+void NodeSetGraphics::repaint() {
     cr->save(); // save the state of the context
     //cr->set_source_rgb(0.86, 0.85, 0.47); // Greenish color
     cr->set_source_rgb(1, 1, 0.97); // Warm white color
     cr->paint(); // fill image with the color
     cr->restore(); // color is back to black now
+}
+
+void NodeSetGraphics::reset() {
+    surface = Cairo::ImageSurface::create(Cairo::FORMAT_ARGB32, windowWidth, windowHeight);
+    cr = Cairo::Context::create(surface);
 }
 
 void NodeSetGraphics::writeToFile(std::string filename) {
