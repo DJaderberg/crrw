@@ -14,7 +14,7 @@ int main() {
     graphics.nodesMinMax(set);
     
 	int j = 0;
-    for (int i = 0; i < 5000; ++i) {
+    for (int i = 0; i < 20000; ++i) {
 		set.takeStep(0.1);
 		std::vector<unsigned int> numPart = set.numberOfParticles();
 		if (i % 5 == 0) {
@@ -23,8 +23,8 @@ int main() {
 			imgFilename << "img/a";
 			imgFilename << std::setfill('0') << std::setw(5) << j++ << ".png";
 			std::string imgFilenameStr = imgFilename.str();
-            graphics.drawEdges(set, 0);
-            graphics.drawNodes(set, 0);
+            graphics.drawEdges(set, 1);
+            graphics.drawNodes(set, 1);
 			graphics.writeToFile(imgFilenameStr);
             graphics.repaint();
 		}
