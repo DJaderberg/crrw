@@ -5,7 +5,7 @@
 
 int main() {
 	std::shared_ptr<AntElement> e(new AntElement());
-	std::string filename = "test/nodes.txt";
+	std::string filename = "test/nodes2d.txt";
 	algorithmCreator create = CurrentWalk::create;
 	PositionedNodeSet set = PositionedNodeSet(filename, create, e);
 	std::cout << set.toString();
