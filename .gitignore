@@ -50,6 +50,5 @@ image.png
 movie.*
 
 # Rust files
-rust-tgf/target/*
 rust-tgf/Cargo.lock
 
