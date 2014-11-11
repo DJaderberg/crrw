@@ -14,7 +14,8 @@ fi
 `awk '{print $2, $3}' $output >> "$input".tmp`
 echo "#" >> "$output"
 `dct/dct < "$input".tmp > "$output".tmp`
-`./dct-doubler.awk "$output".tmp >> "$output"`
+#`./dct-doubler.awk "$output".tmp >> "$output"`
+`awk '{print $1, $2, "\n"$2, $1}' "$output".tmp >> "$output"`
 `rm "$input".tmp`
 `rm "$output".tmp`
 
