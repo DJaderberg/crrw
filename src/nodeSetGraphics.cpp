@@ -18,7 +18,7 @@ struct defaultValues {
     double Nmax = 200;
 };
 
-struct parameters {
+struct parametersValues {
     // Size configurations in px
     unsigned int windowHeight = 800;
     unsigned int windowWidth = 1024;
@@ -47,7 +47,7 @@ void NodeSetGraphics::init() {
     this->repaint();
 }
 
-void NodeSetGraphics::init(struct parameters p) {
+void NodeSetGraphics::init(struct parametersValues p) {
     defaultValues d;
     // Default values flows and number of particles
     flowMin = d.flowMin;
@@ -209,6 +209,27 @@ void NodeSetGraphics::drawEdges(PositionedNodeSet n, bool changeFlow) {
     cr->restore();
 }
 
+void NodeSetGraphics::setDefaultValues(struct defaultValues d) {
+    flowMin = d.flowMin;
+    flowMax = d.flowMax;
+    Nmin = d.Nmin;
+    Nmax = d.Nmax;
+}
+
+void NodeSetGraphics::setParmeters(struct parametersValues p) {
+    windowHeight = p.windowHeight;
+    windowWidth = p.windowWidth;
+    borderWidth = p.borderWidth;
+    nodeMinRadius = p.nodeMinRadius;
+    nodeMaxRadius = p.nodeMaxRadius;
+    nodeBorder = p.nodeBorder;
+    sourceRadius = p.sourceRadius;
+    sinkRadius = p.sinkRadius;
+    lineWidthMin = p.lineWidthMin;
+    lineWidthMax = p.lineWidthMax;
+    lineOpacMin = p.lineOpacMin;
+}
+
 void NodeSetGraphics::repaint() {
     cr->save(); // save the state of the context
     //cr->set_source_rgb(0.86, 0.85, 0.47); // Greenish color
@@ -220,10 +241,6 @@ void NodeSetGraphics::repaint() {
 void NodeSetGraphics::reset() {
     surface = Cairo::ImageSurface::create(Cairo::FORMAT_ARGB32, windowWidth, windowHeight);
     cr = Cairo::Context::create(surface);
-}
-
-void NodeSetGraphics::writeToFile(std::string filename) {
-    surface->write_to_png(filename);
 }
 
 void NodeSetGraphics::writeToFile(PositionedNodeSet n, std::string filename) {

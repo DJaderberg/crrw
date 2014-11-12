@@ -56,6 +56,20 @@ public:
      */
     unsigned int getId();
     
+    /**
+     * Returns the fileId of the Node
+     *
+     * @return An int of the nodes fileId.
+     */
+    int getFileId();
+    
+    /**
+     * Sets the fileId of the Node
+     *
+     * @param fileId An int that will be set to the nodes fileId
+     */
+    void setFileId(int fileId);
+    
 	/**
 	 * Returns the number of particles in the Node
 	 *
@@ -71,6 +85,11 @@ public:
 	void setNumberOfParticles(unsigned int value) {
 		this->numberOfParticles = value;
 	}
+    
+    ///Gets a map of the neigbors of the Node
+    std::unordered_map<unsigned int,std::shared_ptr<Node>> getNeighborsMap() {
+        return neighborsMap;
+    }
 
 	///Gets a map of the distances to the neighbors of the Node
 	std::unordered_map<unsigned int, double> getDistanceMap() {
@@ -105,6 +124,8 @@ protected:
     static unsigned int idCounter;
     ///Unique ID of the Node
     unsigned int id;
+    ///File id, initilized to -1 indicating that there is no corresponding file for this nod yet
+    int fileId = -1;
     
     /**
      * An unordered map containing all neighbors of the Node.

@@ -26,19 +26,27 @@ void PositionedNodeSet::parseTGF(std::istream& input) {
 					std::shared_ptr<PositionedSource<2>> tempNode(new PositionedSource<2>(pos, productionRate));
 					this->positionedNodes.push_back(tempNode);
 					idMap[number] = tempNode->getId();
+					inverseIdMap[tempNode->getId()] = number;
+                    tempNode->setFileId(number);
 				} else if (productionRate < 0) {
 					std::shared_ptr<PositionedSink<2>> tempNode(new PositionedSink<2>(pos, productionRate));
 					this->positionedNodes.push_back(tempNode);
 					idMap[number] = tempNode->getId();
+					inverseIdMap[tempNode->getId()] = number;
+                    tempNode->setFileId(number);
 				} else {
 					std::shared_ptr<PositionedNode<2>> tempNode(new PositionedNode<2>(pos));
 					this->positionedNodes.push_back(tempNode);
 					idMap[number] = tempNode->getId();
+					inverseIdMap[tempNode->getId()] = number;
+                    tempNode->setFileId(number);
 				}
 			} else {
 				std::shared_ptr<PositionedNode<2>> tempNode(new PositionedNode<2>(pos));
 				this->positionedNodes.push_back(tempNode);
 				idMap[number] = tempNode->getId();
+				inverseIdMap[tempNode->getId()] = number;
+                tempNode->setFileId(number);
 			}
 		// Otherwise we are done with creating Nodes
 		} else {
@@ -51,7 +59,7 @@ void PositionedNodeSet::parseTGF(std::istream& input) {
 		std::istringstream iss(line);
 		int from, to;
 		if (iss >> from >> to) {
-			positionedNodes[idMap[from]]->insertNeighbor(positionedNodes[idMap[to]]);
+			positionedNodes[from]->insertNeighbor(positionedNodes[to]);
 		}
 	}
 }
@@ -79,6 +87,12 @@ void PositionedNodeSet::takeStep(double dt) {
 	}
 	for (auto algo : algorithms) {
 		algo->takeStep(dt);
+	}
+}
+
+void PositionedNodeSet::reinitialize() {
+	for (auto algo : algorithms) {
+		algo->reinitialize();
 	}
 }
 

@@ -5,6 +5,9 @@
 #include <list>
 #include <memory>
 #include <array>
+#include <fstream>
+#include <iostream>
+#include <sstream>
 
 /**
  * An element that belongs to some node
@@ -15,15 +18,15 @@
 class Element {
 public:
     ///Reinforcement intensity
-    const double q;
+    double q;
     ///Conductivity decrease rate
-    const double lambda;
+    double lambda;
     ///Road maintenance cost factor
-    const double mu;
+    double mu;
 	///Minimal conductivity
-	const double Dmin;
+	double Dmin;
 	///Production rate of each Source
-	const unsigned int productionRate;
+	unsigned int productionRate;
     /**
      * Construct an element with certain parameters
      *
@@ -39,4 +42,47 @@ public:
 	 * @param productionRate Production rate of each Source
      */
     Element(const double q, const double lambda, const double mu, const double Dmin, unsigned int productionRate) : q(q), lambda(lambda), mu(mu), Dmin(Dmin), productionRate(productionRate) {};
+	/**
+	 * Write the contents of an Element to a file
+	 *
+	 * @param filename A string of the filename of the file to write to
+	 */
+	void writeData(const std::string& filename) {
+        std::ofstream stream(filename);
+		writeData(stream);
+		stream.close();
+	}
+	/**
+	 * Write the contents of an Element to a stream
+	 *
+	 * @param output The stream to write to
+	 */
+	void writeData(std::ostream& output) {
+		writeData(output, ';');
+	}
+	/**
+	 * Write the contents of an Element to a stream
+	 *
+	 * @param output The stream to write to
+	 * @param separator The character to separate each value with
+	 */
+	void writeData(std::ostream& output, char separator) {
+		output << q << separator;
+		output << lambda << separator;
+		output << mu << separator;
+		output << Dmin << separator;
+		output << productionRate << separator;
+	}
+
+	/**
+	 * Read parameters of an element from a file and overwrite the contents
+	 * of this Element with those parameters.
+	 *
+	 * @param filename Filename of the file to read from
+	 */
+	void readData(std::string line) {
+		char temp;
+		std::istringstream iss(line);
+		iss >> q >> temp >> lambda >> temp >> mu >> temp >> Dmin >> temp >> productionRate >> temp;
+	}
 };
