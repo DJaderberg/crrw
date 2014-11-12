@@ -61,11 +61,35 @@ public:
         }
         os << "\n";
     }
-
     
-    /** Read number of particles to stream
+    /** Read number of particles at last line from stream
      *
      * @param stream to read from
+     */
+    void readNumPartFromStream(std::istream& is)
+    {
+        // read in individual members of s
+        std::string line, tempLine;
+
+        while (std::getline( is, tempLine )) {
+            line = tempLine;
+        }
+        
+        std::istringstream iss(line);
+        int N, i = 0;
+        
+        //If we can extract an Int
+        while (iss >> N) {
+            positionedNodes[i]->setNumberOfParticles(N);
+            i++;
+        }
+    }
+
+    
+    /** Read number of particles from stream
+     *
+     * @param stream to read from
+     * @param line number
      */
     void readNumPartFromStream(std::istream& is, int lineNumber)
     {

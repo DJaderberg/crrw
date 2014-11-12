@@ -22,6 +22,70 @@ public:
 			conductivityMap[i.second->getId()] = element->Dmin;
 		}
 	}
+    
+    /** Write number of particles to stream
+     *
+     * @param stream to write to
+     */
+    void writeNumPartToStream(std::ostream& os)
+    {
+        // first write the id then write thi corresponding conductivity.
+        for (auto n: conductivityMap) {
+            os << n.first << " " << n.second << " ";
+        }
+        os << "\n";
+    }
+    
+    // TODO
+    /** Read number of particles at last line from stream
+     *
+     * @param stream to read from
+     */
+    void readNumPartFromStream(std::istream& is)
+    {
+        // read in individual members of s
+        std::string line, tempLine;
+        
+        while (std::getline( is, tempLine )) {
+            line = tempLine;
+        }
+        
+        std::istringstream iss(line);
+        int N, i = 0;
+        
+        //If we can extract an Int
+        while (iss >> N) {
+            positionedNodes[i]->setNumberOfParticles(N);
+            i++;
+        }
+    }
+    
+    // TODO
+    /** Read number of particles from stream
+     *
+     * @param stream to read from
+     * @param line number
+     */
+    void readNumPartFromStream(std::istream& is, int lineNumber)
+    {
+        // read in individual members of s
+        std::string line;
+        
+        for ( int i = lineNumber; i > 0; --i ) {
+            is.ignore( INT_MAX, '\n' );
+        }
+        std::getline( is, line );
+        std::istringstream iss(line);
+        int N, i = 0;
+        
+        //If we can extract an Int
+        while (iss >> N) {
+            positionedNodes[i]->setNumberOfParticles(N);
+            i++;
+        }
+    }
+    
+    
 	/**
 	 * Create a CurrentWalk object that is initialized with n and element.
 	 *
