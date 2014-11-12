@@ -52,3 +52,6 @@ movie.*
 # Rust files
 rust-tgf/Cargo.lock
 
+# Data files
+data/*.txt
+
