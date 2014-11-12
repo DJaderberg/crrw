@@ -25,7 +25,7 @@ public:
             conductivityMap[i.second->getId()] = element->Dmin;
         }
     }
-    
+	virtual void reinitialize();
     /** Write all data to stream
      *
      * @param os Stream to write to
@@ -42,6 +42,8 @@ public:
     void readData(std::istream& is) {
         readNumPart(is);
         readConductivityMap(is);
+		updateCapacitance();
+		updatePotential();
     }
     
     /**
@@ -123,8 +125,6 @@ protected:
     void (*updateFunction)();
     void updatePotential();
     std::shared_ptr<Node> node;
-    ///Mean flow rate through the Node
-    std::unordered_map<unsigned int,double> meanFlowMap;
     ///Conductivity of the Node
     std::unordered_map<unsigned int,double> conductivityMap;
     ///Capacitance of the Node

@@ -90,6 +90,12 @@ void PositionedNodeSet::takeStep(double dt) {
 	}
 }
 
+void PositionedNodeSet::reinitialize() {
+	for (auto algo : algorithms) {
+		algo->reinitialize();
+	}
+}
+
 std::unordered_map<unsigned int, std::array<double, 2>> PositionedNodeSet::getPositions() {
 	std::unordered_map<unsigned int, std::array<double, 2>> positions;
 	for (auto n : positionedNodes) {

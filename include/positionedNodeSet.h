@@ -44,6 +44,12 @@ public:
      * @param dt Length of the time step
      */
     void takeStep(double dt);
+	/**
+	 * Reinitialize the state of the algorithms, so that they may be drawn
+	 *
+	 * This only needs to be done after reading data from file.
+	 */
+	void reinitialize();
     ///Get positions
     std::unordered_map<unsigned int, std::array<double, 2>> getPositions();
     //Get PositionedNodes

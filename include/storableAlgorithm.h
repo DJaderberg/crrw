@@ -8,6 +8,15 @@
 
 class StorableAlgorithm : public Algorithm {
 public:
+	/**
+	 * Fully restore state after readData()
+	 *
+	 * This method should always be called after readData() and its purpose is 
+	 * to calculate any state that is not explicitly stored in file, such as 
+	 * parameters that used when taking a step, but can be calculated from 
+	 * other data that is stored in file.
+	 */
+	virtual void reinitialize() = 0;
     /*
      * Function for storing all the algorithms data to a stream
      *

@@ -15,12 +15,22 @@ void CurrentWalk::takeStep(double dt) {
 	this->updatePotential();
 }
 
+void CurrentWalk::reinitialize() {
+	this->updateMeanFlow();
+	for (auto n : conductivityMap) {
+		std::cout << "Cond: " << n.first << " " << n.second << ", ";
+	}
+	for (auto n : node->meanFlowMap) {
+		std::cout << "Mean flow: " << n.first << " " << n.second << ", ";
+	}
+	std::cout << "\n";
+}
+
 //Calculate the mean flow according to eq 2.16
 void CurrentWalk::updateMeanFlow() {
 	double flow;
 	for (auto n : node->getNeighbors()) {
 		flow = (node->potential - n.second->potential)*conductivityMap[n.first]/node->getDistanceMap()[n.first];
-		meanFlowMap[n.first] = flow;
 		node->meanFlowMap[n.first] = flow; //TODO: Only leave one of these
 	}
 }
@@ -28,7 +38,7 @@ void CurrentWalk::updateMeanFlow() {
 void CurrentWalk::updateFlow(double dt) {
 	int value;
 	int tempNumberOfParticles = node->getNumberOfParticles();
-	for (auto n : meanFlowMap) {
+	for (auto n : node->meanFlowMap) {
 		if (n.second > 0) {
 			double mean = n.second*dt;
 			std::poisson_distribution<int> rngDist(mean);
@@ -65,7 +75,7 @@ void CurrentWalk::updateCapacitance() {
 void CurrentWalk::updateConductivity(double dt) {
 	double value;
 	for (auto n : conductivityMap) {
-		value = n.second + element->q*std::pow(abs(meanFlowMap[n.first]), element->mu) - element->lambda*n.second*dt;
+		value = n.second + element->q*std::pow(abs(node->meanFlowMap[n.first]), element->mu) - element->lambda*n.second*dt;
 		conductivityMap[n.first] = std::max(value, element->Dmin);
 	}
 }

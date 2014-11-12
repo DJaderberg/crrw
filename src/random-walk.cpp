@@ -35,6 +35,7 @@ int main() {
     for (int i = 0; i < 10; i++) {
         set.readData(ifs);
     }
+	set.reinitialize();
     graphics.writeToFile(set, "image.png");
 
     std::cout << set.toString();
