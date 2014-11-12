@@ -26,19 +26,23 @@ void PositionedNodeSet::parseTGF(std::istream& input) {
 					std::shared_ptr<PositionedSource<2>> tempNode(new PositionedSource<2>(pos, productionRate));
 					this->positionedNodes.push_back(tempNode);
 					idMap[number] = tempNode->getId();
+					inverseIdMap[tempNode->getId()] = number;
 				} else if (productionRate < 0) {
 					std::shared_ptr<PositionedSink<2>> tempNode(new PositionedSink<2>(pos, productionRate));
 					this->positionedNodes.push_back(tempNode);
 					idMap[number] = tempNode->getId();
+					inverseIdMap[tempNode->getId()] = number;
 				} else {
 					std::shared_ptr<PositionedNode<2>> tempNode(new PositionedNode<2>(pos));
 					this->positionedNodes.push_back(tempNode);
 					idMap[number] = tempNode->getId();
+					inverseIdMap[tempNode->getId()] = number;
 				}
 			} else {
 				std::shared_ptr<PositionedNode<2>> tempNode(new PositionedNode<2>(pos));
 				this->positionedNodes.push_back(tempNode);
 				idMap[number] = tempNode->getId();
+				inverseIdMap[tempNode->getId()] = number;
 			}
 		// Otherwise we are done with creating Nodes
 		} else {

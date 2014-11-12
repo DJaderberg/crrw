@@ -85,6 +85,24 @@ public:
             i++;
         }
     }
+	/**
+	 * Get the file id of a Node
+	 *
+	 * @param id The in-memory id of the Node
+	 * @return The file id of the Node
+	 */
+	int getFileId(unsigned int id) {
+		return inverseIdMap[id];
+	}
+	/**
+	 * Get the in-memory id of a Node
+	 *
+	 * @param id The file id of the Node
+	 * @return The in-memory id of the Node
+	 */
+	unsigned int getMemoryId(int id) {
+		return idMap[id];
+	}
 private:
     /**
      * Read a stream containing a TGF NodeSet and store it in the member nodes.
@@ -110,6 +128,8 @@ private:
     std::vector<std::shared_ptr<Algorithm>> algorithms;
     ///Map from the ids in the input stream to the actual ids of the Nodes
     std::unordered_map<int, unsigned int> idMap;
+    ///Map from the actual ids of the Nodes to the ids in the input stream 
+    std::unordered_map<unsigned int, int> inverseIdMap;
     ///Helper function to initialize algorithms
     ///@param create The function with which to create the Algorithm for each Node
     ///@param element The Element that the Algorithm should have
