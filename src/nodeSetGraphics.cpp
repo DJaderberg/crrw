@@ -243,6 +243,10 @@ void NodeSetGraphics::reset() {
     cr = Cairo::Context::create(surface);
 }
 
+void NodeSetGraphics::writeToFile(std::string filename) {
+     surface->write_to_png(filename);
+} 
+
 void NodeSetGraphics::writeToFile(PositionedNodeSet n, std::string filename) {
     this->init();
     this->nodesMinMax(n);
