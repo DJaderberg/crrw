@@ -49,66 +49,32 @@ public:
     //Get PositionedNodes
     std::vector<std::shared_ptr<PositionedNode<2>>> getNodes();
     
-    /** Write number of particles to stream
+    /** Write all data to stream
      *
-     * @param stream to write to
+     * @param os Stream to write to
      */
-    void writeNumPartToStream(std::ostream& os)
-    {
-        // write out individual members of s with an end of line between each one
-        for (auto n: positionedNodes) {
-            os << n->getNumberOfParticles() << " ";
+    void writeData(std::ostream& os) {
+        for (auto a: algorithms) {
+            a->writeData(os);
+            os << '|';
         }
-        os << "\n";
     }
     
-    /** Read number of particles at last line from stream
+    /** Write all data to stream
      *
-     * @param stream to read from
+     * @param os Stream to write to
      */
-    void readNumPartFromStream(std::istream& is)
-    {
-        // read in individual members of s
-        std::string line, tempLine;
-
-        while (std::getline( is, tempLine )) {
-            line = tempLine;
-        }
-        
-        std::istringstream iss(line);
-        int N, i = 0;
-        
-        //If we can extract an Int
-        while (iss >> N) {
-            positionedNodes[i]->setNumberOfParticles(N);
-            i++;
+    void readData(std::istream& is) {
+        char separator;
+        for (auto a: algorithms) {
+            a->readData(is);
+            is >> separator;
+            if (separator != '|') {
+                std::cout << "ERROR in PositionedNodeSet, readData(): incorrect separator " << separator << ", should be (|)\n";
+            }
         }
     }
-
     
-    /** Read number of particles from stream
-     *
-     * @param stream to read from
-     * @param line number
-     */
-    void readNumPartFromStream(std::istream& is, int lineNumber)
-    {
-        // read in individual members of s
-        std::string line;
-        
-        for ( int i = lineNumber; i > 0; --i ) {
-            is.ignore( INT_MAX, '\n' );
-        }
-        std::getline( is, line );
-        std::istringstream iss(line);
-        int N, i = 0;
-        
-        //If we can extract an Int
-        while (iss >> N) {
-            positionedNodes[i]->setNumberOfParticles(N);
-            i++;
-        }
-    }
 	/**
 	 * Get the file id of a Node
 	 *
@@ -149,7 +115,7 @@ private:
     ///A vector containing all Nodes in the set
     std::vector<std::shared_ptr<PositionedNode<2>>> positionedNodes;
     ///A vector containing all Algorithms in the set
-    std::vector<std::shared_ptr<Algorithm>> algorithms;
+    std::vector<std::shared_ptr<StorableAlgorithm>> algorithms;
     ///Map from the ids in the input stream to the actual ids of the Nodes
     std::unordered_map<int, unsigned int> idMap;
     ///Map from the actual ids of the Nodes to the ids in the input stream 
@@ -159,7 +125,7 @@ private:
     ///@param element The Element that the Algorithm should have
     void initializeAlgorithms(algorithmCreator create, std::shared_ptr<Element> element) {
         for (auto n : positionedNodes) {
-            auto temp = create(n, element);
+            auto temp = std::dynamic_pointer_cast<StorableAlgorithm>(create(n, element));
             algorithms.push_back(temp);
         }
     }

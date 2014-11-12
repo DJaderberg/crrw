@@ -10,13 +10,19 @@ int main() {
 	PositionedNodeSet set = PositionedNodeSet(filename, create, e);
     std::cout << set.toString();
     
+    NodeSetGraphics graphics = NodeSetGraphics();
+    graphics.init();
+    graphics.nodesMinMax(set);
+    
     std::ofstream ofs("NumPart.txt");
 
-    for (int i = 0; i < 30; ++i) {
+    for (int i = 0; i < 10; ++i) {
 		set.takeStep(0.1);
 		std::vector<unsigned int> numPart = set.numberOfParticles();
         std::cout << "Iteration: " << i << "\n";
-        set.writeNumPartToStream(ofs);
+        set.writeData(ofs);
+        ofs << "\n";
+        
 	}
     
     ofs.close();
@@ -25,9 +31,15 @@ int main() {
     //std::cout << set.toString();
     
     std::ifstream ifs("NumPart.txt");
-    set.readNumPartFromStream(ifs);
+    
+    for (int i = 0; i < 10; i++) {
+        set.readData(ifs);
+    }
+    graphics.writeToFile(set, "image.png");
+
     std::cout << set.toString();
     
+    //graphics.writeToFile(set, "image.png");
     
     return 0;
 }
@@ -47,8 +59,6 @@ int main() {
  imgFilename << "img/a";
  imgFilename << std::setfill('0') << std::setw(5) << j++ << ".png";
  std::string imgFilenameStr = imgFilename.str();
- 
- 
  graphics.drawEdges(set, 1);
  graphics.drawNodes(set, 1);
  graphics.writeToFile(imgFilenameStr);

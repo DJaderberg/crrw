@@ -21,6 +21,14 @@ unsigned int Node::getId() {
     return this->id;
 }
 
+int Node::getFileId() {
+    return this->fileId;
+}
+
+void Node::setFileId(int fileId) {
+    this->fileId = fileId;
+}
+
 unsigned int Node::getNumberOfParticles() {
 	return this->numberOfParticles;
 }

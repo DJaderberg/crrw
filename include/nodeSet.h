@@ -6,7 +6,7 @@
 //
 #pragma once
 #include "node.h"
-#include "algorithm.h"
+#include "storableAlgorithm.h"
 #include <istream>
 #include <fstream>
 #include <vector>
@@ -60,7 +60,7 @@ protected:
 	/** Create a dummy NodeSet, which shouldn't be used
 	 */
 	NodeSet() {};
-private:
+
 	/**
 	 * Read a stream containing a TGF NodeSet and store it in the member nodes.
 	 *
