@@ -34,7 +34,7 @@ public:
      * Initialize surface and cr plus setting parameter values according to the struct p
      * @param a struct the has information about the graphics 
      */
-    void init(struct parameters p);
+    void init(struct parametersValues p);
     
     /**
      * Finds the minimum and maximum x- and y-coordinates
@@ -58,6 +58,20 @@ public:
      * @param boolean to tell if the flow should be statically drawn or of it should be normalized in every frame.
      */
     void drawEdges(PositionedNodeSet n, bool changeFlow);
+    
+    /**
+     * Sets the default values for X and Y coord. along with min and max flow to those stored in the sturct d
+     *
+     * @param d A struct of the default values
+     */
+    void setDefaultValues(struct defaultValues d);
+    
+    /**
+     * Sets the parameters to those stored in the sturct p
+     *
+     * @param p A struct of the parameter
+     */
+    void setParmeters(struct parametersValues p);
     
     /**
      * Repaints the surface to its original empty state

@@ -17,13 +17,6 @@ void CurrentWalk::takeStep(double dt) {
 
 void CurrentWalk::reinitialize() {
 	this->updateMeanFlow();
-	for (auto n : conductivityMap) {
-		std::cout << "Cond: " << n.first << " " << n.second << ", ";
-	}
-	for (auto n : node->meanFlowMap) {
-		std::cout << "Mean flow: " << n.first << " " << n.second << ", ";
-	}
-	std::cout << "\n";
 }
 
 //Calculate the mean flow according to eq 2.16
