@@ -10,7 +10,7 @@ int main() {
 	PositionedNodeSet set = PositionedNodeSet(filename, create, e);
     std::cout << set.toString();
     
-    std::ofstream ofs("saved.txt");
+    std::ofstream ofs("NumPart.txt");
 
     for (int i = 0; i < 30; ++i) {
 		set.takeStep(0.1);
@@ -21,10 +21,13 @@ int main() {
     
     ofs.close();
     
-    std::shared_ptr<AntElement> e2(new AntElement());
-    algorithmCreator create2 = CurrentWalk::create;
-    PositionedNodeSet set2 = PositionedNodeSet("test/nodes2d.txt", create2, e2);
-    std::cout << set2.toString();
+    set = PositionedNodeSet("test/nodes.txt", create, e);
+    //std::cout << set.toString();
+    
+    std::ifstream ifs("NumPart.txt");
+    set.readNumPartFromStream(ifs);
+    std::cout << set.toString();
+    
     
     return 0;
 }
