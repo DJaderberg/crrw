@@ -5,6 +5,7 @@
 //  Created by Kristoffer Jonsson on 04/11/14.
 //
 
+#ifdef GRAPHICS
 #include "nodeSetGraphics.h"
 #include <stdio.h>
 #include <stdlib.h>
@@ -245,7 +246,7 @@ void NodeSetGraphics::reset() {
 
 void NodeSetGraphics::writeToFile(std::string filename) {
      surface->write_to_png(filename);
-} 
+}
 
 void NodeSetGraphics::writeToFile(PositionedNodeSet n, std::string filename) {
     this->init();
@@ -255,7 +256,7 @@ void NodeSetGraphics::writeToFile(PositionedNodeSet n, std::string filename) {
     this->writeToFile(filename);
 }
 
-
+#endif
 
 
 

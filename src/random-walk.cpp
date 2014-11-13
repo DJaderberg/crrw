@@ -10,9 +10,11 @@ int main() {
     PositionedNodeSet set = PositionedNodeSet(filename, create, e);
     std::cout << set.toString();
     
+#ifdef GRAPHICS
     NodeSetGraphics graphics = NodeSetGraphics();
     graphics.init();
     graphics.nodesMinMax(set);
+#endif
     
     std::ofstream ofs("data/save.txt");
     
@@ -29,6 +31,7 @@ int main() {
     
     ofs.close();
     
+#ifdef GRAPHICS
     set = PositionedNodeSet("test/nodes2d.txt", create, e);
     
     std::ifstream ifs("data/save.txt");
@@ -51,6 +54,7 @@ int main() {
     }
     
     ifs.close();
+#endif
     return 0;
 }
 

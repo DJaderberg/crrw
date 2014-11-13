@@ -6,6 +6,7 @@
 //
 
 #pragma once
+#ifdef GRAPHICS
 #include "positionedNodeSet.h"
 #include "positionedSource.h"
 #include "positionedSink.h"
@@ -101,11 +102,10 @@ public:
     void writeToFile(PositionedNodeSet n, std::string filename);
     
 private:
-    /// The active Cairomm surface that the images are beeing drawn upon.
-    Cairo::RefPtr<Cairo::ImageSurface> surface;
     /// The active Cairomm context
     Cairo::RefPtr<Cairo::Context> cr;
-    
+    /// The active Cairomm surface that the images are beeing drawn upon.
+    Cairo::RefPtr<Cairo::ImageSurface> surface;
     /// Help parameters for keeping track of the coordinates and flows
     double Xmin, Xmax, Ymin, Ymax, flowMin, flowMax, Nmin, Nmax;
     
@@ -123,3 +123,4 @@ private:
     double lineOpacMin = 1;
     
 };
+#endif
