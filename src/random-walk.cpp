@@ -5,10 +5,10 @@
 
 int main() {
     std::shared_ptr<AntElement> e(new AntElement());
-    std::string filename = "test/nodes2d.txt";
+    std::string filename = "data/nodes2d.txt";
     algorithmCreator create = CurrentWalk::create;
     PositionedNodeSet set = PositionedNodeSet(filename, create, e);
-    std::cout << set.toString();
+    //std::cout << set.toString();
     
 #ifdef GRAPHICS
     NodeSetGraphics graphics = NodeSetGraphics();
@@ -18,9 +18,13 @@ int main() {
     
     std::ofstream ofs("data/save.txt");
     
-    int nCount = 10000;
+    int nCount = 1000;
+#pragma omp parallel
+{
     for (int i = 0; i < nCount; ++i) {
-        if (i % 100 == 0) {
+#pragma omp single
+{
+        if (i % 1 == 0) {
             std::cout << "CalcIter: " << i << "\n";
         }
         set.takeStep(0.1);
@@ -28,6 +32,8 @@ int main() {
         ofs << "\n";
         
     }
+}
+}
     
     ofs.close();
     
