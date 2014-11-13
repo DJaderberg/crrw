@@ -5,20 +5,20 @@
 
 int main() {
     std::shared_ptr<AntElement> e(new AntElement());
-    std::string filename = "test/nodes2d.txt";
+    std::string filename = "data/nodes2d.txt";
     algorithmCreator create = CurrentWalk::create;
     PositionedNodeSet set = PositionedNodeSet(filename, create, e);
     std::cout << set.toString();
+    
     
 #ifdef GRAPHICS
     NodeSetGraphics graphics = NodeSetGraphics();
     graphics.init();
     graphics.nodesMinMax(set);
 #endif
-    
     std::ofstream ofs("data/save.txt");
     
-    int nCount = 10000;
+    int nCount = 1000;
     for (int i = 0; i < nCount; ++i) {
         if (i % 100 == 0) {
             std::cout << "CalcIter: " << i << "\n";
@@ -32,7 +32,7 @@ int main() {
     ofs.close();
     
 #ifdef GRAPHICS
-    set = PositionedNodeSet("test/nodes2d.txt", create, e);
+    set = PositionedNodeSet(filename, create, e);
     
     std::ifstream ifs("data/save.txt");
     
