@@ -8,4 +8,7 @@
 #include "randomWalk.h"
 #include "nodeSetGraphics.h"
 #include "positionedNodeSet.h"
+#include "generateGraphics.h"
+#include "generateData.h"
+
 
