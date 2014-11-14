@@ -8,8 +8,8 @@ int main() {
     std::string dataPath = "data/save.txt";
     std::shared_ptr<AntElement> e(new AntElement());
     algorithmCreator create = CurrentWalk::create;
-    int nCount = 10;
-    int writeDataInterval = 1;
+    int nCount = 20000;
+    int writeDataInterval = 25;
     int writeGraphicsInterval = 1;
     
 #ifdef GRAPHICS
@@ -18,7 +18,7 @@ int main() {
 #else
     double dt = 0.1;
     generateData(filename, dataPath, e, create, nCount, dt, writeDataInterval);
-    generateData(filename, dataPath, e, create, nCount, dt, writeDataInterval, dataPath);
+    //generateData(filename, dataPath, e, create, nCount, dt, writeDataInterval, dataPath);
 #endif
     return 0;
 }
