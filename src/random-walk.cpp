@@ -24,12 +24,12 @@ int main() {
     for (int i = 0; i < nCount; ++i) {
 #pragma omp single
 {
-        if (i % 1 == 0) {
-            std::cout << "CalcIter: " << i << "\n";
-        }
         set.takeStep(0.1);
-        set.writeData(ofs);
-        ofs << "\n";
+        if (i % 25 == 0) {
+            std::cout << "CalcIter: " << i << "\n";
+			set.writeData(ofs);
+			ofs << "\n";
+        }
         
     }
 }
