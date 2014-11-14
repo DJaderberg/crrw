@@ -27,6 +27,9 @@ void generateData(std::string nodePath, std::string dataSavePath, std::shared_pt
             set.writeData(ofs);
             ofs << "\n";
         }
+		if (i % 1 == 0) {
+			std::cout << "Iteration: " << i << "\n";
+		}
     }
 }
 }
