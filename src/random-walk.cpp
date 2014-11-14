@@ -4,7 +4,7 @@
 #include <iomanip>
 
 int main() {
-    std::string filename = "test/nodes2d.txt";
+    std::string filename = "data/nodes2d.txt";
     std::string dataPath = "data/save.txt";
     std::shared_ptr<AntElement> e(new AntElement());
     algorithmCreator create = CurrentWalk::create;
