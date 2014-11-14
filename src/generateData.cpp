@@ -17,19 +17,13 @@ void generateData(std::string nodePath, std::string dataSavePath, std::shared_pt
     
     std::ofstream ofs(dataSavePath);
     
-#pragma omp parallel
-{
     for (int i = 0; i < nCount; ++i) {
-#pragma omp single
-{
         set.takeStep(dt);
         if (i % writeInterval == 0) {
             set.writeData(ofs);
             ofs << "\n";
         }
     }
-}
-}
     ofs.close();
     
     std::string dataSavePathLast = dataSavePath;
@@ -53,17 +47,11 @@ void generateData(std::string nodePath, std::string dataSavePath, std::shared_pt
     ifs.close();
     std::ofstream ofs(dataSavePath);
     
-#pragma omp parallel
-    {
-        for (int i = 0; i < nCount; ++i) {
-#pragma omp single
-            {
-                set.takeStep(dt);
-                if (i % writeInterval == 0) {
-                    set.writeData(ofs);
-                    ofs << "\n";
-                }
-            }
+    for (int i = 0; i < nCount; ++i) {
+        set.takeStep(dt);
+        if (i % writeInterval == 0) {
+            set.writeData(ofs);
+            ofs << "\n";
         }
     }
     ofs.close();
