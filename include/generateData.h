@@ -18,9 +18,9 @@
 /**
  * Function for generating data
  */
-void generateData(std::string nodePath, std::string dataSavePath, std::shared_ptr<AntElement> e, algorithmCreator create, int nCount, double dt, int writeInterval);
+void generateData(std::string nodePath, std::string dataSavePath, std::shared_ptr<Element> e, algorithmCreator create, int nCount, double dt, int writeInterval);
 
 /**
  * Function for generating data, starting from dataReadPath
  */
-void generateData(std::string nodePath, std::string dataSavePath, std::shared_ptr<AntElement> e, algorithmCreator create, int nCount, double dt, int writeInterval, std::string dataReadPath);
+void generateData(std::string nodePath, std::string dataSavePath, std::shared_ptr<Element> e, algorithmCreator create, int nCount, double dt, int writeInterval, std::string dataReadPath);
