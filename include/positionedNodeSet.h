@@ -38,6 +38,12 @@ public:
     std::string toString();
     /// Return the number of particles at each Node in the NodeSet
     std::vector<unsigned int> numberOfParticles();
+    /**
+     * Make one time step
+     *
+     * @param dt Length of the time step
+     */
+    void takeStep(double dt);
 	/**
 	 * Reinitialize the state of the algorithms, so that they may be drawn
 	 *

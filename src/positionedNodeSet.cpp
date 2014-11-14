@@ -82,7 +82,21 @@ std::vector<unsigned int> PositionedNodeSet::numberOfParticles() {
 	return ret;
 }
 
-
+void PositionedNodeSet::takeStep(double dt) {
+	unsigned int size = algorithms.size();
+	auto algoBegin = algorithms.begin();
+	auto algo = algoBegin;
+#pragma omp for private(algo) schedule(guided)
+	for (unsigned int i = 0; i < size; i++) {
+		algo = algoBegin + i;
+		(*algo)->prepareStep(dt);
+	}
+#pragma omp for private(algo) schedule(guided)
+	for (unsigned int i = 0; i < size; i++) {
+		algo = algoBegin + i;
+		(*algo)->takeStep(dt);
+	}
+}
 
 void PositionedNodeSet::reinitialize() {
 	for (auto algo : algorithms) {

@@ -55,7 +55,7 @@ public:
 	 *
 	 * @param dt Length of the time step
 	 */
-	virtual void takeStep(double dt);
+	void takeStep(double dt);
 protected:
 	/** Create a dummy NodeSet, which shouldn't be used
 	 */
