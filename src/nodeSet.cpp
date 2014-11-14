@@ -74,10 +74,17 @@ std::vector<unsigned int> NodeSet::numberOfParticles() {
 }
 
 void NodeSet::takeStep(double dt) {
-	for (auto algo : algorithms) {
-		algo->prepareStep(dt);
+	unsigned int size = algorithms.size();
+	auto algoBegin = algorithms.begin();
+	auto algo = algoBegin;
+#pragma omp for private(algo) schedule(guided)
+	for (unsigned int i = 0; i < size; i++) {
+		algo = algoBegin + i;
+		(*algo)->prepareStep(dt);
 	}
-	for (auto algo : algorithms) {
-		algo->takeStep(dt);
+#pragma omp for private(algo) schedule(guided)
+	for (unsigned int i = 0; i < size; i++) {
+		algo = algoBegin + i;
+		(*algo)->takeStep(dt);
 	}
 }
