@@ -4,12 +4,12 @@
 #include <iomanip>
 
 int main() {
-    std::string filename = "data/nodes2d.txt";
-    std::string dataPath = "data/save.txt";
-    std::shared_ptr<AntElement> e(new AntElement());
+    std::string filename = "data/nodes.txt";
+    std::string dataPath = "data/save1d.txt";
+    std::shared_ptr<LinearAntElement> e(new LinearAntElement());
     algorithmCreator create = CurrentWalk::create;
     int nCount = 1000;
-    int writeInterval = 5;
+    int writeInterval = 20;
     
 #ifdef GRAPHICS
     std::string imageSavePath = "img/a";

@@ -12,7 +12,7 @@
 /**
  * Function for generating data
  */
-void generateData(std::string nodePath, std::string dataSavePath, std::shared_ptr<AntElement> e, algorithmCreator create, int nCount, double dt, int writeInterval) {
+void generateData(std::string nodePath, std::string dataSavePath, std::shared_ptr<Element> e, algorithmCreator create, int nCount, double dt, int writeInterval) {
     PositionedNodeSet set = PositionedNodeSet(nodePath, create, e);
     
     std::ofstream ofs(dataSavePath);

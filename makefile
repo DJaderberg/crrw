@@ -9,10 +9,10 @@ all: random-walk
 allest: graphics
 VPATH := src:include
 
-graphics: CFLAGS = $(CFLAGS_BASE)-DGRAPHICS $(shell pkg-config --cflags cairomm-1.0 cairo cairomm-png-1.0 cairo-png)
-graphics: LDFLAGS = $(LDFLAGS_BASE)-DGRAPHICS $(shell pkg-config --libs cairomm-1.0 cairo cairomm-png-1.0 cairo-png)
+graphics: CFLAGS = $(CFLAGS_BASE) -DGRAPHICS $(shell pkg-config --cflags cairomm-1.0 cairo cairomm-png-1.0 cairo-png)
+graphics: LDFLAGS = $(LDFLAGS_BASE) -DGRAPHICS $(shell pkg-config --libs cairomm-1.0 cairo cairomm-png-1.0 cairo-png)
 graphics: $(OBJECTS) 
-	$(LD) -o random-walk $^ $(LDFLAGS)
+	$(LD) -o graphics $^ $(LDFLAGS)
 
 random-walk: $(OBJECTS)
 	$(LD) -o random-walk $^ $(LDFLAGS)
