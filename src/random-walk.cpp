@@ -17,8 +17,8 @@ int main() {
     generateGraphics(filename, dataPath, imageSavePath, e, create, nCount/writeDataInterval, writeGraphicsInterval);
 #else
     double dt = 0.1;
-    generateData(filename, dataPath, e, create, nCount, dt, writeDataInterval);
-    //generateData(filename, dataPath, e, create, nCount, dt, writeDataInterval, dataPath);
+    //generateData(filename, dataPath, e, create, nCount, dt, writeDataInterval);
+    generateData(filename, dataPath, e, create, nCount, dt, writeDataInterval, "data/saveLAST.txt");
 #endif
     return 0;
 }

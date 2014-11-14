@@ -42,9 +42,7 @@ void NodeSetGraphics::init() {
     Nmin = d.Nmin;
     Nmax = d.Nmax;
     
-    surface = Cairo::ImageSurface::create(Cairo::FORMAT_ARGB32, windowWidth, windowHeight);
-    cr = Cairo::Context::create(surface);
-    
+    this->reset();
     this->repaint();
 }
 
@@ -69,9 +67,7 @@ void NodeSetGraphics::init(struct parametersValues p) {
     lineWidthMax = p.lineWidthMax;
     lineOpacMin = p.lineOpacMin;
     
-    surface = Cairo::ImageSurface::create(Cairo::FORMAT_ARGB32, windowWidth, windowHeight);
-    cr = Cairo::Context::create(surface);
-    
+    this->reset();
     this->repaint();
 }
 
