@@ -5,15 +5,33 @@
 //  Created by Kristoffer Jonsson on 13/11/14.
 //
 
+#pragma once
 #include "generateData.h"
 #include <string>
 #include <fstream>
+#include <sys/stat.h>
 
 /**
  * Function for generating data
  */
 void generateData(std::string nodePath, std::string dataSavePath, std::shared_ptr<Element> e, algorithmCreator create, int nCount, double dt, int writeInterval) {
     PositionedNodeSet set = PositionedNodeSet(nodePath, create, e);
+    
+    if (exists(dataSavePath)) {
+        std::cout << "ERROR in GeneratData: save file already exists.\n";
+        std::cout << "Data generation aborted.\n";
+        return;
+    }
+    
+    std::string dataSavePathLast = dataSavePath;
+    int pos = dataSavePathLast.find_last_of('.');
+    dataSavePathLast.insert(pos,"LAST");
+    
+    if (exists(dataSavePathLast)) {
+        std::cout << "ERROR in GeneratData: save file \"LAST\" already exists.\n";
+        std::cout << "Data generation aborted.\n";
+        return;
+    }
     
     std::ofstream ofs(dataSavePath);
     
@@ -25,10 +43,6 @@ void generateData(std::string nodePath, std::string dataSavePath, std::shared_pt
         }
     }
     ofs.close();
-    
-    std::string dataSavePathLast = dataSavePath;
-    int pos = dataSavePathLast.find_last_of('.');
-    dataSavePathLast.insert(pos,"LAST");
     
     std::ofstream ofsLast(dataSavePathLast);
     set.writeData(ofsLast);
@@ -58,6 +72,10 @@ void generateData(std::string nodePath, std::string dataSavePath, std::shared_pt
     
 }
 
+inline bool exists(const std::string& name) {
+    struct stat buffer;
+    return (stat (name.c_str(), &buffer) == 0);
+}
 
 
 

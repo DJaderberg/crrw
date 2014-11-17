@@ -101,6 +101,13 @@ public:
      */
     void writeToFile(PositionedNodeSet n, std::string filename);
     
+    /** Return a string representation of the NodeSetGraphics parameters and min and max values
+     *
+     * @return std::string
+     *
+     */
+    std::string toString();
+    
 private:
     /// The active Cairomm context
     Cairo::RefPtr<Cairo::Context> cr;
