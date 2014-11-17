@@ -71,7 +71,7 @@ void NodeSetGraphics::init(struct parametersValues p) {
     this->repaint();
 }
 
-void NodeSetGraphics::nodesMinMax(PositionedNodeSet n) {
+void NodeSetGraphics::XYMinMax(PositionedNodeSet n) {
     std::array<double, 2> pos = n.getNodes().front()->getPosition();
     Xmin = pos[0];
     Ymin = pos[1];
@@ -98,6 +98,31 @@ void NodeSetGraphics::nodesMinMax(PositionedNodeSet n) {
     }
 }
 
+// TODO: NOT DONE
+void NodeSetGraphics::NAndFlowMinMax(PositionedNodeSet n) {
+    
+    int tempN = n.getNodes().front()->getNumberOfParticles();
+    double tempFlow = abs(n.getNodes().front()->getMeanFlow(n.getNodes().front()->getNeighborsMap().begin()->second->getId()));
+    
+    for (auto node: n.getNodes()) {
+        tempN = node->getNumberOfParticles();
+        if (tempN < Nmin) {
+            Nmin = tempN;
+        } else if (tempN > Nmax) {
+            Nmax = tempN;
+        }
+        
+        for (auto neighbor: node->getNeighborsMap()) {
+            tempFlow = abs(node->getMeanFlow(neighbor.second->getId()));
+            if (tempFlow < flowMin) {
+                flowMin = tempFlow;
+            } else if (tempFlow > flowMax) {
+                flowMax = tempFlow;
+            }
+        }
+    }
+    
+}
 
 
 void NodeSetGraphics::drawNodes(PositionedNodeSet n, bool changeSize) {
@@ -246,7 +271,7 @@ void NodeSetGraphics::writeToFile(std::string filename) {
 
 void NodeSetGraphics::writeToFile(PositionedNodeSet n, std::string filename) {
     this->init();
-    this->nodesMinMax(n);
+    this->XYMinMax(n);
     this->drawEdges(n, 1);
     this->drawNodes(n, 1);
     this->writeToFile(filename);
@@ -279,6 +304,8 @@ std::string NodeSetGraphics::toString() {
     str += "Minimum line width: " + std::to_string(lineWidthMin) + "\n";
     str += "Maximum line width: " + std::to_string(lineWidthMax) + "\n";
     str += "Minimum line opacity: " + std::to_string(lineOpacMin) + "\n";
+    
+    return str;
 }
 
 #endif

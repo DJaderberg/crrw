@@ -40,9 +40,16 @@ public:
     /**
      * Finds the minimum and maximum x- and y-coordinates
      *
-     * @param a NodeSet
+     * @param a PositionedNodeSet
      */
-    void nodesMinMax(PositionedNodeSet n);
+    void XYMinMax(PositionedNodeSet n);
+    
+    /**
+     * Finds the minimum and maximum number of particles and flows
+     *
+     * @param a PositionedNodeSet
+     */
+    void NAndFlowMinMax(PositionedNodeSet n);
     
     /**
      * Draws all the Nodes in the NodeSet n to cr
