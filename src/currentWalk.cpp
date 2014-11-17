@@ -16,6 +16,8 @@ void CurrentWalk::takeStep(double dt) {
 }
 
 void CurrentWalk::reinitialize() {
+    this->updateCapacitance();
+    this->updatePotential();
 	this->updateMeanFlow();
 }
 

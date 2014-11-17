@@ -19,7 +19,19 @@ void generateGraphics(std::string nodePath, std::string dataReadPath, std::strin
     graphics.init();
     
     PositionedNodeSet set = PositionedNodeSet(nodePath, create, e);
-    graphics.nodesMinMax(set);
+    graphics.XYMinMax(set);
+    
+    
+    std::ifstream ifsMinMx(dataReadPath);
+    
+    for (int i = 0; i < nCount; i++) {
+        set.readData(ifsMinMx);
+        graphics.NAndFlowMinMax(set);
+    }
+    
+    ifsMinMx.close();
+    
+    std::cout << graphics.toString();
     
     std::ifstream ifs(dataReadPath);
     
@@ -41,6 +53,7 @@ void generateGraphics(std::string nodePath, std::string dataReadPath, std::strin
     }
     
     ifs.close();
+    
     
 }
 #endif
