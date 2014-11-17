@@ -24,3 +24,9 @@ void generateData(std::string nodePath, std::string dataSavePath, std::shared_pt
  * Function for generating data, starting from dataReadPath
  */
 void generateData(std::string nodePath, std::string dataSavePath, std::shared_ptr<Element> e, algorithmCreator create, int nCount, double dt, int writeInterval, std::string dataReadPath);
+
+/**
+ *
+ *
+ */
+bool exists(const std::string& name);
