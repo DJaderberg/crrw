@@ -8,6 +8,7 @@
 #include "generateData.h"
 #include <string>
 #include <fstream>
+#include <omp.h>
 
 /**
  * Function for generating data
@@ -19,19 +20,23 @@ void generateData(std::string nodePath, std::string dataSavePath, std::shared_pt
     
 #pragma omp parallel
 {
+	std::cout << "Hello from thread: " << omp_get_thread_num() << "\n";
     for (int i = 0; i < nCount; ++i) {
 #pragma omp single
 {
-        set.takeStep(dt);
-        if (i % writeInterval == 0) {
-            set.writeData(ofs);
-            ofs << "\n";
-        }
-		if (i % 1 == 0) {
+		if (i % 1000 == 0) {
 			std::cout << "Iteration: " << i << "\n";
 		}
-    }
+        set.takeStep(dt);
 }
+        if (i % writeInterval == 0) {
+#pragma omp critical
+{
+            set.writeData(ofs);
+            ofs << "\n";
+}
+        }
+    }
 }
     ofs.close();
     
