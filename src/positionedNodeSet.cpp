@@ -86,16 +86,19 @@ void PositionedNodeSet::takeStep(double dt) {
 	unsigned int size = algorithms.size();
 	auto algoBegin = algorithms.begin();
 	auto algo = algoBegin;
-#pragma omp for private(algo)
+#pragma omp parallel
+    {
+#pragma omp parallel for private(algo)
 	for (unsigned int i = 0; i < size; i++) {
 		algo = algoBegin + i;
 		(*algo)->prepareStep(dt);
 	}
-#pragma omp for private(algo)
+#pragma omp parallel for private(algo)
 	for (unsigned int i = 0; i < size; i++) {
 		algo = algoBegin + i;
 		(*algo)->takeStep(dt);
 	}
+    }
 }
 
 void PositionedNodeSet::reinitialize() {
