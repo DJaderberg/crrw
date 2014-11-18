@@ -45,8 +45,8 @@ void generateGraphics(std::string nodePath, std::string dataReadPath, std::strin
             imgFilename << imageSavePath;
             imgFilename << std::setfill('0') << std::setw(6) << j++ << ".png";
             std::string imgFilenameStr = imgFilename.str();
-            graphics.drawEdges(set, 1);
-            graphics.drawNodes(set, 1);
+            graphics.drawEdges(set, 0);
+            graphics.drawNodes(set, 0);
             graphics.writeToFile(imgFilenameStr);
             graphics.repaint();
         }
