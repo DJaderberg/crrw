@@ -98,7 +98,6 @@ void NodeSetGraphics::XYMinMax(PositionedNodeSet n) {
     }
 }
 
-// TODO: NOT DONE
 void NodeSetGraphics::NAndFlowMinMax(PositionedNodeSet n) {
     
     int tempN = n.getNodes().front()->getNumberOfParticles();
