@@ -40,9 +40,16 @@ public:
     /**
      * Finds the minimum and maximum x- and y-coordinates
      *
-     * @param a NodeSet
+     * @param a PositionedNodeSet
      */
-    void nodesMinMax(PositionedNodeSet n);
+    void XYMinMax(PositionedNodeSet n);
+    
+    /**
+     * Finds the minimum and maximum number of particles and flows
+     *
+     * @param a PositionedNodeSet
+     */
+    void NAndFlowMinMax(PositionedNodeSet n);
     
     /**
      * Draws all the Nodes in the NodeSet n to cr
@@ -100,6 +107,13 @@ public:
      * @param the name of the file
      */
     void writeToFile(PositionedNodeSet n, std::string filename);
+    
+    /** Return a string representation of the NodeSetGraphics parameters and min and max values
+     *
+     * @return std::string
+     *
+     */
+    std::string toString();
     
 private:
     /// The active Cairomm context

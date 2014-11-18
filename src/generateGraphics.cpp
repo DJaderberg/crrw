@@ -19,26 +19,41 @@ void generateGraphics(std::string nodePath, std::string dataReadPath, std::strin
     graphics.init();
     
     PositionedNodeSet set = PositionedNodeSet(nodePath, create, e);
+    graphics.XYMinMax(set);
+    
+    
+    std::ifstream ifsMinMx(dataReadPath);
+    
+    for (int i = 0; i < nCount; i++) {
+        set.readData(ifsMinMx);
+        graphics.NAndFlowMinMax(set);
+    }
+    
+    ifsMinMx.close();
+    
+    std::cout << graphics.toString();
     
     std::ifstream ifs(dataReadPath);
     
     int j = 0;
     for (int i = 0; i < nCount; i++) {
         set.readData(ifs);
+        //std::cout << set.toString();
         if (i % writeInterval == 0) {
             set.reinitialize();
             std::stringstream imgFilename(imageSavePath, std::ios_base::in|std::ios_base::out);
             imgFilename << imageSavePath;
             imgFilename << std::setfill('0') << std::setw(6) << j++ << ".png";
             std::string imgFilenameStr = imgFilename.str();
-            graphics.drawEdges(set, 1);
-            graphics.drawNodes(set, 1);
+            graphics.drawEdges(set, 0);
+            graphics.drawNodes(set, 0);
             graphics.writeToFile(imgFilenameStr);
             graphics.repaint();
         }
     }
     
     ifs.close();
+    
     
 }
 #endif

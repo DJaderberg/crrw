@@ -7,32 +7,29 @@ use std::rand;
 fn gen_matrix(size: f64, prod_rate: int, nodes: uint, sinks: uint, mut out: Box<Writer>) {
     //Define Nodes (id, x-pos, y-pos, opt. production rate)
     let mut i_range = std::iter::range(0u, nodes);
-    out.write(nodes.to_string().as_bytes());
-    out.write(b"\n");
+    match out.write((nodes.to_string() + "\n").as_bytes()) {
+        Ok(()) => (),
+        Err(e) => panic!(e.desc)
+    };
     for i in i_range {
         let x_val = size*rand::random::<f64>();
         let y_val = size*rand::random::<f64>();
-        //Node id
-        out.write(i.to_string().as_bytes());
-        out.write(b" ");
-        //x position
-        out.write(x_val.to_string().as_bytes());
-        out.write(b" ");
-        //y position
-        out.write(y_val.to_string().as_bytes());
-
+        let mut output : String = i.to_string() + " " + x_val.to_string() + " " + y_val.to_string();
         if i<= sinks {
-            out.write(b" ");
+            output = output + " ";
         }
         //If Source
         if i==0 {
-            out.write((prod_rate.to_string().as_bytes()));
+            output = output + prod_rate.to_string();
         //If Sink
         } else if i <= sinks {
-            out.write(b"-");
-            out.write((prod_rate/sinks as int).to_string().as_bytes());
+            output = output + "-" + (prod_rate as int).to_string();
         }
-        out.write(b"\n");
+        output = output + "\n";
+        match out.write(output.as_bytes()) {
+            Ok(()) => (),
+            Err(e) => panic!(e.desc)
+        };
     }
     return;
 }

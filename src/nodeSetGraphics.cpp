@@ -42,9 +42,7 @@ void NodeSetGraphics::init() {
     Nmin = d.Nmin;
     Nmax = d.Nmax;
     
-    surface = Cairo::ImageSurface::create(Cairo::FORMAT_ARGB32, windowWidth, windowHeight);
-    cr = Cairo::Context::create(surface);
-    
+    this->reset();
     this->repaint();
 }
 
@@ -69,13 +67,11 @@ void NodeSetGraphics::init(struct parametersValues p) {
     lineWidthMax = p.lineWidthMax;
     lineOpacMin = p.lineOpacMin;
     
-    surface = Cairo::ImageSurface::create(Cairo::FORMAT_ARGB32, windowWidth, windowHeight);
-    cr = Cairo::Context::create(surface);
-    
+    this->reset();
     this->repaint();
 }
 
-void NodeSetGraphics::nodesMinMax(PositionedNodeSet n) {
+void NodeSetGraphics::XYMinMax(PositionedNodeSet n) {
     std::array<double, 2> pos = n.getNodes().front()->getPosition();
     Xmin = pos[0];
     Ymin = pos[1];
@@ -102,6 +98,30 @@ void NodeSetGraphics::nodesMinMax(PositionedNodeSet n) {
     }
 }
 
+void NodeSetGraphics::NAndFlowMinMax(PositionedNodeSet n) {
+    
+    int tempN = n.getNodes().front()->getNumberOfParticles();
+    double tempFlow = abs(n.getNodes().front()->getMeanFlow(n.getNodes().front()->getNeighborsMap().begin()->second->getId()));
+    
+    for (auto node: n.getNodes()) {
+        tempN = node->getNumberOfParticles();
+        if (tempN < Nmin) {
+            Nmin = tempN;
+        } else if (tempN > Nmax) {
+            Nmax = tempN;
+        }
+        
+        for (auto neighbor: node->getNeighborsMap()) {
+            tempFlow = abs(node->getMeanFlow(neighbor.second->getId()));
+            if (tempFlow < flowMin) {
+                flowMin = tempFlow;
+            } else if (tempFlow > flowMax) {
+                flowMax = tempFlow;
+            }
+        }
+    }
+    
+}
 
 
 void NodeSetGraphics::drawNodes(PositionedNodeSet n, bool changeSize) {
@@ -250,10 +270,41 @@ void NodeSetGraphics::writeToFile(std::string filename) {
 
 void NodeSetGraphics::writeToFile(PositionedNodeSet n, std::string filename) {
     this->init();
-    this->nodesMinMax(n);
+    this->XYMinMax(n);
     this->drawEdges(n, 1);
     this->drawNodes(n, 1);
     this->writeToFile(filename);
+}
+
+std::string NodeSetGraphics::toString() {
+    std::string str;
+    
+    str = "Minimum X-coord: " + std::to_string(Xmin) + "\n";
+    str += "Maximum X-coord: " + std::to_string(Xmax) + "\n";
+    str += "Minimum Y-coord: " + std::to_string(Ymin) + "\n";
+    str += "Maximum Y-coord: " + std::to_string(Ymax) + "\n";
+    
+    str += "Minimum Num. part.: " + std::to_string(Nmin) + "\n";
+    str += "Maximum Num. part.: " + std::to_string(Nmax) + "\n";
+    
+    str += "Minimum flow: " + std::to_string(flowMin) + "\n";
+    str += "Maximum flow: " + std::to_string(flowMax) + "\n";
+    
+    str += "Surface height: " + std::to_string(windowHeight) + "\n";
+    str += "Surface width: " + std::to_string(windowWidth) + "\n";
+    str += "Border width: " + std::to_string(borderWidth) + "\n";
+    str += "Border width: " + std::to_string(borderWidth) + "\n";
+    str += "Minimum Node radius: " + std::to_string(nodeMinRadius) + "\n";
+    str += "Maximum Node radius: " + std::to_string(nodeMaxRadius) + "\n";
+    str += "Minimum Node radius: " + std::to_string(nodeMinRadius) + "\n";
+    str += "Node border size: " + std::to_string(nodeBorder) + "\n";
+    str += "Source radius: " + std::to_string(sourceRadius) + "\n";
+    str += "Sink radius: " + std::to_string(sinkRadius) + "\n";
+    str += "Minimum line width: " + std::to_string(lineWidthMin) + "\n";
+    str += "Maximum line width: " + std::to_string(lineWidthMax) + "\n";
+    str += "Minimum line opacity: " + std::to_string(lineOpacMin) + "\n";
+    
+    return str;
 }
 
 #endif
