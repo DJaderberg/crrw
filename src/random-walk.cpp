@@ -9,7 +9,7 @@ int main() {
     std::shared_ptr<AntElement> e(new AntElement());
     algorithmCreator create = CurrentWalk::create;
     int nCount = 20000;
-    int writeDataInterval = 25;
+    int writeDataInterval = 100;
     int writeGraphicsInterval = 1;
     
 #ifdef GRAPHICS
