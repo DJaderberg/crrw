@@ -20,4 +20,4 @@
 /**
  * Function for generating images from data
  */
-void generateGraphics(std::string nodePath, std::string dataReadPath, std::string imageSavePath, std::shared_ptr<AntElement> e, algorithmCreator create, int nCount, int writeInterval);
+void generateGraphics(std::string nodePath, std::string dataReadPath, std::string imageSavePath, std::shared_ptr<Element> e, algorithmCreator create, int nCount, int writeInterval);

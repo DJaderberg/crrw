@@ -8,7 +8,6 @@
 #include "generateData.h"
 #include <string>
 #include <fstream>
-#include <sys/stat.h>
 
 /**
  * Function for generating data
@@ -91,11 +90,9 @@ void generateData(std::string nodePath, std::string dataSavePath, std::shared_pt
     }
     ofs.close();
     
-}
-
-inline bool exists(const std::string& name) {
-    struct stat buffer;
-    return (stat (name.c_str(), &buffer) == 0);
+    std::ofstream ofsLast(dataSavePathLast);
+    set.writeData(ofsLast);
+    ofsLast.close();
 }
 
 

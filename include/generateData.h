@@ -14,6 +14,7 @@
 #include "currentWalk.h"
 #include "randomWalk.h"
 #include "positionedNodeSet.h"
+#include "miscFunctions.h"
 
 /**
  * Function for generating data
@@ -25,8 +26,3 @@ void generateData(std::string nodePath, std::string dataSavePath, std::shared_pt
  */
 void generateData(std::string nodePath, std::string dataSavePath, std::shared_ptr<Element> e, algorithmCreator create, int nCount, double dt, int writeInterval, bool force, std::string dataReadPath);
 
-/**
- *
- *
- */
-bool exists(const std::string& name);
