@@ -5,7 +5,6 @@
 //  Created by Kristoffer Jonsson on 13/11/14.
 //
 
-#pragma once
 #include "generateData.h"
 #include <string>
 #include <fstream>
@@ -14,10 +13,10 @@
 /**
  * Function for generating data
  */
-void generateData(std::string nodePath, std::string dataSavePath, std::shared_ptr<Element> e, algorithmCreator create, int nCount, double dt, int writeInterval) {
+void generateData(std::string nodePath, std::string dataSavePath, std::shared_ptr<Element> e, algorithmCreator create, int nCount, double dt, int writeInterval, bool force) {
     PositionedNodeSet set = PositionedNodeSet(nodePath, create, e);
     
-    if (exists(dataSavePath)) {
+    if (!force && exists(dataSavePath)) {
         std::cout << "ERROR in GeneratData: save file already exists.\n";
         std::cout << "Data generation aborted.\n";
         return;
@@ -27,7 +26,7 @@ void generateData(std::string nodePath, std::string dataSavePath, std::shared_pt
     int pos = dataSavePathLast.find_last_of('.');
     dataSavePathLast.insert(pos,"LAST");
     
-    if (exists(dataSavePathLast)) {
+    if (!force && exists(dataSavePathLast)) {
         std::cout << "ERROR in GeneratData: save file \"LAST\" already exists.\n";
         std::cout << "Data generation aborted.\n";
         return;
@@ -56,9 +55,25 @@ void generateData(std::string nodePath, std::string dataSavePath, std::shared_pt
 /**
  * Function for generating data, starting from dataReadPath
  */
-void generateData(std::string nodePath, std::string dataSavePath, std::shared_ptr<Element> e, algorithmCreator create, int nCount, double dt, int writeInterval, std::string dataReadPath) {
+void generateData(std::string nodePath, std::string dataSavePath, std::shared_ptr<Element> e, algorithmCreator create, int nCount, double dt, int writeInterval, bool force, std::string dataReadPath) {
     PositionedNodeSet set = PositionedNodeSet(nodePath, create, e);
+
+    if (!force && exists(dataSavePath)) {
+        std::cout << "ERROR in GeneratData: save file already exists.\n";
+        std::cout << "Data generation aborted.\n";
+        return;
+    }
+	
+	std::string dataSavePathLast = dataSavePath;
+    int pos = dataSavePathLast.find_last_of('.');
+    dataSavePathLast.insert(pos,"LAST");
     
+    if (!force && exists(dataSavePathLast)) {
+        std::cout << "ERROR in GeneratData: save file \"LAST\" already exists.\n";
+        std::cout << "Data generation aborted.\n";
+        return;
+    }
+
     std::ifstream ifs(dataReadPath);
     set.readData(ifs);
     ifs.close();
@@ -69,6 +84,9 @@ void generateData(std::string nodePath, std::string dataSavePath, std::shared_pt
         if (i % writeInterval == 0) {
             set.writeData(ofs);
             ofs << "\n";
+        }
+        if (i % 1000 == 0) {
+            std::cout << "Iter: " << std::to_string(i) << "\n";
         }
     }
     ofs.close();
