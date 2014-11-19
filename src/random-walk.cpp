@@ -18,6 +18,7 @@ struct arguments {
     double dt = 0.1;
 	bool quitAfterArgs = false;
 	bool restart = false;
+	bool force = false;
 };
 
 arguments parse_args(int argc, char* argv[]);
@@ -31,12 +32,12 @@ int main(int argc, char* argv[]) {
 	}
     
 #ifdef GRAPHICS
-    generateGraphics(args.filename, args.storedDataPath, args.dataPath, e, create, args.nCount, args.writeInterval);
+    generateGraphics(args.filename, args.storedDataPath, args.dataPath, e, create, args.nCount, args.writeInterval, args.force);
 #else
 	if (args.restart) {
-		generateData(args.filename, args.dataPath, e, create, args.nCount, args.dt, args.writeInterval, args.storedDataPath);
+		generateData(args.filename, args.dataPath, e, create, args.nCount, args.dt, args.writeInterval, args.force, args.storedDataPath);
 	} else {
-		generateData(args.filename, args.dataPath, e, create, args.nCount, args.dt, args.writeInterval);
+		generateData(args.filename, args.dataPath, e, create, args.nCount, args.dt, args.writeInterval, args.force);
 	}
 #endif
     return 0;
@@ -45,7 +46,7 @@ int main(int argc, char* argv[]) {
 arguments parse_args(int argc, char* argv[]) {
 	arguments args;
 	int c;
-	while ((c = getopt(argc, argv, "i:d:o:n:w:t:h")) != -1) {
+	while ((c = getopt(argc, argv, "i:d:o:n:w:t:fh")) != -1) {
 		switch (c) {
 			case 'i':
 				args.filename = optarg;
@@ -65,6 +66,9 @@ arguments parse_args(int argc, char* argv[]) {
 				break;
 			case 't':
 				args.dt = std::atof(optarg);
+				break;
+			case 'f':
+				args.force = true;
 				break;
 			case 'h':
 				std::cout << "usage: " << argv[0] << " <options>\n\n";

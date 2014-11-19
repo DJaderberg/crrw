@@ -23,7 +23,7 @@ fn gen_matrix(size: f64, prod_rate: int, nodes: uint, sinks: uint, mut out: Box<
             output = output + prod_rate.to_string();
         //If Sink
         } else if i <= sinks {
-            output = output + "-" + (prod_rate as int).to_string();
+            output = output + "-" + (prod_rate/sinks as int).to_string();
         }
         output = output + "\n";
         match out.write(output.as_bytes()) {
@@ -39,6 +39,8 @@ fn print_usage(program: &str, _opts: &[OptGroup]) {
     println!("-o\t\tOutput filename");
     println!("-p\t\tProduction rate of central source");
     println!("-n\t\tNumber of Nodes");
+    println!("-s\t\tMaximum allowable x and y value in the box");
+    println!("-d\t\tNumber of sinks");
     println!("-h --help\t Usage");
 }
 
