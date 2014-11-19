@@ -11,7 +11,7 @@ void CurrentWalk::prepareStep(double dt) {
 void CurrentWalk::takeStep(double dt) {
 	this->updateCapacitance();
 	this->updateConductivity(dt);
-	this->updateNumberOfParticles();
+	this->updateNumberOfParticles(dt);
 	this->updatePotential();
 }
 
@@ -47,7 +47,7 @@ void CurrentWalk::updateFlow(double dt) {
 	}
 }
 
-void CurrentWalk::updateNumberOfParticles() {
+void CurrentWalk::updateNumberOfParticles(double dt) {
 	unsigned int tempNumberOfParticles = node->getNumberOfParticles();
 	for (auto n : node->getNeighbors()) {
 		tempNumberOfParticles -= node->flowMap[n.first];

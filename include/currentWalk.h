@@ -122,7 +122,7 @@ protected:
     void updateFlow(double dt);
     void updateConductivity(double dt);
     void updateCapacitance();
-    virtual void updateNumberOfParticles();
+    virtual void updateNumberOfParticles(double dt);
     void (*updateFunction)();
     void updatePotential();
     std::shared_ptr<Node> node;
@@ -145,9 +145,9 @@ public:
         }
     }
     
-    void updateNumberOfParticles() {
-        CurrentWalk::updateNumberOfParticles();
-        node->setNumberOfParticles(productionRate + node->getNumberOfParticles());
+    void updateNumberOfParticles(double dt) {
+        CurrentWalk::updateNumberOfParticles(dt);
+        node->setNumberOfParticles((int)(dt*productionRate) + node->getNumberOfParticles());
     }
 private:
     int productionRate = 0;
@@ -162,13 +162,13 @@ public:
         }
     }
     
-    void updateNumberOfParticles() {
-        CurrentWalk::updateNumberOfParticles();
+    void updateNumberOfParticles(double dt) {
+        CurrentWalk::updateNumberOfParticles(dt);
         
-        if (node->getNumberOfParticles() <= abs(removalRate)) {
+        if (node->getNumberOfParticles() <= (unsigned int)abs((int)(dt*removalRate))) {
             node->setNumberOfParticles(0);
         } else {
-            node->setNumberOfParticles(removalRate + node->getNumberOfParticles());
+            node->setNumberOfParticles((int)(dt*removalRate) + node->getNumberOfParticles());
         }
         
         

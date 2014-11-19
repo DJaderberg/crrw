@@ -23,7 +23,7 @@ struct arguments {
 arguments parse_args(int argc, char* argv[]);
 
 int main(int argc, char* argv[]) {
-    std::shared_ptr<AntElement> e(new AntElement());
+    std::shared_ptr<LinearAntElement> e(new LinearAntElement());
     algorithmCreator create = CurrentWalk::create;
 	arguments args = parse_args(argc, argv);
 	if (args.quitAfterArgs) {

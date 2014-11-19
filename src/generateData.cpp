@@ -7,6 +7,7 @@
 
 #pragma once
 #include "generateData.h"
+#include "omp.h"
 #include <string>
 #include <fstream>
 #include <sys/stat.h>
@@ -35,6 +36,7 @@ void generateData(std::string nodePath, std::string dataSavePath, std::shared_pt
     
     std::ofstream ofs(dataSavePath);
     
+	double time = omp_get_wtime();
     for (int i = 0; i < nCount; ++i) {
         set.takeStep(dt);
         if (i % writeInterval == 0) {
@@ -45,6 +47,8 @@ void generateData(std::string nodePath, std::string dataSavePath, std::shared_pt
             std::cout << "Iter: " << std::to_string(i) << "\n";
         }
     }
+	time = omp_get_wtime() - time;
+	std::cout << "Execution time: " << time << "\n";
     ofs.close();
     
     std::ofstream ofsLast(dataSavePathLast);
