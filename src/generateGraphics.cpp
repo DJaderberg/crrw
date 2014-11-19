@@ -51,7 +51,7 @@ void generateGraphics(std::string nodePath, std::string dataReadPath, std::strin
 	}
 
 	if (j != 0) {
-		std::cout << "Found existing images, creating new images starting at number" << j << "\n";
+		std::cout << "Found existing images, creating new images starting at number " << j << "\n";
 	}
     for (int i = 0; i < nCount; i++) {
         set.readData(ifs);
