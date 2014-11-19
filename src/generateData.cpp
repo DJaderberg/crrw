@@ -41,6 +41,9 @@ void generateData(std::string nodePath, std::string dataSavePath, std::shared_pt
             set.writeData(ofs);
             ofs << "\n";
         }
+        if (i % 1000 == 0) {
+            std::cout << "Iter: " << std::to_string(i) << "\n";
+        }
     }
     ofs.close();
     
