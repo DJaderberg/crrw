@@ -32,7 +32,7 @@ int main(int argc, char* argv[]) {
 	}
     
 #ifdef GRAPHICS
-    generateGraphics(args.filename, args.storedDataPath, args.dataPath, e, create, args.nCount, args.writeInterval);
+    generateGraphics(args.filename, args.storedDataPath, args.dataPath, e, create, args.nCount, args.writeInterval, args.force);
 #else
 	if (args.restart) {
 		generateData(args.filename, args.dataPath, e, create, args.nCount, args.dt, args.writeInterval, args.force, args.storedDataPath);
