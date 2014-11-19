@@ -147,7 +147,7 @@ public:
     
     void updateNumberOfParticles(double dt) {
         CurrentWalk::updateNumberOfParticles(dt);
-        node->setNumberOfParticles(productionRate + node->getNumberOfParticles());
+        node->setNumberOfParticles((int)(dt*productionRate) + node->getNumberOfParticles());
     }
 private:
     int productionRate = 0;
