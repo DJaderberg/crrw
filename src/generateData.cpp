@@ -35,16 +35,35 @@ void generateData(std::string nodePath, std::string dataSavePath, std::shared_pt
     std::ofstream ofs(dataSavePath);
     double time = omp_get_wtime();
     
+    std::string loadBar = "";
+    
     for (int i = 0; i < nCount; ++i) {
         set.takeStep(dt);
         if (i % writeInterval == 0) {
             set.writeData(ofs);
             ofs << "\n";
         }
-        if (i % 1000 == 0) {
-            std::cout << "Iter: " << std::to_string(i) << "\n";
+        
+        // Printing loadbar
+        if (nCount >= 100) {
+            if (i % (nCount/50) == 0) {
+                loadBar += '#';
+                std::cout << "\r" << loadBar << "..."  << 100*i/nCount << "%";
+                std::cout.flush();
+            }
+            if (i % (nCount/100) == 0) {
+                std::cout << "\r" << loadBar << "..."  << 100*i/nCount << "%";
+                std::cout.flush();
+            }
         }
     }
+    
+    if (nCount >= 100) {
+        loadBar += '#';
+        std::cout << "\r" << loadBar << "..."  << "100%\n";
+        std::cout.flush();
+    }
+    
     
     time = omp_get_wtime() - time;
     std::cout << "Execution time: " << time << "\n";
@@ -84,16 +103,34 @@ void generateData(std::string nodePath, std::string dataSavePath, std::shared_pt
     std::ofstream ofs(dataSavePath);
     double time = omp_get_wtime();
     
+    std::string loadBar = "";
+    
     for (int i = 0; i < nCount; ++i) {
         set.takeStep(dt);
         if (i % writeInterval == 0) {
             set.writeData(ofs);
             ofs << "\n";
         }
-        if (i % 1000 == 0) {
-            std::cout << "Iter: " << std::to_string(i) << "\n";
+        // Printing loadbar
+        if (nCount >= 100) {
+            if (i % (nCount/50) == 0) {
+                loadBar += '#';
+                std::cout << "\r" << loadBar << "..."  << 100*i/nCount << "%";
+                std::cout.flush();
+            }
+            if (i % (nCount/100) == 0) {
+                std::cout << "\r" << loadBar << "..."  << 100*i/nCount << "%";
+                std::cout.flush();
+            }
         }
     }
+    
+    if (nCount >= 100) {
+        loadBar += '#';
+        std::cout << "\r" << loadBar << "..."  << "100%\n";
+        std::cout.flush();
+    }
+    
     
     time = omp_get_wtime() - time;
     std::cout << "Execution time: " << time << "\n";
