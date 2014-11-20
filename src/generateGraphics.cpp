@@ -23,6 +23,8 @@ void generateGraphics(std::string nodePath, std::string dataReadPath, std::strin
     
     
     std::ifstream ifsMinMx(dataReadPath);
+    std::cout << "Finding min and max...\n";
+    
     
     for (int i = 0; i < nCount; i++) {
         set.readData(ifsMinMx);
@@ -53,6 +55,10 @@ void generateGraphics(std::string nodePath, std::string dataReadPath, std::strin
 	if (j != 0) {
 		std::cout << "Found existing images, creating new images starting at number " << j << "\n";
 	}
+    
+    std::cout << "Image generation begun.\n";
+    std::string loadBar = "";
+    
     for (int i = 0; i < nCount; i++) {
         set.readData(ifs);
         //std::cout << set.toString();
@@ -67,6 +73,24 @@ void generateGraphics(std::string nodePath, std::string dataReadPath, std::strin
             graphics.writeToFile(imgFilenameStr);
             graphics.repaint();
         }
+        // Printing loadbar
+        if (nCount >= 100) {
+            if (i % (nCount/50) == 0) {
+                loadBar += '#';
+                std::cout << "\r" << loadBar << "..."  << 100*i/nCount << "%";
+                std::cout.flush();
+            }
+            if (i % (nCount/100) == 0) {
+                std::cout << "\r" << loadBar << "..."  << 100*i/nCount << "%";
+                std::cout.flush();
+            }
+        }
+    }
+    
+    if (nCount >= 100) {
+        loadBar += '#';
+        std::cout << "\r" << loadBar << "..."  << "100%\n";
+        std::cout.flush();
     }
     
     ifs.close();
