@@ -15,6 +15,10 @@
 void generateData(std::string nodePath, std::string dataSavePath, std::shared_ptr<Element> e, algorithmCreator create, int nCount, double dt, int writeInterval, bool force) {
     PositionedNodeSet set = PositionedNodeSet(nodePath, create, e);
     
+	auto pair = set.shortestPath(0);
+	for (auto d : pair.first) {
+		std::cout << "Distance to " << d.first << ": " << d.second << "\tPrevious: " << pair.second[d.first] << "\n";
+	}
     if (!force && exists(dataSavePath)) {
         std::cout << "ERROR in GeneratData: save file already exists.\n";
         std::cout << "Data generation aborted.\n";

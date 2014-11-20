@@ -99,6 +99,14 @@ public:
 	unsigned int getMemoryId(int id) {
 		return idMap[id];
 	}
+	/**
+	 * Find shortest path between two nodes
+	 *
+	 * This uses Dijkstra's algorithm
+	 * @param source The source Node
+	 * @return A map containing the shortest path from source to each node (in-memory node id is the key)
+	 */
+	std::pair<std::unordered_map<unsigned int, double>, std::unordered_map<unsigned int, int>> shortestPath(unsigned int source);
 private:
     /**
      * Read a stream containing a TGF NodeSet and store it in the member nodes.
