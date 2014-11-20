@@ -33,6 +33,7 @@ void generateData(std::string nodePath, std::string dataSavePath, std::shared_pt
     }
     
     std::ofstream ofs(dataSavePath);
+    double time = omp_get_wtime();
     
     for (int i = 0; i < nCount; ++i) {
         set.takeStep(dt);
@@ -44,6 +45,9 @@ void generateData(std::string nodePath, std::string dataSavePath, std::shared_pt
             std::cout << "Iter: " << std::to_string(i) << "\n";
         }
     }
+    
+    time = omp_get_wtime() - time;
+    std::cout << "Execution time: " << time << "\n";
     ofs.close();
     
     std::ofstream ofsLast(dataSavePathLast);
@@ -78,6 +82,7 @@ void generateData(std::string nodePath, std::string dataSavePath, std::shared_pt
     set.readData(ifs);
     ifs.close();
     std::ofstream ofs(dataSavePath);
+    double time = omp_get_wtime();
     
     for (int i = 0; i < nCount; ++i) {
         set.takeStep(dt);
@@ -89,6 +94,9 @@ void generateData(std::string nodePath, std::string dataSavePath, std::shared_pt
             std::cout << "Iter: " << std::to_string(i) << "\n";
         }
     }
+    
+    time = omp_get_wtime() - time;
+    std::cout << "Execution time: " << time << "\n";
     ofs.close();
     
     std::ofstream ofsLast(dataSavePathLast);
