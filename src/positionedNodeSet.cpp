@@ -130,9 +130,10 @@ std::pair<std::unordered_map<unsigned int, double>, std::unordered_map<unsigned 
 		} else {
 			double curMin = 1e21;
 			unsigned int uTemp;
-			for (auto v : positionedNodes[u]->getDistanceMap()) {
-				if (Q.count(v.first) && v.second < curMin) {
-					curMin = v.second;
+			for (auto v : Q) {
+				double w = distances[v.first];
+				if (w < curMin) {
+					curMin = w;
 					uTemp = v.first;
 				}
 			}
@@ -140,12 +141,10 @@ std::pair<std::unordered_map<unsigned int, double>, std::unordered_map<unsigned 
 		}
 		Q.erase(u);
 		for (auto v : positionedNodes[u]->getNeighbors()) {
-			if (Q.count(v.second->getId())) {
-				double alt = distances[u] + v.second->getDistanceMap()[u];
-				if (alt < distances[v.first]) {
-					distances[v.first] = alt;
-					previous[v.first] = u;
-				}
+			double alt = distances[u] + v.second->getDistanceMap()[u];
+			if (alt < distances[v.first]) {
+				distances[v.first] = alt;
+				previous[v.first] = u;
 			}
 		}
 	}
