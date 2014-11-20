@@ -32,24 +32,17 @@ void generateData(std::string nodePath, std::string dataSavePath, std::shared_pt
     }
     
     std::ofstream ofs(dataSavePath);
-	std::string loadBar = "";
+    
     for (int i = 0; i < nCount; ++i) {
         set.takeStep(dt);
         if (i % writeInterval == 0) {
             set.writeData(ofs);
             ofs << "\n";
         }
-		if (i % (nCount/50) == 0) {
-			loadBar += "#";
-		}
-        if (i % (nCount/100) == 0) {
-			std::cout << "\r " << loadBar << ".." << 100*i/nCount << "%\r";
-			std::cout.flush();
+        if (i % 1000 == 0) {
+            std::cout << "Iter: " << std::to_string(i) << "\n";
         }
     }
-	loadBar += "#";
-	std::cout << "\r#" << loadBar << "..100%\n";
-	std::cout.flush();
     ofs.close();
     
     std::ofstream ofsLast(dataSavePathLast);
@@ -85,24 +78,16 @@ void generateData(std::string nodePath, std::string dataSavePath, std::shared_pt
     ifs.close();
     std::ofstream ofs(dataSavePath);
     
-	std::string loadBar = "";
     for (int i = 0; i < nCount; ++i) {
         set.takeStep(dt);
         if (i % writeInterval == 0) {
             set.writeData(ofs);
             ofs << "\n";
         }
-		if (i % (nCount/50) == 0) {
-			loadBar += "#";
-		}
-		if (i % (nCount/100) == 0) {
-			std::cout << "\r " << loadBar << ".." << 100*i/nCount << "%\r";
-			std::cout.flush();
+        if (i % 1000 == 0) {
+            std::cout << "Iter: " << std::to_string(i) << "\n";
         }
     }
-	loadBar += "#";
-	std::cout << "\r#" << loadBar << "..100%\n";
-	std::cout.flush();
     ofs.close();
     
     std::ofstream ofsLast(dataSavePathLast);
