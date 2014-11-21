@@ -34,6 +34,14 @@ struct parametersValues {
     double lineOpacMin = 1;
 };
 
+struct lineSettings {
+    double r;
+    double g;
+    double b;
+    double alpha;
+    double lineWidth;
+};
+
 void NodeSetGraphics::init() {
     defaultValues d;
     // Default values flows and number of particles
@@ -42,9 +50,7 @@ void NodeSetGraphics::init() {
     Nmin = d.Nmin;
     Nmax = d.Nmax;
     
-    surface = Cairo::ImageSurface::create(Cairo::FORMAT_ARGB32, windowWidth, windowHeight);
-    cr = Cairo::Context::create(surface);
-    
+    this->reset();
     this->repaint();
 }
 
@@ -69,13 +75,11 @@ void NodeSetGraphics::init(struct parametersValues p) {
     lineWidthMax = p.lineWidthMax;
     lineOpacMin = p.lineOpacMin;
     
-    surface = Cairo::ImageSurface::create(Cairo::FORMAT_ARGB32, windowWidth, windowHeight);
-    cr = Cairo::Context::create(surface);
-    
+    this->reset();
     this->repaint();
 }
 
-void NodeSetGraphics::nodesMinMax(PositionedNodeSet n) {
+void NodeSetGraphics::XYMinMax(PositionedNodeSet n) {
     std::array<double, 2> pos = n.getNodes().front()->getPosition();
     Xmin = pos[0];
     Ymin = pos[1];
@@ -102,6 +106,30 @@ void NodeSetGraphics::nodesMinMax(PositionedNodeSet n) {
     }
 }
 
+void NodeSetGraphics::NAndFlowMinMax(PositionedNodeSet n) {
+    
+    int tempN = n.getNodes().front()->getNumberOfParticles();
+    double tempFlow = abs(n.getNodes().front()->getMeanFlow(n.getNodes().front()->getNeighborsMap().begin()->second->getId()));
+    
+    for (auto node: n.getNodes()) {
+        tempN = node->getNumberOfParticles();
+        if (tempN < Nmin) {
+            Nmin = tempN;
+        } else if (tempN > Nmax) {
+            Nmax = tempN;
+        }
+        
+        for (auto neighbor: node->getNeighborsMap()) {
+            tempFlow = abs(node->getMeanFlow(neighbor.second->getId()));
+            if (tempFlow < flowMin) {
+                flowMin = tempFlow;
+            } else if (tempFlow > flowMax) {
+                flowMax = tempFlow;
+            }
+        }
+    }
+    
+}
 
 
 void NodeSetGraphics::drawNodes(PositionedNodeSet n, bool changeSize) {
@@ -193,20 +221,38 @@ void NodeSetGraphics::drawEdges(PositionedNodeSet n, bool changeFlow) {
         pos =node->getPosition();
         
         for (auto neighbor: node->getNeighbors()) {
-            cr->move_to((pos[0] - Xmin)/(Xmax - Xmin)*(double)(windowWidth-2*borderWidth) + borderWidth, (pos[1] - Ymin)/(Ymax - Ymin)*(double)(windowHeight-2*borderWidth) + borderWidth);
+            struct lineSettings l;
             flow = abs(node->getMeanFlow(neighbor.first));
             // in no flow set different color for edge
             if (flow == 0) {
-                cr->set_source_rgba(1, 0, 1, 1);
+                l.r = 1;
+                l.g = 0;
+                l.b = 1;
+                l.alpha = 1;
             } else {
-                cr->set_source_rgba(0.2, 0.2, 0.2, ((flow - flowMin)/(flowMax - flowMin))*(1 - lineOpacMin) + lineOpacMin);
+                l.r = 0.2;
+                l.g = 0.2;
+                l.b = 0.2;
+                l.alpha = ((flow - flowMin)/(flowMax - flowMin))*(1 - lineOpacMin) + lineOpacMin;
             }
             
-            cr->set_line_width(((flow - flowMin)/(flowMax-flowMin))*(lineWidthMax - lineWidthMin) + lineWidthMin);
-            cr->line_to((dynamic_cast<PositionedNode<2>*>(neighbor.second.get())->getPosition()[0] - Xmin)/(Xmax - Xmin)*(double)(windowWidth-2*borderWidth) + borderWidth, (dynamic_cast<PositionedNode<2>*>(neighbor.second.get())->getPosition()[1] - Ymin)/(Ymax - Ymin)*(double)(windowHeight-2*borderWidth) + borderWidth);
-            cr->stroke();
+            l.lineWidth = ((flow - flowMin)/(flowMax-flowMin))*(lineWidthMax - lineWidthMin) + lineWidthMin;
+            drawEdge(node, std::dynamic_pointer_cast<PositionedNode<2>>(neighbor.second), l);
         }
     }
+    cr->restore();
+}
+
+void NodeSetGraphics::drawEdge(std::shared_ptr<PositionedNode<2>> node, std::shared_ptr<PositionedNode<2>> neighbor, struct lineSettings l) {
+    cr->save();
+    std::array<double, 2> pos =node->getPosition();
+    cr->move_to((pos[0] - Xmin)/(Xmax - Xmin)*(double)(windowWidth-2*borderWidth) + borderWidth, (pos[1] - Ymin)/(Ymax - Ymin)*(double)(windowHeight-2*borderWidth) + borderWidth);
+    
+    cr->set_source_rgba(l.r, l.g, l.b, l.alpha);
+
+    cr->set_line_width(l.lineWidth);
+    cr->line_to((neighbor->getPosition()[0] - Xmin)/(Xmax - Xmin)*(double)(windowWidth-2*borderWidth) + borderWidth, (neighbor->getPosition()[1] - Ymin)/(Ymax - Ymin)*(double)(windowHeight-2*borderWidth) + borderWidth);
+    cr->stroke();
     cr->restore();
 }
 
@@ -250,10 +296,41 @@ void NodeSetGraphics::writeToFile(std::string filename) {
 
 void NodeSetGraphics::writeToFile(PositionedNodeSet n, std::string filename) {
     this->init();
-    this->nodesMinMax(n);
+    this->XYMinMax(n);
     this->drawEdges(n, 1);
     this->drawNodes(n, 1);
     this->writeToFile(filename);
+}
+
+std::string NodeSetGraphics::toString() {
+    std::string str;
+    
+    str = "Minimum X-coord: " + std::to_string(Xmin) + "\n";
+    str += "Maximum X-coord: " + std::to_string(Xmax) + "\n";
+    str += "Minimum Y-coord: " + std::to_string(Ymin) + "\n";
+    str += "Maximum Y-coord: " + std::to_string(Ymax) + "\n";
+    
+    str += "Minimum Num. part.: " + std::to_string(Nmin) + "\n";
+    str += "Maximum Num. part.: " + std::to_string(Nmax) + "\n";
+    
+    str += "Minimum flow: " + std::to_string(flowMin) + "\n";
+    str += "Maximum flow: " + std::to_string(flowMax) + "\n";
+    
+    str += "Surface height: " + std::to_string(windowHeight) + "\n";
+    str += "Surface width: " + std::to_string(windowWidth) + "\n";
+    str += "Border width: " + std::to_string(borderWidth) + "\n";
+    str += "Border width: " + std::to_string(borderWidth) + "\n";
+    str += "Minimum Node radius: " + std::to_string(nodeMinRadius) + "\n";
+    str += "Maximum Node radius: " + std::to_string(nodeMaxRadius) + "\n";
+    str += "Minimum Node radius: " + std::to_string(nodeMinRadius) + "\n";
+    str += "Node border size: " + std::to_string(nodeBorder) + "\n";
+    str += "Source radius: " + std::to_string(sourceRadius) + "\n";
+    str += "Sink radius: " + std::to_string(sinkRadius) + "\n";
+    str += "Minimum line width: " + std::to_string(lineWidthMin) + "\n";
+    str += "Maximum line width: " + std::to_string(lineWidthMax) + "\n";
+    str += "Minimum line opacity: " + std::to_string(lineOpacMin) + "\n";
+    
+    return str;
 }
 
 #endif

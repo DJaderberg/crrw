@@ -107,3 +107,48 @@ std::unordered_map<unsigned int, std::array<double, 2>> PositionedNodeSet::getPo
 std::vector<std::shared_ptr<PositionedNode<2>>> PositionedNodeSet::getNodes() {
 	return positionedNodes;
 }
+
+std::pair<std::unordered_map<unsigned int, double>, std::unordered_map<unsigned int, int>> PositionedNodeSet::shortestPath(unsigned int source) {
+	std::unordered_map<unsigned int, double> distances;
+	std::unordered_map<unsigned int, int> previous;
+	std::unordered_map<unsigned int, std::shared_ptr<PositionedNode<2>>> Q;
+	for (auto n : this->positionedNodes) {
+		Q[n->getId()] = n;
+		distances[n->getId()] = 1e20;
+		previous[n->getId()] = -1;
+	}
+	distances[source] = 0;
+	unsigned int u = source;
+	bool first = true;
+	while (Q.size() > 0) {
+		//std::cout << "Q.size(): " << Q.size() << "\n";
+		//std::cout << "u: " << u << "\n";
+		//Find nearest neighbor to u and choose that neighbor as the new u
+		if (first) {
+			u = source;
+			first = false;
+		} else {
+			double curMin = 1e21;
+			unsigned int uTemp;
+			for (auto v : Q) {
+				double w = distances[v.first];
+				if (w < curMin) {
+					curMin = w;
+					uTemp = v.first;
+				}
+			}
+			u = uTemp;
+		}
+		Q.erase(u);
+		for (auto v : positionedNodes[u]->getNeighbors()) {
+			double alt = distances[u] + v.second->getDistanceMap()[u];
+			if (alt < distances[v.first]) {
+				distances[v.first] = alt;
+				previous[v.first] = u;
+			}
+		}
+	}
+	std::pair<std::unordered_map<unsigned int, double>, std::unordered_map<unsigned int, int>> ret(distances, previous);
+	return ret;
+}
+

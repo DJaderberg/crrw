@@ -11,11 +11,13 @@ void CurrentWalk::prepareStep(double dt) {
 void CurrentWalk::takeStep(double dt) {
 	this->updateCapacitance();
 	this->updateConductivity(dt);
-	this->updateNumberOfParticles();
+	this->updateNumberOfParticles(dt);
 	this->updatePotential();
 }
 
 void CurrentWalk::reinitialize() {
+    this->updateCapacitance();
+    this->updatePotential();
 	this->updateMeanFlow();
 }
 
@@ -24,7 +26,7 @@ void CurrentWalk::updateMeanFlow() {
 	double flow;
 	for (auto n : node->getNeighbors()) {
 		flow = (node->potential - n.second->potential)*conductivityMap[n.first]/node->getDistanceMap()[n.first];
-		node->meanFlowMap[n.first] = flow; //TODO: Only leave one of these
+		node->meanFlowMap[n.first] = flow;
 	}
 }
 
@@ -45,7 +47,7 @@ void CurrentWalk::updateFlow(double dt) {
 	}
 }
 
-void CurrentWalk::updateNumberOfParticles() {
+void CurrentWalk::updateNumberOfParticles(double dt) {
 	unsigned int tempNumberOfParticles = node->getNumberOfParticles();
 	for (auto n : node->getNeighbors()) {
 		tempNumberOfParticles -= node->flowMap[n.first];

@@ -40,9 +40,16 @@ public:
     /**
      * Finds the minimum and maximum x- and y-coordinates
      *
-     * @param a NodeSet
+     * @param a PositionedNodeSet
      */
-    void nodesMinMax(PositionedNodeSet n);
+    void XYMinMax(PositionedNodeSet n);
+    
+    /**
+     * Finds the minimum and maximum number of particles and flows
+     *
+     * @param a PositionedNodeSet
+     */
+    void NAndFlowMinMax(PositionedNodeSet n);
     
     /**
      * Draws all the Nodes in the NodeSet n to cr
@@ -59,6 +66,15 @@ public:
      * @param boolean to tell if the flow should be statically drawn or of it should be normalized in every frame.
      */
     void drawEdges(PositionedNodeSet n, bool changeFlow);
+    
+    /**
+     * Draws all the edges in the NodeSet n to cr
+     *
+     * @param node Node to start drawing from
+     * @param neighbor A neighbor to the node
+     * @param struct lineSettings A struct with line colors, opacity and line width.
+     */
+    void drawEdge(std::shared_ptr<PositionedNode<2>> node, std::shared_ptr<PositionedNode<2>> neighbor, struct lineSettings l);
     
     /**
      * Sets the default values for X and Y coord. along with min and max flow to those stored in the sturct d
@@ -100,6 +116,13 @@ public:
      * @param the name of the file
      */
     void writeToFile(PositionedNodeSet n, std::string filename);
+    
+    /** Return a string representation of the NodeSetGraphics parameters and min and max values
+     *
+     * @return std::string
+     *
+     */
+    std::string toString();
     
 private:
     /// The active Cairomm context

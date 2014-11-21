@@ -32,7 +32,7 @@ public:
      */
     void writeData(std::ostream& os) {
         writeNumPart(os);
-        writeConductivityMap(os);
+        writeDataMaps(os);
     }
     
     /** Read all data from stream
@@ -41,7 +41,7 @@ public:
      */
     void readData(std::istream& is) {
         readNumPart(is);
-        readConductivityMap(is);
+        readDataMaps(is);
 		updateCapacitance();
 		updatePotential();
     }
@@ -84,11 +84,11 @@ protected:
      * @param os Stream to write to
      * @param func Function for getting the file id from the in memory id
      */
-    void writeConductivityMap(std::ostream& os)
+    void writeDataMaps(std::ostream& os)
     {
         // first write the fileId then write the corresponding conductivity.
         for (auto n: conductivityMap) {
-            os << node->getNeighborsMap()[n.first]->getFileId() << " " << n.second << ';';
+            os << node->getNeighborsMap()[n.first]->getFileId() << " " << n.second << " " << node->getMeanFlow(n.first) <<';';
         }
     }
     
@@ -97,20 +97,21 @@ protected:
      * @param is Stream to read from
      * @param func Function for getting the memory id from the file id
      */
-    void readConductivityMap(std::istream& is)
+    void readDataMaps(std::istream& is)
     {
         char separator;
         int tempId;
-        double cond;
+        double cond, flow;
         for (auto n: conductivityMap) {
             is >> tempId;
             for (auto neighbor: node->getNeighborsMap()) {
                 if (neighbor.second->getFileId() == tempId) {
-                    is >> cond >> separator;
+                    is >> cond >> flow >> separator;
                     if (separator != ';') {
                         std::cout << "ERROR in CurrentWalk, ConductivityMap(): incorrect separator " << separator << ", should be (;)\n";
                     }
                     conductivityMap[neighbor.second->getId()] = cond;
+                    node->meanFlowMap[neighbor.second->getId()] = flow;
                     break;
                 }
             }
@@ -121,7 +122,7 @@ protected:
     void updateFlow(double dt);
     void updateConductivity(double dt);
     void updateCapacitance();
-    virtual void updateNumberOfParticles();
+    virtual void updateNumberOfParticles(double dt);
     void (*updateFunction)();
     void updatePotential();
     std::shared_ptr<Node> node;
@@ -144,9 +145,9 @@ public:
         }
     }
     
-    void updateNumberOfParticles() {
-        CurrentWalk::updateNumberOfParticles();
-        node->setNumberOfParticles(productionRate + node->getNumberOfParticles());
+    void updateNumberOfParticles(double dt) {
+        CurrentWalk::updateNumberOfParticles(dt);
+        node->setNumberOfParticles((int)(dt*productionRate) + node->getNumberOfParticles());
     }
 private:
     int productionRate = 0;
@@ -161,13 +162,13 @@ public:
         }
     }
     
-    void updateNumberOfParticles() {
-        CurrentWalk::updateNumberOfParticles();
+    void updateNumberOfParticles(double dt) {
+        CurrentWalk::updateNumberOfParticles(dt);
         
-        if (node->getNumberOfParticles() <= abs(removalRate)) {
+        if (node->getNumberOfParticles() <= (unsigned int)abs((int)(dt*removalRate))) {
             node->setNumberOfParticles(0);
         } else {
-            node->setNumberOfParticles(removalRate + node->getNumberOfParticles());
+            node->setNumberOfParticles((int)(dt*removalRate) + node->getNumberOfParticles());
         }
         
         
