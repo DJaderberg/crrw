@@ -121,8 +121,8 @@ std::pair<std::unordered_map<unsigned int, double>, std::unordered_map<unsigned 
 	unsigned int u = source;
 	bool first = true;
 	while (Q.size() > 0) {
-		std::cout << "Q.size(): " << Q.size() << "\n";
-		std::cout << "u: " << u << "\n";
+		//std::cout << "Q.size(): " << Q.size() << "\n";
+		//std::cout << "u: " << u << "\n";
 		//Find nearest neighbor to u and choose that neighbor as the new u
 		if (first) {
 			u = source;

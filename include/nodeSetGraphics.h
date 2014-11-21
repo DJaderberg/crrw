@@ -60,12 +60,46 @@ public:
     void drawNodes(PositionedNodeSet n, bool changeSize);
     
     /**
+     * Draws the shortest paths
+     *
+     * @param n A PositionedNodeSet
+     * @param sinkId a Vector of the sinks ids
+     * @param pathMap A path map for the shortest path
+     */
+    void drawShortestPath(PositionedNodeSet n, std::vector<unsigned int> sinkId, std::unordered_map<unsigned int, int> pathMap);
+    
+    /**
+     * Finds the Sources in a PositionedNodeSet
+     *
+     * @param n A PositionedNodeSet
+     * @return a vector with the ids of the sources in the set
+     */
+    std::vector<unsigned int> findSources(PositionedNodeSet n);
+    
+    /**
+     * Finds the Sinks in a PositionedNodeSet
+     *
+     * @param n A PositionedNodeSet
+     * @return a vector with the ids of the sinks in the set
+     */
+    std::vector<unsigned int> findSinks(PositionedNodeSet n);
+    
+    /**
      * Draws all the edges in the NodeSet n to cr
      *
      * @param a NodeSet
      * @param boolean to tell if the flow should be statically drawn or of it should be normalized in every frame.
      */
     void drawEdges(PositionedNodeSet n, bool changeFlow);
+    
+    /**
+     * Draws all the edges in the NodeSet n to cr
+     *
+     * @param node Node to start drawing from
+     * @param neighbor A neighbor to the node
+     * @param struct lineSettings A struct with line colors, opacity and line width.
+     */
+    void drawEdge(std::shared_ptr<PositionedNode<2>> node, std::shared_ptr<PositionedNode<2>> neighbor, struct lineSettings l);
     
     /**
      * Sets the default values for X and Y coord. along with min and max flow to those stored in the sturct d
