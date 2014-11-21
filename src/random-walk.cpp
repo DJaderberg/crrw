@@ -4,23 +4,44 @@
 #include <iomanip>
 #include "unistd.h"
 
+/**
+ * A struct that holds that arguments that the program is being run with.
+ */
 struct arguments {
+	///Filename of the graph file (containing nodes and edges)
     std::string filename = "data/nodes.txt";
 #ifdef GRAPHICS
+	///Path to where the data from computation has been stored
 	std::string storedDataPath = "data/save.txt";
+	///Beginning of the path to which images should be written
     std::string dataPath = "data/img/a";
 #else
+	///Path to file containing only the data to restart from
 	std::string storedDataPath = "data/saveLAST.txt";
+	///Path to where data should be stored
     std::string dataPath = "data/save.txt";
 #endif
+	///Number of steps to take/read
     int nCount = 50;
+	///How often (in steps) to output data
     int writeInterval = 1;
+	///Size of a single timestep
     double dt = 0.1;
+	///True if no generation should be perform (e.g. only print help)
 	bool quitAfterArgs = false;
+	///True when computation should be resumed from some point
 	bool restart = false;
+	///True if we are allowed to over-write data
 	bool force = false;
 };
 
+/**
+ * Read command line arguments and return correct settings.
+ *
+ * @param argc The number of elements in argv
+ * @param argv Each argument
+ * @return A struct arguments with parameters following the arguments in argv.
+ */
 arguments parse_args(int argc, char* argv[]);
 
 int main(int argc, char* argv[]) {

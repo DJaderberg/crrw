@@ -14,6 +14,10 @@
 class CurrentWalkSource;
 class CurrentWalkSink;
 
+/**
+ * An algorithm that implments current-reinforced random-walks as a means to 
+ * find shortest paths.
+ */
 class CurrentWalk : public StorableAlgorithm {
 public:
     void prepareStep(double dt);
@@ -136,6 +140,10 @@ protected:
     std::shared_ptr<Element> element;
 };
 
+/**
+ * A current walk that holds a Source node and takes appropriate action when
+ * updating the number of particles.
+ */
 class CurrentWalkSource : public CurrentWalk {
 public:
     void initialize(std::shared_ptr<Node> n, std::shared_ptr<Element> element) {
@@ -153,6 +161,10 @@ private:
     int productionRate = 0;
 };
 
+/**
+ * A current walk that holds a Sink node and takes appropriate action when
+ * updating the number of particles.
+ */
 class CurrentWalkSink : public CurrentWalk {
 public:
     void initialize(std::shared_ptr<Node> n, std::shared_ptr<Element> element) {
