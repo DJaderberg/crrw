@@ -21,6 +21,8 @@ void generateGraphics(std::string nodePath, std::string dataReadPath, std::strin
     PositionedNodeSet set = PositionedNodeSet(nodePath, create, e);
     graphics.XYMinMax(set);
     
+    graphics.findSources(set);
+    
     
     std::ifstream ifsMinMx(dataReadPath);
     std::cout << "Finding min and max...\n";

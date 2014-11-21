@@ -16,6 +16,7 @@
 #include <cairomm/context.h>
 #include <cairomm/surface.h>
 #include <cmath>
+#include <typeinfo>
 
 class NodeSetGraphics {
 public:
@@ -59,6 +60,22 @@ public:
      */
     void drawNodes(PositionedNodeSet n, bool changeSize);
     
+    /**
+     * Finds the shortest path map for a PositionedNodeSet and a source
+     *
+     * @param n A PositionedNodeSet
+     * @param sourceId An id for the starting poit, i.e the node from which to calculate the shortest paths
+     * @return an unordered map of the shortest path from the scorce, im-memory id is the key.
+     */
+    std::unordered_map<unsigned int, int> findShortestPath(PositionedNodeSet n, unsigned int sourceId);
+    
+    /**
+     * Finds the Sources in a PositionedNodeSet
+     *
+     * @param n A PositionedNodeSet
+     * @return a vector with the ids of the sources in the set
+     */
+    std::vector<unsigned int> findSources(PositionedNodeSet n);
     /**
      * Draws all the edges in the NodeSet n to cr
      *

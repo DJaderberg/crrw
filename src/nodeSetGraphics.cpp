@@ -191,6 +191,25 @@ void NodeSetGraphics::drawNodes(PositionedNodeSet n, bool changeSize) {
     cr->restore();
 }
 
+std::unordered_map<unsigned int, int> NodeSetGraphics::findShortestPath(PositionedNodeSet n, unsigned int sourceId) {
+    std::unordered_map<unsigned int, int> pathMap = n.shortestPath(sourceId).second;
+    return pathMap;
+}
+
+std::vector<unsigned int> NodeSetGraphics::findSources(PositionedNodeSet n) {
+    std::vector<unsigned int> sources;
+    
+    for (auto s: n.getNodes()) {
+        auto temp = std::dynamic_pointer_cast<PositionedSource<2>>(s);
+        if (1) {
+            std::cout << temp;
+            sources.back() = s->getId();
+        }
+        //std::cout << s->toString();
+    }
+    return sources;
+}
+
 void NodeSetGraphics::drawEdges(PositionedNodeSet n, bool changeFlow) {
     cr->save();
     double flowMin = this->flowMin;
@@ -211,8 +230,6 @@ void NodeSetGraphics::drawEdges(PositionedNodeSet n, bool changeFlow) {
             }
         }
     }
-    
-    //std::cout << "flowMin:" << flowMin << " flowMax:" << flowMax << "\n";
     
     // TODO:handle the one dim case
     // Draw lines
