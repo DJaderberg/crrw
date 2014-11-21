@@ -191,23 +191,51 @@ void NodeSetGraphics::drawNodes(PositionedNodeSet n, bool changeSize) {
     cr->restore();
 }
 
-std::unordered_map<unsigned int, int> NodeSetGraphics::findShortestPath(PositionedNodeSet n, unsigned int sourceId) {
-    std::unordered_map<unsigned int, int> pathMap = n.shortestPath(sourceId).second;
-    return pathMap;
+void NodeSetGraphics::drawShortestPath(PositionedNodeSet n, std::vector<unsigned int> sinkId, std::unordered_map<unsigned int, int> pathMap) {
+    cr->save();
+    // Draw lines
+    std::array<double, 2> pos;
+    struct lineSettings l;
+    for (auto id: sinkId) {
+        while (pathMap[id] != -1) {
+            l.r = 0;
+            l.g = 0;
+            l.b = 0;
+            l.alpha = 1;
+            l.lineWidth = 4*lineWidthMin;
+            drawEdge(n.getNodes()[id], n.getNodes()[pathMap[id]], l);
+            l.r = 1;
+            l.g = 0.2;
+            l.b = 0;
+            l.alpha = 1;
+            l.lineWidth = 2*lineWidthMin;
+            drawEdge(n.getNodes()[id], n.getNodes()[pathMap[id]], l);
+            id = pathMap[id];
+        }
+    }
+    cr->restore();
 }
 
 std::vector<unsigned int> NodeSetGraphics::findSources(PositionedNodeSet n) {
-    std::vector<unsigned int> sources;
+    std::vector<unsigned int> sourcesId;
     
     for (auto s: n.getNodes()) {
-        auto temp = std::dynamic_pointer_cast<PositionedSource<2>>(s);
-        if (1) {
-            std::cout << temp;
-            sources.back() = s->getId();
+        if (std::dynamic_pointer_cast<PositionedSource<2>>(s)) {
+            sourcesId.push_back(s->getId());
         }
-        //std::cout << s->toString();
     }
-    return sources;
+    return sourcesId;
+}
+
+std::vector<unsigned int> NodeSetGraphics::findSinks(PositionedNodeSet n) {
+    std::vector<unsigned int> sinksId;
+    
+    for (auto s: n.getNodes()) {
+        if (std::dynamic_pointer_cast<PositionedSink<2>>(s)) {
+            sinksId.push_back(s->getId());
+        }
+    }
+    return sinksId;
 }
 
 void NodeSetGraphics::drawEdges(PositionedNodeSet n, bool changeFlow) {
@@ -335,7 +363,6 @@ std::string NodeSetGraphics::toString() {
     
     str += "Surface height: " + std::to_string(windowHeight) + "\n";
     str += "Surface width: " + std::to_string(windowWidth) + "\n";
-    str += "Border width: " + std::to_string(borderWidth) + "\n";
     str += "Border width: " + std::to_string(borderWidth) + "\n";
     str += "Minimum Node radius: " + std::to_string(nodeMinRadius) + "\n";
     str += "Maximum Node radius: " + std::to_string(nodeMaxRadius) + "\n";
