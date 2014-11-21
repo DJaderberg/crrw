@@ -68,8 +68,8 @@ void generateGraphics(std::string nodePath, std::string dataReadPath, std::strin
     std::string loadBar = "";
     
     for (int i = 0; i < nCount; i++) {
+        set.readData(ifs);
         if (i % writeInterval == 0) {
-			set.readData(ifs);
             set.reinitialize();
             std::stringstream imgFilename(imageSavePath, std::ios_base::in|std::ios_base::out);
             imgFilename << imageSavePath;
@@ -84,9 +84,7 @@ void generateGraphics(std::string nodePath, std::string dataReadPath, std::strin
             graphics.drawNodes(set, 0);
             graphics.writeToFile(imgFilenameStr);
             graphics.repaint();
-        } else {
-			ifs.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-		}
+        }
         // Printing loadbar
         if (nCount >= 100) {
             if (i % (nCount/50) == 0) {
