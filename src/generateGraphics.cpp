@@ -29,7 +29,6 @@ void generateGraphics(std::string nodePath, std::string dataReadPath, std::strin
     for (auto id: sourceId) {
         pathMaps.push_back(set.shortestPath(id).second);
     }
-    //std::unordered_map<unsigned int, int> pathMap = set.shortestPath(sourceId[0]).second;
     
     std::ifstream ifsMinMx(dataReadPath);
     std::cout << "Finding min and max...\n";
@@ -70,7 +69,6 @@ void generateGraphics(std::string nodePath, std::string dataReadPath, std::strin
     
     for (int i = 0; i < nCount; i++) {
         set.readData(ifs);
-        //std::cout << set.toString();
         if (i % writeInterval == 0) {
             set.reinitialize();
             std::stringstream imgFilename(imageSavePath, std::ios_base::in|std::ios_base::out);
