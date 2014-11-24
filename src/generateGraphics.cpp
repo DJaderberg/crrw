@@ -80,11 +80,9 @@ void generateGraphics(std::string nodePath, std::string dataReadPath, std::strin
             imgFilename << std::setfill('0') << std::setw(6) << j++ << ".png";
             std::string imgFilenameStr = imgFilename.str();
             graphics.drawEdges(set, 0);
-            
             for (auto pathMap: pathMaps) {
                 graphics.drawShortestPath(set, sinkId, pathMap);
             }
-            
             graphics.drawNodes(set, 0);
             graphics.writeToFile(imgFilenameStr);
             graphics.repaint();
