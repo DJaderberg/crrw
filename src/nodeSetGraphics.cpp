@@ -34,6 +34,14 @@ struct parametersValues {
     double lineOpacMin = 1;
 };
 
+struct lineSettings {
+    double r;
+    double g;
+    double b;
+    double alpha;
+    double lineWidth;
+};
+
 void NodeSetGraphics::init() {
     defaultValues d;
     // Default values flows and number of particles
@@ -158,6 +166,7 @@ void NodeSetGraphics::drawNodes(PositionedNodeSet n, bool changeSize) {
         if (dynamic_cast<PositionedSource<2>*>(node.get())) {
             //std::cout << "SOURCE\n";
             cr->set_source_rgb(0, 0, 0);
+            //cr->set_source_rgb(1, 1, 1);
             cr->arc((pos[0] - Xmin)/(Xmax - Xmin)*(double)(windowWidth-2*borderWidth) + borderWidth, (pos[1] - Ymin)/(Ymax - Ymin)*(double)(windowHeight-2*borderWidth) + borderWidth,sourceRadius + nodeBorder,0,2.0*M_PI);
             cr->stroke();
             cr->set_source_rgb(1, 0, 0);
@@ -165,12 +174,14 @@ void NodeSetGraphics::drawNodes(PositionedNodeSet n, bool changeSize) {
         } else if (dynamic_cast<PositionedSink<2>*>(node.get())) {
             //std::cout << "SINK\n";
             cr->set_source_rgb(0, 0, 0);
+            //cr->set_source_rgb(1, 1, 1);
             cr->arc((pos[0] - Xmin)/(Xmax - Xmin)*(double)(windowWidth-2*borderWidth) + borderWidth, (pos[1] - Ymin)/(Ymax - Ymin)*(double)(windowHeight-2*borderWidth) + borderWidth,sinkRadius + nodeBorder,0,2.0*M_PI);
             cr->stroke();
             cr->set_source_rgb(0.4, 0.4, 1);
             cr->arc((pos[0] - Xmin)/(Xmax - Xmin)*(double)(windowWidth-2*borderWidth) + borderWidth, (pos[1] - Ymin)/(Ymax - Ymin)*(double)(windowHeight-2*borderWidth) + borderWidth,sinkRadius,0,2.0*M_PI);
         } else {
             cr->set_source_rgb(0, 0, 0);
+            //cr->set_source_rgb(1, 1, 1);
             cr->arc((pos[0] - Xmin)/(Xmax - Xmin)*(double)(windowWidth-2*borderWidth) + borderWidth, (pos[1] - Ymin)/(Ymax - Ymin)*(double)(windowHeight-2*borderWidth) + borderWidth,r + nodeBorder,0,2.0*M_PI);
             cr->stroke();
             cr->set_source_rgb(0.2, 0.9, 0.7);
@@ -181,6 +192,54 @@ void NodeSetGraphics::drawNodes(PositionedNodeSet n, bool changeSize) {
         cr->set_source_rgb(0, 0, 0);
     }
     cr->restore();
+}
+
+void NodeSetGraphics::drawShortestPath(PositionedNodeSet n, std::vector<unsigned int> sinkId, std::unordered_map<unsigned int, int> pathMap) {
+    cr->save();
+    // Draw lines
+    struct lineSettings l;
+    for (auto id: sinkId) {
+        while (pathMap[id] != -1) {
+            /*
+            l.r = 0;
+            l.g = 0;
+            l.b = 0;
+            l.alpha = 1;
+            l.lineWidth = 4*lineWidthMin;
+            drawEdge(n.getNodes()[id], n.getNodes()[pathMap[id]], l);
+             */
+            l.r = 0.5;
+            l.g = 1;
+            l.b = 0;
+            l.alpha = 1;
+            l.lineWidth = 2*lineWidthMin;
+            drawEdge(n.getNodes()[id], n.getNodes()[pathMap[id]], l);
+            id = pathMap[id];
+        }
+    }
+    cr->restore();
+}
+
+std::vector<unsigned int> NodeSetGraphics::findSources(PositionedNodeSet n) {
+    std::vector<unsigned int> sourcesId;
+    
+    for (auto s: n.getNodes()) {
+        if (std::dynamic_pointer_cast<PositionedSource<2>>(s)) {
+            sourcesId.push_back(s->getId());
+        }
+    }
+    return sourcesId;
+}
+
+std::vector<unsigned int> NodeSetGraphics::findSinks(PositionedNodeSet n) {
+    std::vector<unsigned int> sinksId;
+    
+    for (auto s: n.getNodes()) {
+        if (std::dynamic_pointer_cast<PositionedSink<2>>(s)) {
+            sinksId.push_back(s->getId());
+        }
+    }
+    return sinksId;
 }
 
 void NodeSetGraphics::drawEdges(PositionedNodeSet n, bool changeFlow) {
@@ -204,8 +263,6 @@ void NodeSetGraphics::drawEdges(PositionedNodeSet n, bool changeFlow) {
         }
     }
     
-    //std::cout << "flowMin:" << flowMin << " flowMax:" << flowMax << "\n";
-    
     // TODO:handle the one dim case
     // Draw lines
     std::array<double, 2> pos;
@@ -213,20 +270,38 @@ void NodeSetGraphics::drawEdges(PositionedNodeSet n, bool changeFlow) {
         pos =node->getPosition();
         
         for (auto neighbor: node->getNeighbors()) {
-            cr->move_to((pos[0] - Xmin)/(Xmax - Xmin)*(double)(windowWidth-2*borderWidth) + borderWidth, (pos[1] - Ymin)/(Ymax - Ymin)*(double)(windowHeight-2*borderWidth) + borderWidth);
+            struct lineSettings l;
             flow = abs(node->getMeanFlow(neighbor.first));
             // in no flow set different color for edge
             if (flow == 0) {
-                cr->set_source_rgba(1, 0, 1, 1);
+                l.r = 0;
+                l.g = 0.5;
+                l.b = 1;
+                l.alpha = 1;
             } else {
-                cr->set_source_rgba(0.2, 0.2, 0.2, ((flow - flowMin)/(flowMax - flowMin))*(1 - lineOpacMin) + lineOpacMin);
+                l.r = 1;
+                l.g = 0;
+                l.b = 0.7;
+                l.alpha = ((flow - flowMin)/(flowMax - flowMin))*(1 - lineOpacMin) + lineOpacMin;
             }
             
-            cr->set_line_width(((flow - flowMin)/(flowMax-flowMin))*(lineWidthMax - lineWidthMin) + lineWidthMin);
-            cr->line_to((dynamic_cast<PositionedNode<2>*>(neighbor.second.get())->getPosition()[0] - Xmin)/(Xmax - Xmin)*(double)(windowWidth-2*borderWidth) + borderWidth, (dynamic_cast<PositionedNode<2>*>(neighbor.second.get())->getPosition()[1] - Ymin)/(Ymax - Ymin)*(double)(windowHeight-2*borderWidth) + borderWidth);
-            cr->stroke();
+            l.lineWidth = ((flow - flowMin)/(flowMax-flowMin))*(lineWidthMax - lineWidthMin) + lineWidthMin;
+            drawEdge(node, std::dynamic_pointer_cast<PositionedNode<2>>(neighbor.second), l);
         }
     }
+    cr->restore();
+}
+
+void NodeSetGraphics::drawEdge(std::shared_ptr<PositionedNode<2>> node, std::shared_ptr<PositionedNode<2>> neighbor, struct lineSettings l) {
+    cr->save();
+    std::array<double, 2> pos =node->getPosition();
+    cr->move_to((pos[0] - Xmin)/(Xmax - Xmin)*(double)(windowWidth-2*borderWidth) + borderWidth, (pos[1] - Ymin)/(Ymax - Ymin)*(double)(windowHeight-2*borderWidth) + borderWidth);
+    
+    cr->set_source_rgba(l.r, l.g, l.b, l.alpha);
+
+    cr->set_line_width(l.lineWidth);
+    cr->line_to((neighbor->getPosition()[0] - Xmin)/(Xmax - Xmin)*(double)(windowWidth-2*borderWidth) + borderWidth, (neighbor->getPosition()[1] - Ymin)/(Ymax - Ymin)*(double)(windowHeight-2*borderWidth) + borderWidth);
+    cr->stroke();
     cr->restore();
 }
 
@@ -254,7 +329,8 @@ void NodeSetGraphics::setParmeters(struct parametersValues p) {
 void NodeSetGraphics::repaint() {
     cr->save(); // save the state of the context
     //cr->set_source_rgb(0.86, 0.85, 0.47); // Greenish color
-    cr->set_source_rgb(1, 1, 0.97); // Warm white color
+    //cr->set_source_rgb(1, 1, 0.97); // Warm white color
+    cr->set_source_rgb(0.1, 0.1, 0.1); // Blackish
     cr->paint(); // fill image with the color
     cr->restore(); // color is back to black now
 }
@@ -292,7 +368,6 @@ std::string NodeSetGraphics::toString() {
     
     str += "Surface height: " + std::to_string(windowHeight) + "\n";
     str += "Surface width: " + std::to_string(windowWidth) + "\n";
-    str += "Border width: " + std::to_string(borderWidth) + "\n";
     str += "Border width: " + std::to_string(borderWidth) + "\n";
     str += "Minimum Node radius: " + std::to_string(nodeMinRadius) + "\n";
     str += "Maximum Node radius: " + std::to_string(nodeMaxRadius) + "\n";

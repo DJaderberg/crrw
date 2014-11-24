@@ -27,7 +27,7 @@ public:
 	 * @param dt The size of the step to take
 	 */
 	virtual void takeStep(double dt) = 0;
-	/*
+	/**
 	 * Initialize an Algorithm object
 	 *
 	 * @param node The Node that the Algorithm should hold
@@ -36,5 +36,8 @@ public:
 	virtual void initialize(std::shared_ptr<Node> node, std::shared_ptr<Element> element) = 0;
 };
 
+/**
+ * A pointer to a function that when given a Node and an Element returns an Algorithm.
+ */
 typedef std::shared_ptr<Algorithm> (*algorithmCreator)(std::shared_ptr<Node>, std::shared_ptr<Element>);
 

@@ -78,7 +78,7 @@ public:
 	 * Read parameters of an element from a file and overwrite the contents
 	 * of this Element with those parameters.
 	 *
-	 * @param filename Filename of the file to read from
+	 * @param line The lne of data to read from
 	 */
 	void readData(std::string line) {
 		char temp;

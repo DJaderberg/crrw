@@ -6,6 +6,10 @@
 #include <fstream>
 #include <iostream>
 
+/**
+ * An Algorithm that supplies methods for storing data and restarting 
+ * computation from stored data.
+ */
 class StorableAlgorithm : public Algorithm {
 public:
 	/**
