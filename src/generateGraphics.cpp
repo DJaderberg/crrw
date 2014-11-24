@@ -35,8 +35,12 @@ void generateGraphics(std::string nodePath, std::string dataReadPath, std::strin
     
     
     for (int i = 0; i < nCount; i++) {
-        set.readData(ifsMinMx);
-        graphics.NAndFlowMinMax(set);
+        if (i % writeInterval == 0) {
+            set.readData(ifsMinMx);
+            graphics.NAndFlowMinMax(set);
+        } else {
+            ifsMinMx.ignore(std::numeric_limits<std::streamsize>::max(),'\n');
+        }
     }
     
     ifsMinMx.close();
@@ -46,23 +50,23 @@ void generateGraphics(std::string nodePath, std::string dataReadPath, std::strin
     std::ifstream ifs(dataReadPath);
     
     int j = 0;
-	if (!force) {
-		while (true) {
-			std::stringstream imgFilename(imageSavePath, std::ios_base::in|std::ios_base::out);
-			imgFilename << imageSavePath;
-			imgFilename << std::setfill('0') << std::setw(6) << j << ".png";
-			std::string imgFilenameStr = imgFilename.str();
-			if (!exists(imgFilenameStr)) {
-				break;
-			} else {
-				j++;
-			}
-		}
-	}
-
-	if (j != 0) {
-		std::cout << "Found existing images, creating new images starting at number " << j << "\n";
-	}
+    if (!force) {
+        while (true) {
+            std::stringstream imgFilename(imageSavePath, std::ios_base::in|std::ios_base::out);
+            imgFilename << imageSavePath;
+            imgFilename << std::setfill('0') << std::setw(6) << j << ".png";
+            std::string imgFilenameStr = imgFilename.str();
+            if (!exists(imgFilenameStr)) {
+                break;
+            } else {
+                j++;
+            }
+        }
+    }
+    
+    if (j != 0) {
+        std::cout << "Found existing images, creating new images starting at number " << j << "\n";
+    }
     
     std::cout << "Image generation begun.\n";
     std::string loadBar = "";
@@ -80,7 +84,7 @@ void generateGraphics(std::string nodePath, std::string dataReadPath, std::strin
             for (auto pathMap: pathMaps) {
                 graphics.drawShortestPath(set, sinkId, pathMap);
             }
-
+            
             graphics.drawNodes(set, 0);
             graphics.writeToFile(imgFilenameStr);
             graphics.repaint();
