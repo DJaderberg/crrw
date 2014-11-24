@@ -194,7 +194,6 @@ void NodeSetGraphics::drawNodes(PositionedNodeSet n, bool changeSize) {
 void NodeSetGraphics::drawShortestPath(PositionedNodeSet n, std::vector<unsigned int> sinkId, std::unordered_map<unsigned int, int> pathMap) {
     cr->save();
     // Draw lines
-    std::array<double, 2> pos;
     struct lineSettings l;
     for (auto id: sinkId) {
         while (pathMap[id] != -1) {
