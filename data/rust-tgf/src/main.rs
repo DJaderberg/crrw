@@ -16,8 +16,8 @@ fn gen_matrix(size: f64, prod_rate: int, nodes: uint, sinks: uint, mut out: Box<
     for i in i_range {
         let mut j_range = std::iter::range(0u, sqrt_nodes as uint);
         for j in j_range {
-            let x_val = (i as f64)*size/sqrt_nodes + 0.1*size/sqrt_nodes*(rand::random::<f64>() - 0.5) + (if i%2 == 0 { 0.0 } else { 0.0 });
-            let y_val = (j as f64)*size/sqrt_nodes + 0.1*size/sqrt_nodes*(rand::random::<f64>() - 0.5) + (if i%2 == 0 { 0.0 } else { size/sqrt_nodes*0.5 });
+            let x_val = (i as f64)*size/sqrt_nodes + 0.3*size/sqrt_nodes*(rand::random::<f64>() - 0.5) + (if i%2 == 0 { 0.0 } else { 0.0 });
+            let y_val = (j as f64)*size/sqrt_nodes + 0.3*size/sqrt_nodes*(rand::random::<f64>() - 0.5) + (if i%2 == 0 { 0.0 } else { size/sqrt_nodes*0.5 });
             let mut output : String = (i*(sqrt_nodes as uint)+j).to_string() + " " + x_val.to_string() + " " + y_val.to_string();
             if i<= sinks {
                 output = output + " ";
