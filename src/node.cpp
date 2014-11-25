@@ -36,9 +36,9 @@ unsigned int Node::getNumberOfParticles() {
 std::string Node::toString() {
     std::string str = "ID: " + std::to_string(this->id) + "\n";
     str = str + "Number of particles: " + std::to_string(this->numberOfParticles) + "\n";
-	str += "Neighbors: ";
-	for (auto n : neighborsMap) {
-		str += std::to_string(n.first) + ", ";
+	str += "Neighbors and mean flow: ";
+	for (auto n : meanFlowMap) {
+		str += std::to_string(n.first) + ": " + std::to_string(n.second) + ", ";
 	}
 	str += "\n";
     return str;
