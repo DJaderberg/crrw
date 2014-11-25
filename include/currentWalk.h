@@ -135,7 +135,7 @@ protected:
     ///Capacitance of the Node
     double capacitance = 0;
     ///Random number generation state
-    std::random_device rd;
+    static std::random_device rd;
     ///The element of the Algorithm
     std::shared_ptr<Element> element;
 };
