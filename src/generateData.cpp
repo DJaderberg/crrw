@@ -8,6 +8,7 @@
 #include "generateData.h"
 #include <string>
 #include <fstream>
+#include <stdlib.h>
 
 /**
  * Function for generating data
@@ -16,7 +17,7 @@ void generateData(std::string nodePath, std::string dataSavePath, std::shared_pt
     PositionedNodeSet set = PositionedNodeSet(nodePath, create, e);
 
     if (!force && exists(dataSavePath)) {
-        std::cout << "ERROR in GeneratData: save file already exists.\n";
+        std::cout << "ERROR in GenerateData: save file already exists.\n";
         std::cout << "Data generation aborted.\n";
         return;
     }
