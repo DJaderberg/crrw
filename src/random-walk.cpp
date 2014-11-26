@@ -33,6 +33,10 @@ struct arguments {
 	bool restart = false;
 	///True if we are allowed to over-write data
 	bool force = false;
+	///True if we should only partition data using METIS
+	bool metis = false;
+	std::string metisPath = "data/metis.txt";
+	int metisParts = 1;
 };
 
 /**
@@ -53,6 +57,10 @@ int main(int argc, char* argv[]) {
 	}
     
 #ifdef GRAPHICS
+	if (args.metis) {
+		generateMetis(args.filename, args.dataPath, args.metisPath, e, create, args.metisParts, args.force);
+		return 0;
+	}
     generateGraphics(args.filename, args.storedDataPath, args.dataPath, e, create, args.nCount, args.writeInterval, args.force);
 #else
 	if (args.restart) {
@@ -67,7 +75,7 @@ int main(int argc, char* argv[]) {
 arguments parse_args(int argc, char* argv[]) {
 	arguments args;
 	int c;
-	while ((c = getopt(argc, argv, "i:d:o:n:w:t:fh")) != -1) {
+	while ((c = getopt(argc, argv, "i:d:o:n:w:t:fm:q:h")) != -1) {
 		switch (c) {
 			case 'i':
 				args.filename = optarg;
@@ -90,6 +98,13 @@ arguments parse_args(int argc, char* argv[]) {
 				break;
 			case 'f':
 				args.force = true;
+				break;
+			case 'm':
+				args.metis = true;
+				args.metisPath = optarg;
+				break;
+			case 'q':
+				args.metisParts = std::atoi(optarg);
 				break;
 			case 'h':
 				std::cout << "usage: " << argv[0] << " <options>\n\n";
