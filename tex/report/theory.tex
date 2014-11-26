@@ -1,0 +1,43 @@
+\section{Theory}
+\label{sec:theory}
+In the particular underlying current-reinforced random walk for this paper the probability for a particle to move to an other node depends on the flow of particles to that node, i.e. the current of particles. The mathematical modeling is based on the research presented in the paper \cite{Current}. The basic idea of a current-reinforced random walk is to find the shortest path between a source and a sink for a given graph. This optimizes the path length for each individual path from the sources to the sinks. When utilizing non linear current-reinforced random walks a combination of path length and path maintenance is optimized. For example, ants may want to construct one big road rather than many small ones to easier keep needles and dirt of the road while not making each individual path that much longer.
+
+
+\subsection{Preparation}
+The preparation begins with each node calculating the mean flow to each of its neighbors as
+\begin{equation}
+\bar{I}_{ij} = \frac{(N_i - N_j)D_{ij}}{l_{ij}},
+\end{equation}
+from which it can be seen that the mean flow depends on the conductivity of each edge, $D_{ij}$, which is initialized and kept at or above some minimal value.
+The actual flow can along the edge $ij$ then be found as
+\begin{equation}
+I_{ij} = \text{Poi}(|\bar{I}_{ij}|\Delta t).
+\end{equation}
+In terms of implementation, it is important that nodes that are connected to the same edge agree on the same number of particles to transfer. This is ensured by allowing only the node with a larger number of particles to randomize the value and then both nodes use that value when updating the number of particles. This work is done at the node with the largest number of particles, since it is also important to ensure that there are never fewer than zero particles at a node and the number of particles will be decreasing at the node with the largest number of particles. When a node has a smaller number of particles than a given neighbor, the node always calculates the flow to that neighbor as zero. After all nodes have calculated and stored $\bar{I}$ and $I$, the preparation step is finished.
+
+\subsection{Confirmation}
+At the beginning of the confirmation part, all the data regarding how many particles will move along each edge is available. And so each node begins by updating the number of particles that is has as
+ \begin{equation}
+ N_i(t + \Delta t) = N_i(t) + \sum_{j \in \text{Neighbors}(i)} \left( I_{ji} - I_{ij} \right)
+ \end{equation}
+ The flow should theoretically be symmetric, but since only one particle has randomized a value, and the other has set it to zero, the flow is not symmetric in this implementation.
+ 
+ \ \\
+ 
+\noindent After that, the final part of the step begins, in which several parameters that are relevant to the algorithm are updated. First is the conductivity, which can be calculated as
+\begin{equation}
+D_{ij}(t + \Delta t) = D_{ij}(t) + q|\bar{I}|^\mu - \lambda D_{ij}(t)\Delta t,
+\end{equation}
+
+where $\mu$ is the path maintenance parameter, $\lambda$ is the conductivity decay parameter and $\Delta t$ is the time step. If $\mu$ is set to one the current-reinforced random walk is linear and will converge to the same solution every time. If on the other hand $\mu$ is set to greater than one the current-reinforced random walk becomes non-linear and will not converge to the same solution every run. The solution path for a non linear current-reinforced random walk will instead of optimizing for shortest individual path try to optimize {\color{red} BAKSJBDAKSJ}. 
+
+Next to be calculated is the capacitance, which is calculated as 
+ \begin{equation}
+ C_i = \sum_{j \in \text{Neighbors}(i)} D_{ij}
+ \end{equation}
+ and finally the potential is calculated as
+ \begin{equation}
+ P_i = \frac{N_i}{C_i}.
+ \end{equation}
+ 
+ \noindent When this is done the step is finished and the next step can be started.
