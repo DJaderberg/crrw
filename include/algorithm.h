@@ -34,6 +34,17 @@ public:
 	 * @param e The Element of the Node that the Algorithm should hold
 	 */
 	virtual void initialize(std::shared_ptr<Node> node, std::shared_ptr<Element> element) = 0;
+    
+    /**
+     * Sets the algorithms private random device pntr to som random device
+     *
+     * @param rd A shared pointer to some random device;
+     */
+    void setRd(std::shared_ptr<std::random_device> rd);
+    
+protected:
+    ///Private random device
+    std::shared_ptr<std::random_device> rd;
 };
 
 /**

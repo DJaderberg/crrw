@@ -7,6 +7,9 @@
 #include <fstream>
 #include <iostream>
 #include <sstream>
+#include <omp.h>
+
+const unsigned int NUM_RAND_DEVS = 1000;
 
 class PositionedNodeSet : public NodeSet {
 public:
@@ -18,6 +21,10 @@ public:
      */
     PositionedNodeSet(std::istream input, algorithmCreator create, std::shared_ptr<Element> element) {
         this->parseTGF(input);
+        for (int i = 0; i < NUM_RAND_DEVS; ++i) {
+            std::shared_ptr<std::random_device> rd(new std::random_device());
+            randVect.push_back(rd);
+        }
         this->initializeAlgorithms(create, element);
     }
     /** Create a NodeSet from a filename
@@ -31,6 +38,10 @@ public:
     PositionedNodeSet(const std::string& filename, algorithmCreator create, std::shared_ptr<Element> element) {
         std::ifstream stream(filename);
         this->parseTGF(stream);
+        for (int i = 0; i < NUM_RAND_DEVS; ++i) {
+            std::shared_ptr<std::random_device> rd(new std::random_device());
+            randVect.push_back(rd);
+        }
         this->initializeAlgorithms(create, element);
         stream.close();
     };
@@ -107,6 +118,7 @@ public:
 	 * @return A map containing the shortest path from source to each node (in-memory node id is the key)
 	 */
 	std::pair<std::unordered_map<unsigned int, double>, std::unordered_map<unsigned int, int>> shortestPath(unsigned int source);
+
 private:
     /**
      * Read a stream containing a TGF NodeSet and store it in the member nodes.
@@ -134,13 +146,18 @@ private:
     std::unordered_map<int, unsigned int> idMap;
     ///Map from the actual ids of the Nodes to the ids in the input stream 
     std::unordered_map<unsigned int, int> inverseIdMap;
+    ///Vector of random devices, one for each thread
+    std::vector<std::shared_ptr<std::random_device>> randVect;
     ///Helper function to initialize algorithms
     ///@param create The function with which to create the Algorithm for each Node
     ///@param element The Element that the Algorithm should have
     void initializeAlgorithms(algorithmCreator create, std::shared_ptr<Element> element) {
+        int i = 0;
         for (auto n : positionedNodes) {
             auto temp = std::dynamic_pointer_cast<StorableAlgorithm>(create(n, element));
+            temp->setRd(randVect[i*omp_get_max_threads()/positionedNodes.size()]);
             algorithms.push_back(temp);
+            ++i;
         }
     }
 };

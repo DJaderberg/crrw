@@ -3,8 +3,6 @@
  */
 #include "currentWalk.h"
 
-std::random_device CurrentWalk::rd;
-
 void CurrentWalk::prepareStep(double dt) {
 	this->updateMeanFlow();
 	this->updateFlow(dt);
@@ -39,7 +37,7 @@ void CurrentWalk::updateFlow(double dt) {
 		if (n.second > 0) {
 			double mean = n.second*dt;
 			std::poisson_distribution<int> rngDist(mean);
-			value = rngDist(this->rd);
+			value = rngDist(*this->rd);
 			node->flowMap[n.first] = std::min(tempNumberOfParticles, value);
 			tempNumberOfParticles -= value;
 			tempNumberOfParticles = std::max(0, tempNumberOfParticles);
