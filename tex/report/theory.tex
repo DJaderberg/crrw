@@ -29,7 +29,12 @@ At the beginning of the confirmation part, all the data regarding how many parti
 D_{ij}(t + \Delta t) = D_{ij}(t) + q|\bar{I}|^\mu - \lambda D_{ij}(t)\Delta t,
 \end{equation}
 
-where $\mu$ is the path maintenance parameter, $\lambda$ is the conductivity decay parameter and $\Delta t$ is the time step. If $\mu$ is set to one the current-reinforced random walk is linear and will converge to the same solution every time. If on the other hand $\mu$ is set to greater than one the current-reinforced random walk becomes non-linear and will not converge to the same solution every run. The solution path for a non linear current-reinforced random walk will instead of optimizing for shortest individual path try to optimize {\color{red} BAKSJBDAKSJ}. 
+where $q$ is the reinforcement intensity caused by per unit flow, $\mu$ is the path maintenance parameter, $\lambda$ is the conductivity decay parameter and $\Delta t$ is the time step. If $\mu$ is set to one the current-reinforced random walk is linear and will converge to the same solution every time. If on the other hand $\mu$ is set to greater than one the current-reinforced random walk becomes non-linear and will not converge to the same solution every run. The solution path for a non linear current-reinforced random walk will instead of optimizing for shortest individual path try to minimize
+
+\begin{equation}
+\sum_{j \in \text{Neighbors}(i)}\frac{l_{ij}}{D_{ij}}\bar{I}^{1/\mu}.
+\end{equation}
+ 
 
 Next to be calculated is the capacitance, which is calculated as 
  \begin{equation}
