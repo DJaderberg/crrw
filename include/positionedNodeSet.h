@@ -9,7 +9,7 @@
 #include <sstream>
 #include <omp.h>
 
-const unsigned int NUM_RAND_DEVS = 1000;
+const int NUM_RAND_DEVS = 1000;
 
 class PositionedNodeSet : public NodeSet {
 public:
