@@ -1,6 +1,46 @@
 \section{Theory}
 \label{sec:theory}
-In the particular underlying current-reinforced random walk for this paper the probability for a particle to move to an other node depends on the flow of particles to that node, i.e. the current of particles. The mathematical modeling is based on the research presented in the paper \cite{Current}. The basic idea of a current-reinforced random walk is to find the shortest path between a source and a sink for a given graph. This optimizes the path length for each individual path from the sources to the sinks. When utilizing non linear current-reinforced random walks a combination of path length and path maintenance is optimized. For example, ants may want to construct one big road rather than many small ones to easier keep needles and dirt of the road while not making each individual path that much longer.
+The theory behind the mathematical modeling is very much based upon the modeling described in Section 3 in the paper by \cite{Current}. The basic idea of a current-reinforced random walk is to find the shortest path through a given graph. The core of this modeling is that there are sources, sinks, nodes, particles and edges all organized within a graph representing a network. The fundamental idea is that sources send out information, sinks want information and particles represent information. Edges are connections between sources, sinks and nodes and represent a path for the information to spread. Sources have a production rate, i.e the rate at which new particles are being injected int the system. Sinks have a removal rate, i.e. the rate at which particles are being removed from the system. Sources, sinks and nodes can all contain particles. For a system to have a viable solution for a shortest path between sources and sinks the cumulative production rate of all the sources  must be less or equal to the cumulative removal rate of all the sinks, otherwise no flow equilibrium can be established.
+
+There are several analogies in nature to this modeling. For example can the transport network of many pheromone dropping ants be modeled by current-reinforced random walks as presented in \cite{Schweitzer1997153}. An other example is how the current and conductivity changes in special electrical networks as presented in \cite{Doyle}. 
+
+There are several necessary parameters for this model to make sens. These parameters and their analogy in both electrical networks and ant trail network are shown in Table \ref{tab:parameters}.
+\begin{table}
+\centering
+\caption{•}
+\label{tab:parameters}
+\begin{tabular}{ c | c | c }                       
+	\textbf{Parameter} & \textbf{Electrical network} & \textbf{Ant trails} \\
+	\hline
+	$l_{ij}$ & length in space & length in space \\
+	\hline
+	$N_{ij}$ & potential & number of ants \\
+	\hline
+	$I_{ij}$ & current & flow of ants \\
+	\hline
+	$D_{ij}$ & conductivity & pheromone concentration \\
+	\hline
+	$C_{ij}$ & capacitance & total pheromone density \\
+	\hline
+	$q_{ij}$ & reinforcement intensity & pheromone drop rate \\
+	\hline
+	$\lambda_{ij}$ & conductivity decrease rate & pheromone evaporation rate \\
+\end{tabular} 
+\end{table}
+
+The probability for a particle to move to an other node in this particular current-reinforced random walk for this paper depends on the flow of particles to that node, i.e. the current of particles. This optimizes the path length for each individual path from the sources to the sinks, i.e it minimizes 
+
+\begin{equation}
+\sum_{j \in \text{Neighbors}(i)} l_{ij} \bar{I}_{ij},
+\end{equation}
+
+\noindent where $l_{ij}$ is the edge length between node $i$ and $j$ and $\bar{I}_{ij}$ is the corresponding mean flow of particles. When utilizing non linear current-reinforced random walks a combination of path length and path maintenance is optimized. I this case the algorithm minimizes
+
+\begin{equation}
+\sum_{j \in \text{Neighbors}(i)}\frac{l_{ij}}{D_{ij}}\bar{I}^{1/\mu},
+\end{equation}
+
+\noindent where $\mu$ is the path maintenance parameter. Non linear current-reinforced random walks describe many networks created by animals. Ants for example may want to construct one big road for transporting food rather than many small ones to easier keep needles and dirt of the road while not making each individual path that much longer.
 
 
 \subsection{Preparation}
