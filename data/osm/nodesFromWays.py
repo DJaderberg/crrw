@@ -4,8 +4,14 @@ import sys
 from subprocess import call
 tree_file = "roads.osm"
 csv_file = "nodes_space.csv"
-output_file = "output.txt"
-temp_output_file = output_file + '.tmp'
+temp_output_file = '.tmp'
+if len(sys.argv) > 1:
+    tree_file = sys.argv[1]
+if len(sys.argv) > 2:
+    csv_file = sys.argv[2]
+if len(sys.argv) > 2:
+    temp_output_file = sys.argv[3]
+
 
 tree = ET.parse(tree_file)
 
