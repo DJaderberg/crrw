@@ -12,5 +12,6 @@
 #include "generateGraphics.h"
 #include "generateData.h"
 #include "omp.h"
+#include "generateMetis.h"
 
 

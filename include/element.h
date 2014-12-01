@@ -85,4 +85,19 @@ public:
 		std::istringstream iss(line);
 		iss >> q >> temp >> lambda >> temp >> mu >> temp >> Dmin >> temp >> productionRate >> temp;
 	}
+    
+    /**
+     * Creates a string representation of the element
+     *
+     * @return a string represantation of the element
+     */
+    std::string toString() {
+        std::string str;
+        str = "q: " + std::to_string(q) + "\n";
+        str += "lambda: " + std::to_string(lambda) + "\n";
+        str += "mu: " + std::to_string(mu) + "\n";
+        str += "Dmin: " + std::to_string(Dmin) + "\n";
+        str += "productionRate: " + std::to_string(productionRate) + "\n";
+        return str;
+    }
 };

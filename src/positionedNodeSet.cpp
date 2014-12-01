@@ -7,6 +7,7 @@
 #include <sstream>
 #include <unordered_map>
 #include <string>
+#include <memory>
 #include <omp.h>
 
 //TODO: Make this throw exceptions when file is incorrectly formatted
@@ -163,3 +164,54 @@ std::pair<std::unordered_map<unsigned int, double>, std::unordered_map<unsigned 
 	return ret;
 }
 
+void PositionedNodeSet::writeMETIS(std::ostream& stream) {
+	//Stream to which all connections are buffered
+	std::stringstream connection;
+	//Count number of edges (divide by 2 in the end)
+	unsigned int numEdges = 0;
+	stream << positionedNodes.size() << " ";
+	//For each node, write all neighbors (separated by space)
+	for (auto p : positionedNodes) {
+		for (auto n : p->getNeighborsMap()) {
+			connection << n.first+1 << " ";
+			++numEdges;
+		}
+		connection << "\n";
+	}
+	stream << numEdges/2 << "\n";
+	stream << connection.rdbuf();
+}
+
+void PositionedNodeSet::readMETIS(std::istream& input, std::ostream& output, unsigned int numPart) {
+	std::string line;
+	std::vector<std::vector<unsigned int>> partVectors;
+	//Initialize vectors
+	for (unsigned int i = 0; i < numPart; i++) {
+		partVectors.push_back(std::vector<unsigned int>());
+	}
+	//Add all nodes to the correct partition by reading the value in the METIS file
+	for (auto n : positionedNodes) {
+		std::getline(input, line);
+		int part = std::stoi(line);
+		partVectors[part].push_back(n->getId());
+	}
+	output << positionedNodes.size() << '\n';
+	//Add all nodes to the output, in order of partitions
+	unsigned int id = 0;
+	for (auto v : partVectors) {
+		for (auto n : v) {
+			output << id++ << ' '; //Print id
+			//Print position
+			auto posArray = positionedNodes[n]->getPosition();
+			for (auto pos : posArray) {
+				output << pos << ' ';
+			}
+			if (auto source = std::dynamic_pointer_cast<PositionedSource<posArray.size()>>(positionedNodes[n])) {
+				output << source->getProductionRate();
+			} else if (auto sink = std::dynamic_pointer_cast<PositionedSink<posArray.size()>>(positionedNodes[n])) {
+				output << sink->getRemovalRate();
+			}
+			output << '\n';
+		}
+	}
+}

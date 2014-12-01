@@ -118,7 +118,42 @@ public:
 	 * @return A map containing the shortest path from source to each node (in-memory node id is the key)
 	 */
 	std::pair<std::unordered_map<unsigned int, double>, std::unordered_map<unsigned int, int>> shortestPath(unsigned int source);
-
+	/**
+	 * Write this set in METIS format.
+	 *
+	 * @param stream The output stream to write to
+	 */
+	void writeMETIS(std::ostream& stream);
+	/**
+	 * Write this set in METIS format.
+	 *
+	 * @param filename The file to write to
+	 */
+	void writeMETIS(const std::string& filename) {
+        std::ofstream stream(filename);
+        this->writeMETIS(stream);
+        stream.close();
+	}
+	/**
+	 * Reorder nodes and write to a file using a METIS partition.
+	 *
+	 * @param filename The file to write to
+	 * @param numPart The number of partitions used by METIS
+	 */
+   void readMETIS(std::istream& input, std::ostream& output, unsigned int numPart);
+	/**
+	 * Reorder nodes and write to a file using a METIS partition.
+	 *
+	 * @param filename The file to write to
+	 * @param numPart The number of partitions used by METIS
+	 */
+   void readMETIS(const std::string& input, const std::string& output, unsigned int numPart) {
+        std::ifstream in(input);
+        std::ofstream out(output);
+        readMETIS(in, out, numPart);
+        in.close();
+        out.close();
+   }	   
 private:
     /**
      * Read a stream containing a TGF NodeSet and store it in the member nodes.
