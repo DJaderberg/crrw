@@ -23,7 +23,7 @@ void generateDataCore(PositionedNodeSet set, std::string dataSavePath, int nCoun
     
     std::string dataSavePathLast = dataSavePath;
     int pos = dataSavePathLast.find_last_of('.');
-    dataSavePathLast.insert(pos,"LAST");
+    dataSavePathLast.insert(pos,"_LAST");
     
     if (!force && exists(dataSavePathLast)) {
         std::cout << "ERROR in GeneratData: save file \"LAST\" already exists.\n";
@@ -70,10 +70,43 @@ void generateDataCore(PositionedNodeSet set, std::string dataSavePath, int nCoun
 }
 
 /**
+ * Function for writing info to stream
+ *
+ */
+void writeInfo(PositionedNodeSet set, std::string dataSavePath, std::shared_ptr<Element> e, int nCount, double dt, int writeInterval, bool force) {
+    std::string dataInfoPath = dataSavePath;
+    int pos = dataInfoPath.find_last_of('.');
+    dataInfoPath.insert(pos,"_INFO");
+    
+    if (!force && exists(dataInfoPath)) {
+        std::cout << "ERROR in GeneratData: save file \"INFO\" already exists.\n";
+        std::cout << "Info writing aborted.\n";
+        return;
+    }
+    
+    std::ofstream ofsInfo(dataInfoPath);
+    
+    ofsInfo << "GENERAL INFO\n";
+    ofsInfo << "dt: " << dt << "\n";
+    ofsInfo << "nCount: " << nCount << "\n";
+    ofsInfo << "writeInterval: " << writeInterval << "\n";
+    ofsInfo << "Computation length: " << nCount*dt << "\n";
+    
+    ofsInfo << "\nELEMENT INFO\n" << e->toString();
+    
+    ofsInfo << "\nNODE SET INFO\n";
+    ofsInfo << "Number of nodes: " << set.getNodes().size() << "\n";
+    
+    ofsInfo.close();
+}
+
+/**
  * Function for generating data
  */
 void generateData(std::string nodePath, std::string dataSavePath, std::shared_ptr<Element> e, algorithmCreator create, int nCount, double dt, int writeInterval, bool force) {
     PositionedNodeSet set = PositionedNodeSet(nodePath, create, e);
+    
+    writeInfo(set, dataSavePath, e, nCount, dt, writeInterval, force);
     
     generateDataCore(set, dataSavePath, nCount, dt, writeInterval, force);
 }
@@ -88,6 +121,8 @@ void generateData(std::string nodePath, std::string dataSavePath, std::shared_pt
     std::ifstream ifs(dataReadPath);
     set.readData(ifs);
     ifs.close();
+
+    writeInfo(set, dataSavePath, e, nCount, dt, writeInterval, force);
     
     generateDataCore(set, dataSavePath, nCount, dt, writeInterval, force);
 }
