@@ -15,8 +15,11 @@ std::shared_ptr<PositionedNodeSet> reduceNodes(std::shared_ptr<PositionedNodeSet
 	std::unordered_map<unsigned int, unsigned int> oldToNew;
 	std::unordered_map<unsigned int, std::vector<unsigned int>> newToOld;
 	i = 0;
+    
 	//Create new nodes where necessary
+    int j = 0;
 	for (auto oldNode : oldNodes) {
+        std::cout << j << "\n";
 		auto newNodes = ret->getNodes();
 		bool matchFound = false;
 		for (auto node : newNodes) {
@@ -38,6 +41,7 @@ std::shared_ptr<PositionedNodeSet> reduceNodes(std::shared_ptr<PositionedNodeSet
 			newIdToNewVecPos[node->getId()] = i;
 			i++;
 		}
+        j++;
 	}
 	
 	//TODO: Change this so that the outermost loop is over all old nodes.
