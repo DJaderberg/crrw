@@ -1,6 +1,6 @@
 CXX     = g++
 LD		= g++
-CFLAGS_BASE  = -Wall -Wextra -std=c++11 -Iinclude 
+CFLAGS_BASE  = -Wall -Wextra -std=c++11 -Iinclude -Wno-overloaded-virtual
 CFLAGS = $(CFLAGS_BASE) 
 LDFLAGS_BASE = 
 LDFLAGS = $(LDFLAGS_BASE) 
@@ -9,8 +9,8 @@ all: random-walk
 allest: graphics
 VPATH := src:include
 
-graphics: CFLAGS = $(CFLAGS_BASE)-DGRAPHICS $(shell pkg-config --cflags cairomm-1.0 cairo cairomm-png-1.0 cairo-png)
-graphics: LDFLAGS = $(LDFLAGS_BASE)-DGRAPHICS $(shell pkg-config --libs cairomm-1.0 cairo cairomm-png-1.0 cairo-png)
+graphics: CFLAGS = $(CFLAGS_BASE) -DGRAPHICS $(shell pkg-config --cflags cairomm-1.0 cairo cairomm-png-1.0 cairo-png)
+graphics: LDFLAGS = $(LDFLAGS_BASE) -DGRAPHICS $(shell pkg-config --libs cairomm-1.0 cairo cairomm-png-1.0 cairo-png)
 graphics: $(OBJECTS) 
 	$(LD) -o graphics $^ $(LDFLAGS)
 

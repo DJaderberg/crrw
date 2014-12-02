@@ -109,7 +109,7 @@ void NodeSetGraphics::XYMinMax(PositionedNodeSet n) {
 void NodeSetGraphics::NAndFlowMinMax(PositionedNodeSet n) {
     
     int tempN = n.getNodes().front()->getNumberOfParticles();
-    double tempFlow = abs(n.getNodes().front()->getMeanFlow(n.getNodes().front()->getNeighborsMap().begin()->second->getId()));
+    double tempFlow = std::abs(n.getNodes().front()->getMeanFlow(n.getNodes().front()->getNeighborsMap().begin()->second->getId()));
     
     for (auto node: n.getNodes()) {
         tempN = node->getNumberOfParticles();
@@ -120,7 +120,7 @@ void NodeSetGraphics::NAndFlowMinMax(PositionedNodeSet n) {
         }
         
         for (auto neighbor: node->getNeighborsMap()) {
-            tempFlow = abs(node->getMeanFlow(neighbor.second->getId()));
+            tempFlow = std::abs(node->getMeanFlow(neighbor.second->getId()));
             if (tempFlow < flowMin) {
                 flowMin = tempFlow;
             } else if (tempFlow > flowMax) {
@@ -249,11 +249,11 @@ void NodeSetGraphics::drawEdges(PositionedNodeSet n, bool changeFlow) {
     double flow;
     // Find min and max Mean Flow
     if (changeFlow) {
-        flowMin = abs(n.getNodes().front()->getMeanFlow(n.getNodes().front()->getNeighbors().begin()->first));
+        flowMin = std::abs(n.getNodes().front()->getMeanFlow(n.getNodes().front()->getNeighbors().begin()->first));
         flowMax = flowMin;
         for (auto node: n.getNodes()) {
             for (auto neighbor: node->getNeighbors()) {
-                flow = abs(node->getMeanFlow(neighbor.first));
+                flow = std::abs(node->getMeanFlow(neighbor.first));
                 if ( flow < flowMin) {
                     flowMin = flow;
                 } else if (flow > flowMax) {
@@ -271,7 +271,7 @@ void NodeSetGraphics::drawEdges(PositionedNodeSet n, bool changeFlow) {
         
         for (auto neighbor: node->getNeighbors()) {
             struct lineSettings l;
-            flow = abs(node->getMeanFlow(neighbor.first));
+            flow = std::abs(node->getMeanFlow(neighbor.first));
             // in no flow set different color for edge
             if (flow == 0) {
                 l.r = 0;

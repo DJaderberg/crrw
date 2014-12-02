@@ -177,7 +177,7 @@ public:
     void updateNumberOfParticles(double dt) {
         CurrentWalk::updateNumberOfParticles(dt);
         
-        if (node->getNumberOfParticles() <= (unsigned int)abs((int)(dt*removalRate))) {
+        if (node->getNumberOfParticles() <= (unsigned int)std::abs((int)(dt*removalRate))) {
             node->setNumberOfParticles(0);
         } else {
             node->setNumberOfParticles((int)(dt*removalRate) + node->getNumberOfParticles());
