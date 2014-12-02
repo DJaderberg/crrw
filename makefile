@@ -1,6 +1,6 @@
 CXX     = g++-4.9
 LD		= g++-4.9
-CFLAGS_BASE  = -Wall -Wextra -std=c++11 -Iinclude -fopenmp -O3
+CFLAGS_BASE  = -Wall -Wextra -std=c++11 -Iinclude -fopenmp -O3 -Wno-overloaded-virtual
 CFLAGS = $(CFLAGS_BASE) 
 LDFLAGS_BASE = -fopenmp -O3
 LDFLAGS = $(LDFLAGS_BASE) 

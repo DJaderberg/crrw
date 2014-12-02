@@ -13,5 +13,6 @@
 #include "generateData.h"
 #include "omp.h"
 #include "generateMetis.h"
+#include "reduceNodes.h"
 
 

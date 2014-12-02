@@ -155,7 +155,9 @@ private:
     /// The active Cairomm surface that the images are beeing drawn upon.
     Cairo::RefPtr<Cairo::ImageSurface> surface;
     /// Help parameters for keeping track of the coordinates and flows
-    double Xmin, Xmax, Ymin, Ymax, flowMin, flowMax, Nmin, Nmax;
+    double Xmin, Xmax, Ymin, Ymax, flowMin, flowMax;
+    /// Help parameters for keeping track of the minimum and maximum number of particles
+    int Nmin, Nmax;
     
     /// Size configurations in px
     unsigned int windowHeight = 800;

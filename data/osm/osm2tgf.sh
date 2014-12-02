@@ -18,7 +18,7 @@ echo "Creating roads.osm via ./osmconvert..."
 `./osmconvert roads.pbf --drop-relations --drop-nodes --out-osm > roads.osm`
 # Extract nodes (id, lat,lon) in a CSV-file
 echo "Creating nodes.csv via ./osmconvert..."
-`./osmconvert "$orig" --drop-relations --drop-ways --csv="@id @lat @lon" -o=nodes.csv`
+`./osmconvert "$orig" --drop-relations --drop-ways --csv="@id @lon @lat" -o=nodes.csv`
 # Change tab delimited CSV to space delimited
 echo "Creating nodes_space.csv via awk..."
 `awk '{print $1, $2, $3}' nodes.csv > nodes_space.csv`

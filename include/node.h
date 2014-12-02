@@ -45,7 +45,14 @@ public:
      * @param distance The distance to the neighbor
      */
     virtual void insertNeighbor(std::shared_ptr<Node> neighbor, double distance);
-    
+	/**
+	 * Create a new neighbor of the node if the node is not already connected 
+	 * to the given neighbor.
+	 *
+     * @param neighbor A Node that should be a neighbor to the current Node
+     * @param distance The distance to the neighbor
+	 */
+	virtual void insertNeighborUnique(std::shared_ptr<Node> neighbor, double distance);
     /**
      * Returns the id of the Node
      *

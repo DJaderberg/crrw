@@ -57,7 +57,7 @@ void CurrentWalk::updateNumberOfParticles(double dt) {
 }
 
 void CurrentWalk::updatePotential() {
-    node->potential = node->getNumberOfParticles()/this->capacitance;
+    node->potential = ((double)node->getNumberOfParticles())/this->capacitance;
 }
 
 void CurrentWalk::updateCapacitance() {
@@ -70,7 +70,7 @@ void CurrentWalk::updateCapacitance() {
 void CurrentWalk::updateConductivity(double dt) {
 	double value;
 	for (auto n : conductivityMap) {
-		value = n.second + element->q*std::pow(abs(node->meanFlowMap[n.first]), element->mu) - element->lambda*n.second*dt;
+        value = n.second + element->q*std::pow(std::abs(node->meanFlowMap[n.first]), element->mu) - element->lambda*n.second*dt;
 		conductivityMap[n.first] = std::max(value, element->Dmin);
 	}
 }

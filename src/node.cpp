@@ -17,6 +17,14 @@ void Node::insertNeighbor(std::shared_ptr<Node> neighbor, double distance) {
     lengthMap[id] = distance;
 }
 
+void Node::insertNeighborUnique(std::shared_ptr<Node> neighbor, double distance) {
+		if (neighborsMap.count(neighbor->getId()) || neighbor->getId() == getId()) {
+			return;
+		} else {
+			insertNeighbor(neighbor, distance);
+		}
+}
+
 unsigned int Node::getId() {
     return this->id;
 }
