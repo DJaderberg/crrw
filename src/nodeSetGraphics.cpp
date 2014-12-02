@@ -273,7 +273,7 @@ void NodeSetGraphics::drawEdges(PositionedNodeSet n, bool changeFlow) {
             struct lineSettings l;
             flow = std::abs(node->getMeanFlow(neighbor.first));
             // in no flow set different color for edge
-            if (flow == 0) {
+            if (flow <= flowMax*0.0005) {
                 l.r = 0;
                 l.g = 0.5;
                 l.b = 1;
