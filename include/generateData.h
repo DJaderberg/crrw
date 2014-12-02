@@ -17,6 +17,17 @@
 #include "miscFunctions.h"
 
 /**
+ * Core function for generating data
+ */
+void generateDataCore(PositionedNodeSet set, std::string dataSavePath, int nCount, double dt, int writeInterval, bool force);
+
+/**
+ * Function for writing info to stream
+ *
+ */
+void writeInfo(PositionedNodeSet set, std::string dataSavePath, std::shared_ptr<Element> e, int nCount, double dt, int writeInterval, bool force);
+
+/**
  * Function for generating data
  */
 void generateData(std::string nodePath, std::string dataSavePath, std::shared_ptr<Element> e, algorithmCreator create, int nCount, double dt, int writeInterval, bool force);
