@@ -21,17 +21,17 @@ struct defaultValues {
 
 struct parametersValues {
     // Size configurations in px
-    unsigned int windowHeight = 800;
-    unsigned int windowWidth = 1024;
-    unsigned int borderWidth = 100;
-    double nodeMinRadius = 1;
-    double nodeMaxRadius = 10;
-    double nodeBorder = 2;
-    double sourceRadius = 4;
-    double sinkRadius = 4;
-    double lineWidthMin = 1;
-    double lineWidthMax = 80;
-    double lineOpacMin = 1;
+    unsigned int windowHeight;
+    unsigned int windowWidth;
+    unsigned int borderWidth;
+    double nodeMinRadius;
+    double nodeMaxRadius;
+    double nodeBorder;
+    double sourceRadius;
+    double sinkRadius;
+    double lineWidthMin;
+    double lineWidthMax;
+    double lineOpacMin;
 };
 
 struct lineSettings {
