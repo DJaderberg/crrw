@@ -204,3 +204,18 @@ void PositionedNodeSet::readMETIS(std::istream& input, std::ostream& output, uns
 		}
 	}
 }
+
+void PositionedNodeSet::writeTGF(std::ostream& output) {
+	//Write down all nodes
+	for (auto n : positionedNodes) {
+		auto pos = n->getPosition();
+		output << n->getFileId() << ' ' << pos[0] << ' ' << pos[1] << '\n';
+	}
+	output << "#\n";
+	for (auto n : positionedNodes) {
+		for (auto neighbor : n->getNeighbors()) {
+			output << n->getFileId() << ' ' << neighbor.second->getFileId() << '\n';
+		}
+	}
+}
+

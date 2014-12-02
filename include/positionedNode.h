@@ -34,6 +34,13 @@ public:
     void insertNeighbor(std::shared_ptr<PositionedNode<dimension>> n) {
 		Node::insertNeighbor(n, this->distance(n));
 	}
+	/**
+	 * Create a new neighbor of the node if the node is not already connected 
+	 * to the given neighbor.
+	 */
+	void insertNeighborUnique(std::shared_ptr<PositionedNode<dimension>> n) {
+		Node::insertNeighborUnique(n, this->distance(n));
+	}
 	std::string toString() {
 		std::string pos = "Position: (";
 		for (auto p : position) {
@@ -47,9 +54,6 @@ public:
 	std::array<double, dimension> getPosition() {
 		return position;
 	}
-private:
-    ///Position of the node
-    std::array<double, dimension> position;
     /**
      * Calculate the distance from this node to the other
      *
@@ -65,4 +69,7 @@ private:
 		}
 		return sqrt(dist);
 	}
+private:
+    ///Position of the node
+    std::array<double, dimension> position;
 };

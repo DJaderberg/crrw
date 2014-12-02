@@ -34,6 +34,12 @@ public:
         this->initializeAlgorithms(create, element);
         stream.close();
     };
+	/**
+	 * Create an empty and uninitalized PositionedNodeSet.
+	 *
+	 * For internal use only.
+	 */
+	PositionedNodeSet() {};
     /// Return a string representation of the NodeSet
     std::string toString();
     /// Return the number of particles at each Node in the NodeSet
@@ -142,7 +148,25 @@ public:
         readMETIS(in, out, numPart);
         in.close();
         out.close();
-   }	   
+   }   
+   /**
+	* Add a node to the set
+	*
+	* @param node The node to add to the set.
+	*/
+   void addNode(std::shared_ptr<PositionedNode<2>> node) {
+	   positionedNodes.push_back(node);
+   }
+   void writeTGF(std::ostream& output);
+   /**
+	* Write this PositionedNodeSet to a TGF file
+	* @param filename The file to write to
+	*/
+   void writeTGF(const std::string& filename) {
+        std::ofstream out(filename);
+		writeTGF(out);
+        out.close();
+   }
 private:
     /**
      * Read a stream containing a TGF NodeSet and store it in the member nodes.

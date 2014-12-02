@@ -12,5 +12,6 @@
 #include "generateGraphics.h"
 #include "generateData.h"
 #include "generateMetis.h"
+#include "reduceNodes.h"
 
 

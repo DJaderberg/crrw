@@ -37,6 +37,10 @@ struct arguments {
 	bool metis = false;
 	std::string metisPath = "data/metis.txt";
 	int metisParts = 1;
+	///True if we should only reduce the number of nodes
+	bool reduce = false;
+	///The maximal distance between nodes that should be joined
+	double reduceDist = 0.0;
 };
 
 /**
@@ -57,6 +61,12 @@ int main(int argc, char* argv[]) {
 	}
     
 #ifdef GRAPHICS
+	if (args.reduce) {
+		std::shared_ptr<PositionedNodeSet> set_ptr(new PositionedNodeSet(args.filename, create, e));
+		auto newSet = reduceNodes(set_ptr, args.reduceDist);
+		newSet->writeTGF(args.dataPath);
+		return 0;
+	}
 	if (args.metis) {
 		generateMetis(args.filename, args.dataPath, args.metisPath, e, create, args.metisParts, args.force);
 		return 0;
@@ -75,7 +85,7 @@ int main(int argc, char* argv[]) {
 arguments parse_args(int argc, char* argv[]) {
 	arguments args;
 	int c;
-	while ((c = getopt(argc, argv, "i:d:o:n:w:t:fm:q:h")) != -1) {
+	while ((c = getopt(argc, argv, "i:d:o:n:w:t:fm:q:r:h")) != -1) {
 		switch (c) {
 			case 'i':
 				args.filename = optarg;
@@ -105,6 +115,10 @@ arguments parse_args(int argc, char* argv[]) {
 				break;
 			case 'q':
 				args.metisParts = std::atoi(optarg);
+				break;
+			case 'r':
+				args.reduce = true;
+				args.reduceDist = std::atof(optarg);
 				break;
 			case 'h':
 				std::cout << "usage: " << argv[0] << " <options>\n\n";
