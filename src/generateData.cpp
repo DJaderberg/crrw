@@ -96,6 +96,7 @@ void writeInfo(PositionedNodeSet set, std::string dataSavePath, std::shared_ptr<
     ofsInfo << "nCount: " << nCount << "\n";
     ofsInfo << "writeInterval: " << writeInterval << "\n";
     ofsInfo << "Computation length: " << nCount*dt << "\n";
+    ofsInfo << "Number of threads: " << omp_get_max_threads() << "\n";
     
     ofsInfo << "\nELEMENT INFO\n" << e->toString();
     
