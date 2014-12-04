@@ -167,19 +167,19 @@ void NodeSetGraphics::drawNodes(PositionedNodeSet n, bool changeSize) {
             //std::cout << "SOURCE\n";
             cr->set_source_rgb(0, 0, 0);
             //cr->set_source_rgb(1, 1, 1);
-            cr->arc((pos[0] - Xmin)/(Xmax - Xmin)*(double)(windowWidth-2*borderWidth) + borderWidth, (pos[1] - Ymin)/(Ymax - Ymin)*(double)(windowHeight-2*borderWidth) + borderWidth,sourceRadius + nodeBorder,0,2.0*M_PI);
+            cr->arc((pos[0] - Xmin)/(Xmax - Xmin)*(double)(windowWidth-2*borderWidth) + borderWidth, (pos[1] - Ymin)/(Ymax - Ymin)*(double)(windowHeight-2*borderWidth) + borderWidth,r + nodeBorder,0,2.0*M_PI);
             cr->stroke();
             cr->set_source_rgb(1, 0.8, 0.3);
-            cr->arc((pos[0] - Xmin)/(Xmax - Xmin)*(double)(windowWidth-2*borderWidth) + borderWidth, (pos[1] - Ymin)/(Ymax - Ymin)*(double)(windowHeight-2*borderWidth) + borderWidth,sourceRadius,0,2.0*M_PI);
+            cr->arc((pos[0] - Xmin)/(Xmax - Xmin)*(double)(windowWidth-2*borderWidth) + borderWidth, (pos[1] - Ymin)/(Ymax - Ymin)*(double)(windowHeight-2*borderWidth) + borderWidth,r,0,2.0*M_PI);
         } else if (dynamic_cast<PositionedSink<2>*>(node.get())) {
             //std::cout << "SINK\n";
             cr->set_source_rgb(1, 1, 1);
             //cr->set_source_rgb(1, 1, 1);
-            cr->arc((pos[0] - Xmin)/(Xmax - Xmin)*(double)(windowWidth-2*borderWidth) + borderWidth, (pos[1] - Ymin)/(Ymax - Ymin)*(double)(windowHeight-2*borderWidth) + borderWidth,sinkRadius + nodeBorder,0,2.0*M_PI);
+            cr->arc((pos[0] - Xmin)/(Xmax - Xmin)*(double)(windowWidth-2*borderWidth) + borderWidth, (pos[1] - Ymin)/(Ymax - Ymin)*(double)(windowHeight-2*borderWidth) + borderWidth,r + nodeBorder,0,2.0*M_PI);
             cr->stroke();
             //cr->set_source_rgb(0.4, 0.4, 1);
             cr->set_source_rgb(1, 0, 0);
-            cr->arc((pos[0] - Xmin)/(Xmax - Xmin)*(double)(windowWidth-2*borderWidth) + borderWidth, (pos[1] - Ymin)/(Ymax - Ymin)*(double)(windowHeight-2*borderWidth) + borderWidth,sinkRadius,0,2.0*M_PI);
+            cr->arc((pos[0] - Xmin)/(Xmax - Xmin)*(double)(windowWidth-2*borderWidth) + borderWidth, (pos[1] - Ymin)/(Ymax - Ymin)*(double)(windowHeight-2*borderWidth) + borderWidth,r,0,2.0*M_PI);
         } else {
             cr->set_source_rgb(0, 0, 0);
             //cr->set_source_rgb(1, 1, 1);

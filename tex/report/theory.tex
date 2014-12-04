@@ -32,19 +32,21 @@ There are some necessary parameters for this model to make sens. These parameter
 \end{tabular} 
 \end{table}
 
-The probability for a particle to move to an other node in this particular current-reinforced random walk for this paper depends on the flow of particles to that node, i.e. the current of particles. This optimizes the path length for each individual path from the sources to the sinks, i.e it minimizes 
+The probability for a particle to move to an other node in this particular current-reinforced random walk for this paper depends on the flow of particles to that node, i.e. the current of particles. This optimizes the path length for each individual path from the sources to the sinks, i.e it minimizes the cost function
 
 \begin{equation}
 \sum_{j \in \text{Neighbors}(i)} l_{ij} \bar{I}_{ij},
 \end{equation}
 
-\noindent where $l_{ij}$ is the edge length between node $i$ and $j$ and $\bar{I}_{ij}$ is the corresponding mean flow of particles. When utilizing non linear current-reinforced random walks a combination of path length and path maintenance is optimized. I this case the algorithm minimizes
+\noindent where $l_{ij}$ is the edge length between node $i$ and $j$ and $\bar{I}_{ij}$ is the corresponding mean flow of particles. When utilizing non linear current-reinforced random walks a combination of path length and path maintenance is optimized. I this case the algorithm minimizes something like
 
 \begin{equation}
 \sum_{j \in \text{Neighbors}(i)}\frac{l_{ij}}{D_{ij}}\bar{I}^{1/\mu},
 \end{equation}
 
-\noindent where $\mu$ is the path maintenance parameter. Non linear current-reinforced random walks describe many networks created by animals. Ants for example may want to construct one big road for transporting food rather than many small ones to easier keep needles and dirt of the road while not making each individual path that much longer.
+\noindent where $\mu$ is the path maintenance parameter. 
+
+Non linear current-reinforced random walks describe many networks created by animals. Ants for example may want to construct one big road for transporting food rather than many small ones to easier keep needles and dirt of the road while not making each individual path that much longer.
 
 
 \subsubsection{Preparation}
