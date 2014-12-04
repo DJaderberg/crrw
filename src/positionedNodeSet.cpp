@@ -184,12 +184,15 @@ void PositionedNodeSet::readMETIS(std::istream& input, std::ostream& output, uns
 		int part = std::stoi(line);
 		partVectors[part].push_back(n->getId());
 	}
-	output << positionedNodes.size() << '\n';
+	//output << positionedNodes.size() << '\n';
+	std::unordered_map<unsigned int, unsigned int> oldToNewId;
 	//Add all nodes to the output, in order of partitions
 	unsigned int id = 0;
 	for (auto v : partVectors) {
 		for (auto n : v) {
-			output << id++ << ' '; //Print id
+			oldToNewId[n] = id;
+			output << id << ' '; //Print id
+			++id;
 			//Print position
 			auto posArray = positionedNodes[n]->getPosition();
 			for (auto pos : posArray) {
@@ -201,6 +204,15 @@ void PositionedNodeSet::readMETIS(std::istream& input, std::ostream& output, uns
 				output << sink->getRemovalRate();
 			}
 			output << '\n';
+		}
+	}
+	output << "#\n";
+	//Print all edges to the output, correctly renamed
+	for (auto n : positionedNodes) {
+		unsigned int id = oldToNewId[n->getId()];
+		for (auto neighbor : n->getNeighbors()) {
+			unsigned int neighborId = oldToNewId[neighbor.first];
+			output << id << ' ' << neighborId << '\n';
 		}
 	}
 }
