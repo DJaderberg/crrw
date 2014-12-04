@@ -37,7 +37,6 @@ class Group:
     self.lat = lat
     self.dist = dist
     self.source = source
-    self.number_objects = 0
   def is_in(self, lon, lat):
       if ((self.lat - lat)**2 + (self.lon - lon)**2 < self.dist**2):
           return True
@@ -46,20 +45,21 @@ class Group:
 
 # Definitions of groups
 #Sinks
-centrum = Group(17.6389, 59.8586, 0.0010, False)
-bolanderna = Group(17.6753 , 59.8504 , 0.0010, False)
-polacks = Group(17.6476 , 59.8396 , 0.0010, False)
+centrum = Group(17.6389, 59.8586, 0.0100, False)
+bolanderna = Group(17.6753 , 59.8504 , 0.0100, False)
+polacks = Group(17.6476 , 59.8396 , 0.0100, False)
 
-sink_list = [centrum, bolanderna, polacks]
+#sink_list = [centrum, bolanderna, polacks]
+sink_list = [centrum]
 #Sources
-sunnersta = Group(17.6535, 59.7960, 0.0030, True)
-gottsunda = Group(17.6260 , 59.8095 , 0.0030, True)
-savja = Group(17.7034 , 59.8167 , 0.0030, True)
-norby = Group(17.6219 , 59.8238 , 0.0030, True)
-flogsta = Group(17.5898 , 59.8485 , 0.0030, True)
-luthagen = Group(17.6128 , 59.8683 , 0.0030, True)
-nyby = Group(17.6501 , 59.8791 , 0.0030, True)
-sala_backe = Group(17.6746 , 59.8691 , 0.0030, True)
+sunnersta = Group(17.6535, 59.7960, 0.0205, True)
+gottsunda = Group(17.6260 , 59.8095 , 0.0100, True)
+savja = Group(17.7034 , 59.8167 , 0.0200, True)
+norby = Group(17.6219 , 59.8238 , 0.0172, True)
+flogsta = Group(17.5898 , 59.8485 , 0.0297, True)
+luthagen = Group(17.6128 , 59.8683 , 0.0100, True)
+nyby = Group(17.6501 , 59.8791 , 0.0225, True)
+sala_backe = Group(17.6746 , 59.8691 , 0.0100, True)
 
 source_list = [sunnersta, gottsunda, savja, norby, flogsta, luthagen, nyby, sala_backe]
 
@@ -70,7 +70,6 @@ vals = re.findall(r'\b\d+\.?\d*\b', line)
 
 sources = 0
 sinks = 0
-MAX_NUM = 1
 
 # Count sources and count sinks
 while len(vals) >= 3:
@@ -80,14 +79,12 @@ while len(vals) >= 3:
     # Sinks
     matched = False
     for group in sink_list:
-        if matched == False and group.is_in(lon, lat) and group.number_objects < MAX_NUM:
-            group.number_objects = group.number_objects + 1
+        if matched == False and group.is_in(lon, lat):
             sinks = sinks + 1
             matched = True
     # Sources
     for group in source_list:
-        if matched == False and group.is_in(lon, lat) and group.number_objects < MAX_NUM:
-            group.number_objects = group.number_objects + 1
+        if matched == False and group.is_in(lon, lat):
             sources = sources + 1
             matched = True
     line = node_file.readline()
@@ -95,7 +92,7 @@ while len(vals) >= 3:
 
 node_file.close()
 
-sink_rate = -int(total_rate/sinks + 1)
+sink_rate = -int(math.ceil(total_rate/sinks))
 source_rate = int(total_rate/sources)
 
 node_file = open(filename, 'r')
@@ -107,14 +104,6 @@ vals = re.findall(r'\b\d+\.?\d*\b', line)
 sources = 0
 sinks = 0
 
-for group in sink_list:
-    assert(group.number_objects == MAX_NUM)
-    group.number_objects = 0
-
-for group in source_list:
-    assert(group.number_objects == MAX_NUM)
-    group.number_objects = 0
-
 while len(vals) >= 3:
     i = int(vals[0])
     lon = float(vals[1])
@@ -122,14 +111,12 @@ while len(vals) >= 3:
     matched = False
     # Sinks
     for group in sink_list:
-        if matched == False and group.is_in(lon, lat) and group.number_objects < MAX_NUM:
-            group.number_objects = group.number_objects + 1
+        if matched == False and group.is_in(lon, lat):
             output.write("%d %f %f %d\n" % (i, lon, lat, sink_rate))
             matched = True
     # Sources
     for group in source_list:
-        if matched == False and group.is_in(lon, lat) and group.number_objects < MAX_NUM:
-            group.number_objects = group.number_objects + 1
+        if matched == False and group.is_in(lon, lat):
             output.write("%d %f %f %d\n" % (i, lon, lat, source_rate))
             matched = True
     if matched == False:
