@@ -185,6 +185,10 @@ void PositionedNodeSet::writeMETIS(std::ostream& stream) {
 void PositionedNodeSet::readMETIS(std::istream& input, std::ostream& output, unsigned int numPart) {
 	std::string line;
 	std::vector<std::vector<unsigned int>> partVectors;
+
+	//Calculate shortest paths - which are to be used for finding which nodes are connected to the large network
+	auto pair = shortestPath(0);
+	auto distances = pair.first;
 	//Initialize vectors
 	for (unsigned int i = 0; i < numPart; i++) {
 		partVectors.push_back(std::vector<unsigned int>());
@@ -201,29 +205,35 @@ void PositionedNodeSet::readMETIS(std::istream& input, std::ostream& output, uns
 	unsigned int id = 0;
 	for (auto v : partVectors) {
 		for (auto n : v) {
-			oldToNewId[n] = id;
-			output << id << ' '; //Print id
-			++id;
-			//Print position
-			auto posArray = positionedNodes[n]->getPosition();
-			for (auto pos : posArray) {
-				output << pos << ' ';
+			//Don't add this node if it isn't connected to the network
+			if (distances[n] < 1e19) {
+				oldToNewId[n] = id;
+				output << id << ' '; //Print id
+				++id;
+				//Print position
+				auto posArray = positionedNodes[n]->getPosition();
+				for (auto pos : posArray) {
+					output << pos << ' ';
+				}
+				if (auto source = std::dynamic_pointer_cast<PositionedSource<posArray.size()>>(positionedNodes[n])) {
+					output << source->getProductionRate();
+				} else if (auto sink = std::dynamic_pointer_cast<PositionedSink<posArray.size()>>(positionedNodes[n])) {
+					output << sink->getRemovalRate();
+				}
+				output << '\n';
 			}
-			if (auto source = std::dynamic_pointer_cast<PositionedSource<posArray.size()>>(positionedNodes[n])) {
-				output << source->getProductionRate();
-			} else if (auto sink = std::dynamic_pointer_cast<PositionedSink<posArray.size()>>(positionedNodes[n])) {
-				output << sink->getRemovalRate();
-			}
-			output << '\n';
 		}
 	}
 	output << "#\n";
 	//Print all edges to the output, correctly renamed
 	for (auto n : positionedNodes) {
 		unsigned int id = oldToNewId[n->getId()];
-		for (auto neighbor : n->getNeighbors()) {
-			unsigned int neighborId = oldToNewId[neighbor.first];
-			output << id << ' ' << neighborId << '\n';
+		//Don't add this node if it isn't connected to the network
+		if (distances[n->getId()] < 1e19) {
+			for (auto neighbor : n->getNeighbors()) {
+				unsigned int neighborId = oldToNewId[neighbor.first];
+				output << id << ' ' << neighborId << '\n';
+			}
 		}
 	}
 }

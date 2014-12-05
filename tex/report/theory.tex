@@ -48,8 +48,8 @@ The preparation begins with each node calculating the mean flow to each of its n
 \begin{equation}
 \bar{I}_{ij} = \frac{(N_i - N_j)D_{ij}}{l_{ij}},
 \end{equation}
-from which it can be seen that the mean flow depends on the conductivity of each edge, $D_{ij}$, which is initialized and kept at or above some minimal value.
-The actual flow can along the edge $ij$ then be found as
+from which it can be seen that the mean flow depends on the conductivity of each edge, $D_{ij}$, which is 	initialized at and kept at or above some minimal value.
+The actual flow along the edge $ij$ can then be found as
 \begin{equation}
 I_{ij} = \text{Poi}(|\bar{I}_{ij}|\Delta t).
 \end{equation}
@@ -62,19 +62,12 @@ At the beginning of the confirmation part, all the data regarding how many parti
  \end{equation}
  The flow should theoretically be symmetric, but since only one particle has randomized a value, and the other has set it to zero, the flow is not symmetric in this implementation.
  
- \ \\
- 
-\noindent After that, the final part of the step begins, in which several parameters that are relevant to the algorithm are updated. First is the conductivity, which can be calculated as
+After that, the final part of the step begins, in which several parameters that are relevant to the algorithm are updated. First is the conductivity, which can be calculated as
 \begin{equation}
 D_{ij}(t + \Delta t) = D_{ij}(t) + q|\bar{I}|^\mu - \lambda D_{ij}(t)\Delta t,
 \end{equation}
 
-where $q$ is the reinforcement intensity caused by per unit flow, $\mu$ is the path maintenance parameter, $\lambda$ is the conductivity decay parameter and $\Delta t$ is the time step. If $\mu$ is set to one the current-reinforced random walk is linear and will converge to the same solution every time. If on the other hand $\mu$ is set to greater than one the current-reinforced random walk becomes non-linear and will not converge to the same solution every run. The solution path for a non linear current-reinforced random walk will instead of optimizing for shortest individual path try to minimize
-
-\begin{equation}
-\sum_{j \in \text{Neighbors}(i)}\frac{l_{ij}}{D_{ij}}\bar{I}^{1/\mu}.
-\end{equation}
- 
+where $q$ is the reinforcement intensity caused by per unit flow, $\mu$ is the path maintenance parameter, $\lambda$ is the conductivity decay parameter and $\Delta t$ is the time step. If $\mu$ is set to one the current-reinforced random walk is linear and will converge to the same solution every time. If on the other hand $\mu$ is set to greater than one the current-reinforced random walk becomes non-linear and will not converge to the same solution every time that a system is simulated. 
 
 Next to be calculated is the capacitance, which is calculated as 
  \begin{equation}
