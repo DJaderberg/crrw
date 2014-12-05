@@ -160,8 +160,8 @@ private:
     int Nmin, Nmax;
     
     /// Size configurations in px
-    unsigned int windowHeight = 1310*4;
-    unsigned int windowWidth = 2786*4;
+    unsigned int windowHeight = 1000; //1310*4;
+    unsigned int windowWidth = 1000; //2786*4;
     unsigned int borderWidth = 100;
     double nodeMinRadius = 1;
     double nodeMaxRadius = 10;
