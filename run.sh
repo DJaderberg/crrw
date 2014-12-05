@@ -1,8 +1,8 @@
 #!/bin/bash
 
 out_folder="/temp/random-walk"
-sinks_file="nodes_sinks.txt"
-sources_file="nodes_sources.txt"
+sinks_file="data/nodes/nodes_sinks_M10.txt"
+sources_file="data/nodes/nodes_sources_M10.txt"
 
 base_name="nodes"
 metis="M10"
