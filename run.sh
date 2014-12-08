@@ -18,12 +18,14 @@ threads=10
 #Parallel linear with METIS with many sinks
 sinks_or_sources="sources"
 filename="$base_name"_"$metis"_"$sinks_or_sources"_"$mu""$filetype"
-`./random-walk -i data/"$sources_file" -o "$out_folder"/"$filename" -n "$steps" -w "$write" -t "$time_step" -u "$mu" -p "$threads"`
+echo "./random-walk -i "$sources_file" -o "$out_folder"/"$filename" -n "$steps" -w "$write" -t "$time_step" -u "$mu" -p "$threads""
+./random-walk -i "$sources_file" -o "$out_folder"/"$filename" -n "$steps" -w "$write" -t "$time_step" -u "$mu" -p "$threads"
 
 #Parallel linear with METIS with many sources
 sinks_or_sources="sinks"
 filename="$base_name"_"$metis"_"$sinks_or_sources"_"$mu""$filetype"
-`./random-walk -i data/"$sinks_file" -o "$out_folder"/"$filename" -n "$steps" -w "$write" -t "$time_step" -u "$mu" -p "$threads"`
+echo "./random-walk -i "$sinks_file" -o "$out_folder"/"$filename" -n "$steps" -w "$write" -t "$time_step" -u "$mu" -p "$threads""
+./random-walk -i "$sinks_file" -o "$out_folder"/"$filename" -n "$steps" -w "$write" -t "$time_step" -u "$mu" -p "$threads"
 
 
 #
@@ -35,12 +37,14 @@ mu="1.1"
 #Parallel non-linear (mu=1.1) with METIS with many sources
 sinks_or_sources="sources"
 filename="$base_name"_"$metis"_"$sinks_or_sources"_"$mu""$filetype"
-`./random-walk -i data/"$sources_file" -o "$out_folder"/"$filename" -n "$steps" -w "$write" -t "$time_step" -u "$mu" -p "$threads"`
+echo "./random-walk -i "$sources_file" -o "$out_folder"/"$filename" -n "$steps" -w "$write" -t "$time_step" -u "$mu" -p "$threads""
+./random-walk -i "$sources_file" -o "$out_folder"/"$filename" -n "$steps" -w "$write" -t "$time_step" -u "$mu" -p "$threads"
 
 #Parallel non-linear (mu=1.1) with METIS with many sinks
 sinks_or_sources="sinks"
 filename="$base_name"_"$metis"_"$sinks_or_sources"_"$mu""$filetype"
-`./random-walk -i data/"$sinks_file" -o "$out_folder"/"$filename" -n "$steps" -w "$write" -t "$time_step" -u "$mu" -p "$threads"`
+echo "./random-walk -i "$sinks_file" -o "$out_folder"/"$filename" -n "$steps" -w "$write" -t "$time_step" -u "$mu" -p "$threads""
+./random-walk -i "$sinks_file" -o "$out_folder"/"$filename" -n "$steps" -w "$write" -t "$time_step" -u "$mu" -p "$threads"
 
 #
 # Switch from linear to non-linear (mu = 1.4)!
@@ -51,12 +55,14 @@ mu="1.4"
 #Parallel non-linear (mu=1.4) with METIS with many sources
 sinks_or_sources="sources"
 filename="$base_name"_"$metis"_"$sinks_or_sources"_"$mu""$filetype"
-`./random-walk -i data/"$sources_file" -o "$out_folder"/"$filename" -n "$steps" -w "$write" -t "$time_step" -u "$mu" -p "$threads"`
+echo "./random-walk -i "$sources_file" -o "$out_folder"/"$filename" -n "$steps" -w "$write" -t "$time_step" -u "$mu" -p "$threads""
+./random-walk -i "$sources_file" -o "$out_folder"/"$filename" -n "$steps" -w "$write" -t "$time_step" -u "$mu" -p "$threads"
 
 #Parallel non-linear (mu=1.4) with METIS with many sinks
 sinks_or_sources="sinks"
 filename="$base_name"_"$metis"_"$sinks_or_sources"_"$mu""$filetype"
-`./random-walk -i data/"$sinks_file" -o "$out_folder"/"$filename" -n "$steps" -w "$write" -t "$time_step" -u "$mu" -p "$threads"`
+echo "./random-walk -i "$sinks_file" -o "$out_folder"/"$filename" -n "$steps" -w "$write" -t "$time_step" -u "$mu" -p "$threads""
+./random-walk -i "$sinks_file" -o "$out_folder"/"$filename" -n "$steps" -w "$write" -t "$time_step" -u "$mu" -p "$threads"
 
 
 #
@@ -68,9 +74,11 @@ mu="1.8"
 #Parallel non-linear (mu=1.8) with METIS with many sources
 sinks_or_sources="sources"
 filename="$base_name"_"$metis"_"$sinks_or_sources"_"$mu""$filetype"
-`./random-walk -i data/"$sources_file" -o "$out_folder"/"$filename" -n "$steps" -w "$write" -t "$time_step" -u "$mu" -p "$threads"`
+echo "./random-walk -i "$sources_file" -o "$out_folder"/"$filename" -n "$steps" -w "$write" -t "$time_step" -u "$mu" -p "$threads""
+./random-walk -i "$sources_file" -o "$out_folder"/"$filename" -n "$steps" -w "$write" -t "$time_step" -u "$mu" -p "$threads"
 
 #Parallel non-linear (mu=1.8) with METIS with many sinks
 sinks_or_sources="sinks"
 filename="$base_name"_"$metis"_"$sinks_or_sources"_"$mu""$filetype"
-`./random-walk -i data/"$sinks_file" -o "$out_folder"/"$filename" -n "$steps" -w "$write" -t "$time_step" -u "$mu" -p "$threads"`
+echo "./random-walk -i "$sinks_file" -o "$out_folder"/"$filename" -n "$steps" -w "$write" -t "$time_step" -u "$mu" -p "$threads""
+./random-walk -i "$sinks_file" -o "$out_folder"/"$filename" -n "$steps" -w "$write" -t "$time_step" -u "$mu" -p "$threads"
