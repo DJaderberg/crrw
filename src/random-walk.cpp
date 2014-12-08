@@ -41,6 +41,8 @@ struct arguments {
 	bool reduce = false;
 	///The maximal distance between nodes that should be joined
 	double reduceDist = 0.0;
+	///The non-linearity parameter mu
+	double mu = 1.0;
     ///Number of threads to use
     unsigned int threads = 1;
 };
@@ -55,12 +57,12 @@ struct arguments {
 arguments parse_args(int argc, char* argv[]);
 
 int main(int argc, char* argv[]) {
-    std::shared_ptr<AntElement> e(new AntElement());
-    algorithmCreator create = CurrentWalk::create;
 	arguments args = parse_args(argc, argv);
 	if (args.quitAfterArgs) {
 		return 0;
 	}
+    std::shared_ptr<Element> e(new Element(0.0001, 0.001, args.mu, 5e-2, 10));
+    algorithmCreator create = CurrentWalk::create;
     
 #ifdef GRAPHICS
 	if (args.reduce) {
@@ -88,7 +90,7 @@ int main(int argc, char* argv[]) {
 arguments parse_args(int argc, char* argv[]) {
 	arguments args;
 	int c;
-	while ((c = getopt(argc, argv, "i:d:o:n:w:t:fm:q:p:r:h")) != -1) {
+	while ((c = getopt(argc, argv, "i:d:o:n:w:t:fm:q:r:u:p:h")) != -1) {
 		switch (c) {
 			case 'i':
 				args.filename = optarg;
@@ -122,6 +124,9 @@ arguments parse_args(int argc, char* argv[]) {
 			case 'r':
 				args.reduce = true;
 				args.reduceDist = std::atof(optarg);
+				break;
+			case 'u':
+				args.mu = std::atof(optarg);
 				break;
             case 'p':
                 args.threads = std::atoi(optarg);
