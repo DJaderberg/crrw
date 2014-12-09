@@ -59,7 +59,7 @@ int main(int argc, char* argv[]) {
 	if (args.quitAfterArgs) {
 		return 0;
 	}
-    std::shared_ptr<Element> e(new Element(0.0001, 0.001, args.mu, 5e-2, 10));
+    std::shared_ptr<Element> e(new Element(0.0001, 0.001, args.mu, 5e-2, 0));
     algorithmCreator create = CurrentWalk::create;
     
 #ifdef GRAPHICS
