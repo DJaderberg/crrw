@@ -6,6 +6,7 @@
 \subsection{Metis and parallelism}
 
 \subsection{Algorithm}
+\label{sec:appendix:algorithm}
 The probability for a particle to move to another node in this particular current-reinforced random walk depends on the flow of particles to that node, i.e. the current of particles. This optimizes the path length for each individual path from the sources to the sinks, i.e it minimizes 
 
 \begin{equation}
@@ -25,7 +26,9 @@ There are some necessary parameters for this model to make sense. These paramete
 	\hline
 	$l_{ij}$ & length in space & length in space \\
 	\hline
-	$N_{i}$ & potential & number of ants \\
+	$N_{i}$ & number of electrons & number of ants \\
+	\hline	
+	$P_{i}$ & potential & inverse flowness \\
 	\hline
 	$I_{ij}$ & current & flow of ants \\
 	\hline
