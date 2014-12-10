@@ -1,0 +1,7 @@
+\section{Method}
+\label{sec:method}
+
+\subsection{Mathematical modeling}
+ The core of modeling current-reinforced random walks is that there are sources, sinks, nodes, particles and edges all organized within a graph representing a network. The fundamental idea is that sources send out information, sinks collect information and particles represent information. Edges are connections between sources, sinks and nodes and represent a path for the information to spread. Sources have a production rate, i.e the rate at which new particles are being injected into the system. Sinks have a removal rate, i.e. the rate at which particles are being removed from the system. Sources, sinks and nodes can all contain particles. For a system to have a viable solution for a shortest path between sources and sinks the cumulative production rate of all the sources must be less than or equal to the cumulative removal rate of all the sinks, otherwise no flow equilibrium can be established.
+ 
+ \subsection{Implementation and parallelism}
