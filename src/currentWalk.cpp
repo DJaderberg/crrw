@@ -11,8 +11,8 @@ void CurrentWalk::prepareStep(double dt) {
 }
 
 void CurrentWalk::takeStep(double dt) {
-	this->updateCapacitance();
 	this->updateConductivity(dt);
+	this->updateCapacitance();
 	this->updateNumberOfParticles(dt);
 	this->updatePotential();
 }
