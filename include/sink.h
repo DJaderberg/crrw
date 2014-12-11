@@ -14,7 +14,7 @@ public:
      * @param n Neighbors of the new Sink 
      * @param dist Distance to each neighbor, in same order as n
      */
-    Sink(std::unordered_map<unsigned int,std::shared_ptr<Node>> n, std::unordered_map<unsigned int,double> dist) : Node(n, dist) {
+    Sink(std::unordered_map<unsigned long long,std::shared_ptr<Node>> n, std::unordered_map<unsigned long long,double> dist) : Node(n, dist) {
 	};
 	/** Create a Sink with only an element
 	 */

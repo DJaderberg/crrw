@@ -51,8 +51,12 @@ Confirmation:\\
 \label{alg:outline}
 \end{algorithm}
 
- \subsection{Implementation and parallelism} 
- \label{sec:parallel}
+\subsection{Implementation and parallelism} 
+\label{sec:parallel}
+
+The algorithm shown in Algorithm \ref{alg:outline} can be parallelized in each of the outer loops, with synchronization after each preparation step and after each confirmation step. The synchronizations are necessary since the update of the conductivity depends on the flow from the neighboring nodes and since the update of the mean flow depends on the potential of the neighboring nodes. So strictly speaking, global synchronization is not necessary, but it is much simpler and may not be slower since it avoids complicated synchronization patterns.
+
+It is also important to take care that there are never fewer than zero particles at each node. This can be a problem due to the randomness of the flow, but can be avoided by ensuring that each node will not send more particles along all its connected edges than are at the node at the beginning of the time step.
 
 \begin{algorithm}[H]
 Preparation\\
