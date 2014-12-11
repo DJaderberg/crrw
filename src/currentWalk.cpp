@@ -33,16 +33,16 @@ void CurrentWalk::updateMeanFlow() {
 }
 
 void CurrentWalk::updateFlow(double dt) {
-	int value;
-	int tempNumberOfParticles = node->getNumberOfParticles();
+	long long value;
+	long long tempNumberOfParticles = node->getNumberOfParticles();
 	for (auto n : node->meanFlowMap) {
 		if (n.second > 0) {
 			double mean = n.second*dt;
-			std::poisson_distribution<int> rngDist(mean);
+			std::poisson_distribution<long long> rngDist(mean);
 			value = rngDist(this->rd);
 			node->flowMap[n.first] = std::min(tempNumberOfParticles, value);
 			tempNumberOfParticles -= value;
-			tempNumberOfParticles = std::max(0, tempNumberOfParticles);
+			tempNumberOfParticles = std::max((long long)0, tempNumberOfParticles);
 		} else {
 			node->flowMap[n.first] = 0;
 		}
@@ -50,7 +50,7 @@ void CurrentWalk::updateFlow(double dt) {
 }
 
 void CurrentWalk::updateNumberOfParticles(double dt) {
-	unsigned int tempNumberOfParticles = node->getNumberOfParticles();
+	unsigned long long tempNumberOfParticles = node->getNumberOfParticles();
 	for (auto n : node->getNeighbors()) {
 		tempNumberOfParticles -= node->flowMap[n.first];
 		tempNumberOfParticles += n.second->flowMap[node->getId()];

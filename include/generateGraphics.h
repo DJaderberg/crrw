@@ -21,4 +21,4 @@
 /**
  * Function for generating images from data
  */
-void generateGraphics(std::string nodePath, std::string dataReadPath, std::string imageSavePath, std::shared_ptr<Element> e, algorithmCreator create, int nCount, int writeInterval, bool force);
+void generateGraphics(std::string nodePath, std::string dataReadPath, std::string imageSavePath, std::shared_ptr<Element> e, algorithmCreator create, long long nCount, long long writeInterval, bool force);

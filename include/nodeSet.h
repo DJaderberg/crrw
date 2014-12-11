@@ -49,7 +49,7 @@ public:
 	/// Return a string representation of the NodeSet
 	virtual std::string toString();
 	/// Return the number of particles at each Node in the NodeSet
-	virtual std::vector<unsigned int> numberOfParticles();
+	virtual std::vector<unsigned long long> numberOfParticles();
 	/**
 	 * Make one time step
 	 *
@@ -83,6 +83,6 @@ protected:
 	///A vector containing all Algorithms in the set
 	std::vector<std::shared_ptr<Algorithm>> algorithms;
 	///Map from the ids in the input stream to the actual ids of the Nodes
-	std::unordered_map<int, unsigned int> idMap;
+	std::unordered_map<long long, unsigned long long> idMap;
 };
 

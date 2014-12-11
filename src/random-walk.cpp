@@ -22,9 +22,9 @@ struct arguments {
     std::string dataPath = "data/save.txt";
 #endif
 	///Number of steps to take/read
-    int nCount = 50;
+    long long nCount = 50;
 	///How often (in steps) to output data
-    int writeInterval = 1;
+    long long writeInterval = 1;
 	///Size of a single timestep
     double dt = 0.1;
 	///True if no generation should be perform (e.g. only print help)
@@ -36,7 +36,7 @@ struct arguments {
 	///True if we should only partition data using METIS
 	bool metis = false;
 	std::string metisPath = "data/metis.txt";
-	int metisParts = 1;
+	long long metisParts = 1;
 	///True if we should only reduce the number of nodes
 	bool reduce = false;
 	///The maximal distance between nodes that should be joined
@@ -86,7 +86,7 @@ int main(int argc, char* argv[]) {
 
 arguments parse_args(int argc, char* argv[]) {
 	arguments args;
-	int c;
+	long long c;
 	while ((c = getopt(argc, argv, "i:d:o:n:w:t:fm:q:r:u:h")) != -1) {
 		switch (c) {
 			case 'i':
@@ -100,10 +100,10 @@ arguments parse_args(int argc, char* argv[]) {
 				args.dataPath = optarg;
 				break;
 			case 'n':
-				args.nCount = std::atoi(optarg);
+				args.nCount = (long long) std::atoi(optarg);
 				break;
 			case 'w':
-				args.writeInterval = std::atoi(optarg);
+				args.writeInterval = (long long) std::atoi(optarg);
 				break;
 			case 't':
 				args.dt = std::atof(optarg);
@@ -116,7 +116,7 @@ arguments parse_args(int argc, char* argv[]) {
 				args.metisPath = optarg;
 				break;
 			case 'q':
-				args.metisParts = std::atoi(optarg);
+				args.metisParts = (long long) std::atoi(optarg);
 				break;
 			case 'r':
 				args.reduce = true;

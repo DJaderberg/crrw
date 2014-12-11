@@ -6,7 +6,7 @@
  *
  * @tparam dimension Dimensionality of the Euclidean space that the node exists in
  */
-template<int dimension>
+template<long long dimension>
 class PositionedNode : public Node {
 public:
     /**
@@ -21,7 +21,7 @@ public:
      * @param n Neighbors to the node
 	 * @param e The Element of the Node
      */
-    PositionedNode(std::array<double, dimension> pos, std::unordered_map<unsigned int,std::shared_ptr<PositionedNode>> n) : Node(), position(pos) {
+    PositionedNode(std::array<double, dimension> pos, std::unordered_map<unsigned long long,std::shared_ptr<PositionedNode>> n) : Node(), position(pos) {
         for (auto& neighbor : n) {
             this->insertNeighbor(neighbor);
         }
@@ -63,7 +63,7 @@ public:
     double distance(std::shared_ptr<PositionedNode<dimension>> n) {
 		double dist = 0;
 		double temp;
-		for (int i = 0; i < dimension; ++i) {
+		for (long long i = 0; i < dimension; ++i) {
 			temp = (this->position[i] - n->position[i]);
 			dist += temp*temp;
 		}

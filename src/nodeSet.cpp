@@ -16,10 +16,10 @@ void NodeSet::parseTGF(std::istream& input) {
 	std::string line;
 	while (std::getline(input, line)) {
 		std::istringstream iss(line);
-		int number, productionRate;
-		//If we can extract an int, create a new Node
+		long long number, productionRate;
+		//If we can extract an long long, create a new Node
 		if (iss >> number) {
-			//If we can get another int, it could be a Source or a drain
+			//If we can get another long long, it could be a Source or a drain
 			if (iss >> productionRate) {
 				if (productionRate > 0) {
 					std::shared_ptr<Source> tempNode(new Source(productionRate));
@@ -48,7 +48,7 @@ void NodeSet::parseTGF(std::istream& input) {
 	//The next step is to set up all the connections
 	while (std::getline(input, line)) {
 		std::istringstream iss(line);
-		int from, to;
+		long long from, to;
 		double distance;
 		if (iss >> from >> to >> distance) {
 			nodes[idMap[from]]->insertNeighbor(nodes[idMap[to]], distance);
@@ -64,8 +64,8 @@ std::string NodeSet::toString() {
 	return ret;
 }
 
-std::vector<unsigned int> NodeSet::numberOfParticles() {
-	std::vector<unsigned int> ret = std::vector<unsigned int>();
+std::vector<unsigned long long> NodeSet::numberOfParticles() {
+	std::vector<unsigned long long> ret = std::vector<unsigned long long>();
 	ret.reserve(nodes.size()); //Alloc space for as many elements as are in nodes
 	for (auto n : nodes) {
 		ret.push_back(n->getNumberOfParticles());

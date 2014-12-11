@@ -1,6 +1,6 @@
 #include "source.h"
 
-int Source::getProductionRate() {
+long long Source::getProductionRate() {
 	return this->productionRate;
 }
 

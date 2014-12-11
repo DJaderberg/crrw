@@ -74,7 +74,7 @@ protected:
      */
     void readNumPart(std::istream& is)
     {
-        unsigned int temp;
+        unsigned long long temp;
         char separator;
         is >> temp >> separator;
         if (separator != ';') {
@@ -104,7 +104,7 @@ protected:
     void readDataMaps(std::istream& is)
     {
         char separator;
-        int tempId;
+        long long tempId;
         double cond, flow;
         for (auto n: conductivityMap) {
             is >> tempId;
@@ -131,7 +131,7 @@ protected:
     void updatePotential();
     std::shared_ptr<Node> node;
     ///Conductivity of the Node
-    std::unordered_map<unsigned int,double> conductivityMap;
+    std::unordered_map<unsigned long long,double> conductivityMap;
     ///Capacitance of the Node
     double capacitance = 0;
     ///Random number generation state
@@ -155,10 +155,10 @@ public:
     
     void updateNumberOfParticles(double dt) {
         CurrentWalk::updateNumberOfParticles(dt);
-        node->setNumberOfParticles((int)(dt*productionRate) + node->getNumberOfParticles());
+        node->setNumberOfParticles((long long)(dt*productionRate) + node->getNumberOfParticles());
     }
 private:
-    int productionRate = 0;
+    long long productionRate = 0;
 };
 
 /**
@@ -177,14 +177,14 @@ public:
     void updateNumberOfParticles(double dt) {
         CurrentWalk::updateNumberOfParticles(dt);
         
-        if (node->getNumberOfParticles() <= (unsigned int)std::abs((int)(dt*removalRate))) {
+        if (node->getNumberOfParticles() <= (unsigned long long)std::abs((long long)(dt*removalRate))) {
             node->setNumberOfParticles(0);
         } else {
-            node->setNumberOfParticles((int)(dt*removalRate) + node->getNumberOfParticles());
+            node->setNumberOfParticles((long long)(dt*removalRate) + node->getNumberOfParticles());
         }
         
         
     }
 private:
-    int removalRate = 0;
+    long long removalRate = 0;
 };

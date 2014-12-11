@@ -14,14 +14,14 @@ void PositionedNodeSet::parseTGF(std::istream& input) {
 	std::string line;
 	while (std::getline(input, line)) {
 		std::istringstream iss(line);
-		int number, productionRate;
+		long long number, productionRate;
 		double x, y;
-		//If we can extract an int and two doubles, create a new Node
+		//If we can extract an long long and two doubles, create a new Node
 		if (iss >> number >> x >> y) {
 			std::array<double, 2> pos;
 			pos[0] = x;
 			pos[1] = y;
-			//If we can get another int, it could be a Source or a sink
+			//If we can get another long long, it could be a Source or a sink
 			if (iss >> productionRate) {
 				if (productionRate > 0) {
 					std::shared_ptr<PositionedSource<2>> tempNode(new PositionedSource<2>(pos, productionRate));
@@ -58,7 +58,7 @@ void PositionedNodeSet::parseTGF(std::istream& input) {
 	//The next step is to set up all the connections
 	while (std::getline(input, line)) {
 		std::istringstream iss(line);
-		int from, to;
+		long long from, to;
 		if (iss >> from >> to) {
 			positionedNodes[from]->insertNeighbor(positionedNodes[to]);
 		}
@@ -73,8 +73,8 @@ std::string PositionedNodeSet::toString() {
 	return ret;
 }
 
-std::vector<unsigned int> PositionedNodeSet::numberOfParticles() {
-	std::vector<unsigned int> ret = std::vector<unsigned int>();
+std::vector<unsigned long long> PositionedNodeSet::numberOfParticles() {
+	std::vector<unsigned long long> ret = std::vector<unsigned long long>();
 	ret.reserve(positionedNodes.size()); //Alloc space for as many elements as are in nodes
 	for (auto n : positionedNodes) {
 		ret.push_back(n->getNumberOfParticles());
@@ -97,8 +97,8 @@ void PositionedNodeSet::reinitialize() {
 	}
 }
 
-std::unordered_map<unsigned int, std::array<double, 2>> PositionedNodeSet::getPositions() {
-	std::unordered_map<unsigned int, std::array<double, 2>> positions;
+std::unordered_map<unsigned long long, std::array<double, 2>> PositionedNodeSet::getPositions() {
+	std::unordered_map<unsigned long long, std::array<double, 2>> positions;
 	for (auto n : positionedNodes) {
 		positions[n->getId()] = n->getPosition();
 	}
@@ -109,17 +109,17 @@ std::vector<std::shared_ptr<PositionedNode<2>>> PositionedNodeSet::getNodes() {
 	return positionedNodes;
 }
 
-std::pair<std::unordered_map<unsigned int, double>, std::unordered_map<unsigned int, int>> PositionedNodeSet::shortestPath(unsigned int source) {
-	std::unordered_map<unsigned int, double> distances;
-	std::unordered_map<unsigned int, int> previous;
-	std::unordered_map<unsigned int, std::shared_ptr<PositionedNode<2>>> Q;
+std::pair<std::unordered_map<unsigned long long, double>, std::unordered_map<unsigned long long, long long>> PositionedNodeSet::shortestPath(unsigned long long source) {
+	std::unordered_map<unsigned long long, double> distances;
+	std::unordered_map<unsigned long long, long long> previous;
+	std::unordered_map<unsigned long long, std::shared_ptr<PositionedNode<2>>> Q;
 	for (auto n : this->positionedNodes) {
 		Q[n->getId()] = n;
 		distances[n->getId()] = 1e20;
 		previous[n->getId()] = -1;
 	}
 	distances[source] = 0;
-	unsigned int u = source;
+	unsigned long long u = source;
 	bool first = true;
 	while (Q.size() > 0) {
 		//std::cout << "Q.size(): " << Q.size() << "\n";
@@ -130,7 +130,7 @@ std::pair<std::unordered_map<unsigned int, double>, std::unordered_map<unsigned 
 			first = false;
 		} else {
 			double curMin = 1e21;
-			unsigned int uTemp;
+			unsigned long long uTemp;
 			for (auto v : Q) {
 				double w = distances[v.first];
 				if (w < curMin) {
@@ -149,7 +149,7 @@ std::pair<std::unordered_map<unsigned int, double>, std::unordered_map<unsigned 
 			}
 		}
 	}
-	std::pair<std::unordered_map<unsigned int, double>, std::unordered_map<unsigned int, int>> ret(distances, previous);
+	std::pair<std::unordered_map<unsigned long long, double>, std::unordered_map<unsigned long long, long long>> ret(distances, previous);
 	return ret;
 }
 
@@ -157,7 +157,7 @@ void PositionedNodeSet::writeMETIS(std::ostream& stream) {
 	//Stream to which all connections are buffered
 	std::stringstream connection;
 	//Count number of edges (divide by 2 in the end)
-	unsigned int numEdges = 0;
+	unsigned long long numEdges = 0;
 	stream << positionedNodes.size() << " ";
 	//For each node, write all neighbors (separated by space)
 	for (auto p : positionedNodes) {
@@ -171,27 +171,27 @@ void PositionedNodeSet::writeMETIS(std::ostream& stream) {
 	stream << connection.rdbuf();
 }
 
-void PositionedNodeSet::readMETIS(std::istream& input, std::ostream& output, unsigned int numPart) {
+void PositionedNodeSet::readMETIS(std::istream& input, std::ostream& output, unsigned long long numPart) {
 	std::string line;
-	std::vector<std::vector<unsigned int>> partVectors;
+	std::vector<std::vector<unsigned long long>> partVectors;
 
 	//Calculate shortest paths - which are to be used for finding which nodes are connected to the large network
 	auto pair = shortestPath(0);
 	auto distances = pair.first;
 	//Initialize vectors
-	for (unsigned int i = 0; i < numPart; i++) {
-		partVectors.push_back(std::vector<unsigned int>());
+	for (unsigned long long i = 0; i < numPart; i++) {
+		partVectors.push_back(std::vector<unsigned long long>());
 	}
 	//Add all nodes to the correct partition by reading the value in the METIS file
 	for (auto n : positionedNodes) {
 		std::getline(input, line);
-		int part = std::stoi(line);
+		long long part = std::stoi(line);
 		partVectors[part].push_back(n->getId());
 	}
 	//output << positionedNodes.size() << '\n';
-	std::unordered_map<unsigned int, unsigned int> oldToNewId;
+	std::unordered_map<unsigned long long, unsigned long long> oldToNewId;
 	//Add all nodes to the output, in order of partitions
-	unsigned int id = 0;
+	unsigned long long id = 0;
 	for (auto v : partVectors) {
 		for (auto n : v) {
 			//Don't add this node if it isn't connected to the network
@@ -216,11 +216,11 @@ void PositionedNodeSet::readMETIS(std::istream& input, std::ostream& output, uns
 	output << "#\n";
 	//Print all edges to the output, correctly renamed
 	for (auto n : positionedNodes) {
-		unsigned int id = oldToNewId[n->getId()];
+		unsigned long long id = oldToNewId[n->getId()];
 		//Don't add this node if it isn't connected to the network
 		if (distances[n->getId()] < 1e19) {
 			for (auto neighbor : n->getNeighbors()) {
-				unsigned int neighborId = oldToNewId[neighbor.first];
+				unsigned long long neighborId = oldToNewId[neighbor.first];
 				output << id << ' ' << neighborId << '\n';
 			}
 		}
