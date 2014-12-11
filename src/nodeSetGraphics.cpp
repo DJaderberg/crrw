@@ -214,7 +214,7 @@ void NodeSetGraphics::drawShortestPath(PositionedNodeSet n, std::vector<unsigned
             l.g = 1;
             l.b = 1;
             l.alpha = 1;
-            l.lineWidth = 2*lineWidthMin;
+            l.lineWidth = 2*lineWidthNoFlow;
             drawEdge(n.getNodes()[id], n.getNodes()[pathMap[id]], l);
             id = pathMap[id];
         }
@@ -292,14 +292,15 @@ void NodeSetGraphics::drawEdges(PositionedNodeSet n, bool changeFlow) {
                 l.g = 0;
                 l.b = 0;
                 l.alpha = 1;
+                l.lineWidth = lineWidthNoFlow;
             } else {
                 l.r = 1;
-                l.g = 0;
-                l.b = 0.7;
+                l.g = 0.5;
+                l.b = 0.1;
                 l.alpha = ((flow - flowMin)/(flowMax - flowMin))*(1 - lineOpacMin) + lineOpacMin;
+                l.lineWidth = ((flow - flowMin)/(flowMax-flowMin))*(lineWidthMax - lineWidthMin) + lineWidthMin;
             }
             
-            l.lineWidth = ((flow - flowMin)/(flowMax-flowMin))*(lineWidthMax - lineWidthMin) + lineWidthMin;
             drawEdge(node, std::dynamic_pointer_cast<PositionedNode<2>>(neighbor.second), l);
         }
     }
