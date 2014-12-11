@@ -5,14 +5,14 @@
 #include <cmath>
 #include <algorithm>
 
-unsigned int Node::idCounter = 0;
+unsigned long long Node::idCounter = 0;
 
-std::unordered_map<unsigned int,std::shared_ptr<Node>> Node::getNeighbors() {
+std::unordered_map<unsigned long long,std::shared_ptr<Node>> Node::getNeighbors() {
     return this->neighborsMap;
 }
 
 void Node::insertNeighbor(std::shared_ptr<Node> neighbor, double distance) {
-    unsigned int id = neighbor->getId();
+    unsigned long long id = neighbor->getId();
     neighborsMap[id] = neighbor;
     lengthMap[id] = distance;
 }
@@ -25,19 +25,19 @@ void Node::insertNeighborUnique(std::shared_ptr<Node> neighbor, double distance)
 		}
 }
 
-unsigned int Node::getId() {
+unsigned long long Node::getId() {
     return this->id;
 }
 
-int Node::getFileId() {
+long long Node::getFileId() {
     return this->fileId;
 }
 
-void Node::setFileId(int fileId) {
+void Node::setFileId(long long fileId) {
     this->fileId = fileId;
 }
 
-unsigned int Node::getNumberOfParticles() {
+unsigned long long Node::getNumberOfParticles() {
 	return this->numberOfParticles;
 }
 

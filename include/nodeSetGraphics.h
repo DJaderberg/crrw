@@ -66,7 +66,7 @@ public:
      * @param sinkId a Vector of the sinks ids
      * @param pathMap A path map for the shortest path
      */
-    void drawShortestPath(PositionedNodeSet n, std::vector<unsigned int> sinkId, std::unordered_map<unsigned int, int> pathMap);
+    void drawShortestPath(PositionedNodeSet n, std::vector<unsigned long long> sinkId, std::unordered_map<unsigned long long, long long> pathMap);
     
     /**
      * Finds the Sources in a PositionedNodeSet
@@ -74,7 +74,7 @@ public:
      * @param n A PositionedNodeSet
      * @return a vector with the ids of the sources in the set
      */
-    std::vector<unsigned int> findSources(PositionedNodeSet n);
+    std::vector<unsigned long long> findSources(PositionedNodeSet n);
     
     /**
      * Finds the Sinks in a PositionedNodeSet
@@ -82,7 +82,7 @@ public:
      * @param n A PositionedNodeSet
      * @return a vector with the ids of the sinks in the set
      */
-    std::vector<unsigned int> findSinks(PositionedNodeSet n);
+    std::vector<unsigned long long> findSinks(PositionedNodeSet n);
     
     /**
      * Draws all the edges in the NodeSet n to cr
@@ -157,12 +157,12 @@ private:
     /// Help parameters for keeping track of the coordinates and flows
     double Xmin, Xmax, Ymin, Ymax, flowMin, flowMax;
     /// Help parameters for keeping track of the minimum and maximum number of particles
-    int Nmin, Nmax;
+    long long Nmin, Nmax;
     
     /// Size configurations in px
-    unsigned int windowHeight = 1000; //1310*4;
-    unsigned int windowWidth = 1000; //2786*4;
-    unsigned int borderWidth = 100;
+    unsigned long long windowHeight = 1000; //1310*4;
+    unsigned long long windowWidth = 1000; //2786*4;
+    unsigned long long borderWidth = 100;
     double nodeMinRadius = 1;
     double nodeMaxRadius = 10;
     double nodeBorder = 2;

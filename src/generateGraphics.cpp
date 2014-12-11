@@ -13,7 +13,7 @@
 /**
  * Function for generating images from data
  */
-void generateGraphics(std::string nodePath, std::string dataReadPath, std::string imageSavePath, std::shared_ptr<Element> e, algorithmCreator create, int nCount, int writeInterval, bool force) {
+void generateGraphics(std::string nodePath, std::string dataReadPath, std::string imageSavePath, std::shared_ptr<Element> e, algorithmCreator create, long long nCount, long long writeInterval, bool force) {
     
     NodeSetGraphics graphics = NodeSetGraphics();
     graphics.init();
@@ -22,10 +22,10 @@ void generateGraphics(std::string nodePath, std::string dataReadPath, std::strin
     graphics.XYMinMax(set);
     
     
-    std::vector<unsigned int> sourceId = graphics.findSources(set);
-    std::vector<unsigned int> sinkId = graphics.findSinks(set);
+    std::vector<unsigned long long> sourceId = graphics.findSources(set);
+    std::vector<unsigned long long> sinkId = graphics.findSinks(set);
     
-    std::vector<std::unordered_map<unsigned int, int>> pathMaps;
+    std::vector<std::unordered_map<unsigned long long, long long>> pathMaps;
     
     for (auto id: sourceId) {
         pathMaps.push_back(set.shortestPath(id).second);
@@ -36,7 +36,7 @@ void generateGraphics(std::string nodePath, std::string dataReadPath, std::strin
     std::cout << "Finding min and max...\n";
     
     
-    for (int i = 0; i < nCount; i++) {
+    for (long long i = 0; i < nCount; i++) {
         if (i % writeInterval == 0) {
             set.readData(ifsMinMx);
             graphics.NAndFlowMinMax(set);
@@ -51,7 +51,7 @@ void generateGraphics(std::string nodePath, std::string dataReadPath, std::strin
     
     std::ifstream ifs(dataReadPath);
     
-    int j = 0;
+    long long j = 0;
     if (!force) {
         while (true) {
             std::stringstream imgFilename(imageSavePath, std::ios_base::in|std::ios_base::out);
@@ -73,7 +73,7 @@ void generateGraphics(std::string nodePath, std::string dataReadPath, std::strin
     std::cout << "Image generation begun.\n";
     std::string loadBar = "";
     
-    for (int i = 0; i < nCount; i++) {
+    for (long long i = 0; i < nCount; i++) {
         if (i % writeInterval == 0) {
             set.readData(ifs);
             set.reinitialize();

@@ -21,9 +21,9 @@ struct defaultValues {
 
 struct parametersValues {
     // Size configurations in px
-    unsigned int windowHeight;
-    unsigned int windowWidth;
-    unsigned int borderWidth;
+    unsigned long long windowHeight;
+    unsigned long long windowWidth;
+    unsigned long long borderWidth;
     double nodeMinRadius;
     double nodeMaxRadius;
     double nodeBorder;
@@ -108,7 +108,7 @@ void NodeSetGraphics::XYMinMax(PositionedNodeSet n) {
 
 void NodeSetGraphics::NAndFlowMinMax(PositionedNodeSet n) {
     
-    int tempN = n.getNodes().front()->getNumberOfParticles();
+    long long tempN = n.getNodes().front()->getNumberOfParticles();
     double tempFlow = std::abs(n.getNodes().front()->getMeanFlow(n.getNodes().front()->getNeighborsMap().begin()->second->getId()));
     
     for (auto node: n.getNodes()) {
@@ -196,7 +196,7 @@ void NodeSetGraphics::drawNodes(PositionedNodeSet n, bool changeSize) {
     cr->restore();
 }
 
-void NodeSetGraphics::drawShortestPath(PositionedNodeSet n, std::vector<unsigned int> sinkId, std::unordered_map<unsigned int, int> pathMap) {
+void NodeSetGraphics::drawShortestPath(PositionedNodeSet n, std::vector<unsigned long long> sinkId, std::unordered_map<unsigned long long, long long> pathMap) {
     cr->save();
     // Draw lines
     struct lineSettings l;
@@ -222,8 +222,8 @@ void NodeSetGraphics::drawShortestPath(PositionedNodeSet n, std::vector<unsigned
     cr->restore();
 }
 
-std::vector<unsigned int> NodeSetGraphics::findSources(PositionedNodeSet n) {
-    std::vector<unsigned int> sourcesId;
+std::vector<unsigned long long> NodeSetGraphics::findSources(PositionedNodeSet n) {
+    std::vector<unsigned long long> sourcesId;
     
     for (auto s: n.getNodes()) {
         if (std::dynamic_pointer_cast<PositionedSource<2>>(s)) {
@@ -233,8 +233,8 @@ std::vector<unsigned int> NodeSetGraphics::findSources(PositionedNodeSet n) {
     return sourcesId;
 }
 
-std::vector<unsigned int> NodeSetGraphics::findSinks(PositionedNodeSet n) {
-    std::vector<unsigned int> sinksId;
+std::vector<unsigned long long> NodeSetGraphics::findSinks(PositionedNodeSet n) {
+    std::vector<unsigned long long> sinksId;
     
     for (auto s: n.getNodes()) {
         if (std::dynamic_pointer_cast<PositionedSink<2>>(s)) {

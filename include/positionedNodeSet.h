@@ -54,7 +54,7 @@ public:
     /// Return a string representation of the NodeSet
     std::string toString();
     /// Return the number of particles at each Node in the NodeSet
-    std::vector<unsigned int> numberOfParticles();
+    std::vector<unsigned long long> numberOfParticles();
     /**
      * Make one time step
      *
@@ -68,7 +68,7 @@ public:
 	 */
 	void reinitialize();
     ///Get positions
-    std::unordered_map<unsigned int, std::array<double, 2>> getPositions();
+    std::unordered_map<unsigned long long, std::array<double, 2>> getPositions();
     //Get PositionedNodes
     std::vector<std::shared_ptr<PositionedNode<2>>> getNodes();
     
@@ -104,7 +104,7 @@ public:
 	 * @param id The in-memory id of the Node
 	 * @return The file id of the Node
 	 */
-	int getFileId(unsigned int id) {
+	long long getFileId(unsigned long long id) {
 		return inverseIdMap[id];
 	}
 	/**
@@ -113,7 +113,7 @@ public:
 	 * @param id The file id of the Node
 	 * @return The in-memory id of the Node
 	 */
-	unsigned int getMemoryId(int id) {
+	unsigned long long getMemoryId(long long id) {
 		return idMap[id];
 	}
 	/**
@@ -123,7 +123,7 @@ public:
 	 * @param source The source Node
 	 * @return A map containing the shortest path from source to each node (in-memory node id is the key)
 	 */
-	std::pair<std::unordered_map<unsigned int, double>, std::unordered_map<unsigned int, int>> shortestPath(unsigned int source);
+	std::pair<std::unordered_map<unsigned long long, double>, std::unordered_map<unsigned long long, long long>> shortestPath(unsigned long long source);
 	/**
 	 * Write this set in METIS format.
 	 *
@@ -146,14 +146,14 @@ public:
 	 * @param filename The file to write to
 	 * @param numPart The number of partitions used by METIS
 	 */
-   void readMETIS(std::istream& input, std::ostream& output, unsigned int numPart);
+   void readMETIS(std::istream& input, std::ostream& output, unsigned long long numPart);
 	/**
 	 * Reorder nodes and write to a file using a METIS partition.
 	 *
 	 * @param filename The file to write to
 	 * @param numPart The number of partitions used by METIS
 	 */
-   void readMETIS(const std::string& input, const std::string& output, unsigned int numPart) {
+   void readMETIS(const std::string& input, const std::string& output, unsigned long long numPart) {
         std::ifstream in(input);
         std::ofstream out(output);
         readMETIS(in, out, numPart);
@@ -202,9 +202,9 @@ private:
     ///A vector containing all Algorithms in the set
     std::vector<std::shared_ptr<StorableAlgorithm>> algorithms;
     ///Map from the ids in the input stream to the actual ids of the Nodes
-    std::unordered_map<int, unsigned int> idMap;
+    std::unordered_map<long long, unsigned long long> idMap;
     ///Map from the actual ids of the Nodes to the ids in the input stream 
-    std::unordered_map<unsigned int, int> inverseIdMap;
+    std::unordered_map<unsigned long long, long long> inverseIdMap;
     ///Vector of random devices, one for each thread
     std::vector<std::shared_ptr<std::random_device>> randVect;
     ///Helper function to initialize algorithms

@@ -3,9 +3,25 @@
 
 \subsection{Object oriented programming}
 
+There are two main class structures used in the program, one to represent graphs and one to represent different computational methods.
+
+The class \texttt{NodeSet} exists to model a graph. This is done by storing all nodes, each in an instance of the class \texttt{Node}, and their neighbors, where each \texttt{Node} has a list of pointers to all its neighbors. To model sources and sinks, the classes \texttt{Source} and \texttt{Sink} exists, and they are both subclasses of \texttt{Node}. This is in itself enough to model a graph, but there are also some extensions to help dealing with graphs where every node has a given position in a Euclidean space. To do this, the classes \texttt{PositionedNodeSet}, \texttt{PositionedNode}, \texttt{PositionedSource}, and \texttt{PositionedSink} are introduced, which are all similar to their non-positioned versions. These classes are then used as tools when implementing the actual computations.
+
+The class structure allows to implement different computation algorithms using the same framework. To do this, there exists the abstract class \texttt{Algorithm}, which contains a few pure virtual methods that must be implemented by each subclass. The main subclass of \texttt{Algorithm} is \texttt{CurrentWalk}, which implements the current-reinforced random walks. Each instance of \texttt{Algorithm} expects to be given a single \texttt{Node} and uses that as the basis for its calculations.
+
+These two groups of classes are then used by the main program to perform simulations. Given a method to create instances of some subclass of \texttt{Algorithm}, the main program is then able to construct a \texttt{NodeSet} with a set of \texttt{Node}s and an \texttt{Algorithm} for each \texttt{Node}. The algorithm advances using the \texttt{takeStep()} method in \texttt{NodeSet}. A schematic overview of this structure is shown in fig. (\ref{fig:graphToClass}).
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.95\textwidth]{img/graphToClass.png}
+\caption{An overview of the relation between elements in the graph and different classes in the program structure. It can be seen that each \texttt{NodeSet} contains both a set of \texttt{Node}s and a set of \texttt{Algorithm}s.}
+\label{fig:graphToClass}
+\end{figure}
+
 \subsection{Metis and parallelism}
 
 \subsection{Algorithm}
+\label{sec:appendix:algorithm}
 The probability for a particle to move to another node in this particular current-reinforced random walk depends on the flow of particles to that node, i.e. the current of particles. This optimizes the path length for each individual path from the sources to the sinks, i.e it minimizes 
 
 \begin{equation}
@@ -25,7 +41,9 @@ There are some necessary parameters for this model to make sense. These paramete
 	\hline
 	$l_{ij}$ & length in space & length in space \\
 	\hline
-	$N_{i}$ & potential & number of ants \\
+	$N_{i}$ & number of electrons & number of ants \\
+	\hline	
+	$P_{i}$ & potential & inverse flowness \\
 	\hline
 	$I_{ij}$ & current & flow of ants \\
 	\hline
