@@ -66,3 +66,21 @@ Sync\\
 \caption{Outline of the parallel version of the algorithm showed in Algorithm \ref{alg:outline}.}
 \label{alg:parallel}
 \end{algorithm}
+
+\subsection{Graph partitioning}
+When utilizing multithread systems it is important to minimize memory invalidation, i.e. communication between threads, in order to get good performance. This can be done in numerous ways but when working with graphs a natural way of minimizing memory invalidation is to partition the graph. Partitioning the graph must be done in a clever way so that there are as few as possible edges connecting nodes belonging to different threads. A schematic view of such a graph partitioning is shown in Figure \ref{fig:partitioning}. 
+
+\begin{figure}[H]
+\centering
+\begin{subfigure}[b]{0.48\textwidth}
+\includegraphics[width=\textwidth]{img/partitioning_false.png}
+\caption{Non-partitioned graph.}
+\end{subfigure}
+~
+\begin{subfigure}[b]{0.48\textwidth}
+\includegraphics[width=\textwidth]{img/partitioning_true.png}
+\caption{Partitioned graph.}
+\end{subfigure}
+\caption{Figure shows the difference in number of overlapping edges in between threads for non-partitioned and partitioned graphs. Each color represents nodes belonging to different threads.}
+\label{fig:partitioning}
+\end{figure}
