@@ -168,8 +168,9 @@ private:
     double nodeBorder = 2;
     double sourceRadius = 10;
     double sinkRadius = 10;
-    double lineWidthMin = 1;
-    double lineWidthMax = 40;
+    double lineWidthNoFlow = 1;
+    double lineWidthMin = 3;
+    double lineWidthMax = 60;
     double lineOpacMin = 1;
     
 };
