@@ -35,16 +35,39 @@ void CurrentWalk::updateMeanFlow() {
 void CurrentWalk::updateFlow(double dt) {
 	long long value;
 	long long tempNumberOfParticles = node->getNumberOfParticles();
-	for (auto n : node->meanFlowMap) {
-		if (n.second > 0) {
-			double mean = n.second*dt;
+	std::uniform_int_distribution<long long> uniformDist(0, node->meanFlowMap.size());
+	long long firstNeighbor = uniformDist(this->rd);
+	auto itBegin = node->meanFlowMap.begin();
+	for (long long i = 0; i < firstNeighbor; i++) {
+		++itBegin;
+	}
+	//We use two for-loops here to randomize which neighbor is sent particles first
+	//This should allow for bigger time-steps to be used, since it is now acceptable
+	//when we send all our particles in one step (even though it may be okay to do 
+	//that every iteration)
+	for (auto n = itBegin; n != node->meanFlowMap.end(); n++) {
+		if (n->second > 0) {
+			double mean = n->second*dt;
 			std::poisson_distribution<long long> rngDist(mean);
 			value = rngDist(this->rd);
-			node->flowMap[n.first] = std::min(tempNumberOfParticles, value);
+			node->flowMap[n->first] = std::min(tempNumberOfParticles, value);
 			tempNumberOfParticles -= value;
 			tempNumberOfParticles = std::max((long long)0, tempNumberOfParticles);
 		} else {
-			node->flowMap[n.first] = 0;
+			node->flowMap[n->first] = 0;
+		}
+	}
+
+	for (auto n = node->meanFlowMap.begin(); n != itBegin; n++) {
+		if (n->second > 0) {
+			double mean = n->second*dt;
+			std::poisson_distribution<long long> rngDist(mean);
+			value = rngDist(this->rd);
+			node->flowMap[n->first] = std::min(tempNumberOfParticles, value);
+			tempNumberOfParticles -= value;
+			tempNumberOfParticles = std::max((long long)0, tempNumberOfParticles);
+		} else {
+			node->flowMap[n->first] = 0;
 		}
 	}
 }
