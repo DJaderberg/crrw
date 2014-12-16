@@ -29,7 +29,6 @@ end
 fig1 = figure;
 set(fig1,'units','normalized','outerposition',[0 0 1 1]);
 %----------------------------------------
-versions = {'Pragma schedule - Static', 'Pragma task', 'Bin-Pack', 'Run time system'};
 
 col={'.--b','.--r','.--g','.--m','.--c','.--y','.--k'};
 
