@@ -106,10 +106,11 @@ void NodeSetGraphics::XYMinMax(PositionedNodeSet n) {
     }
 }
 
-void NodeSetGraphics::NAndFlowMinMax(PositionedNodeSet n) {
+void NodeSetGraphics::NAndFlowCondMinMax(PositionedNodeSet n) {
     
     long long tempN = n.getNodes().front()->getNumberOfParticles();
     double tempFlow = std::abs(n.getNodes().front()->getMeanFlow(n.getNodes().front()->getNeighborsMap().begin()->second->getId()));
+    double tempCond = std::abs(n.getNodes().front()->getConductivity(n.getNodes().front()->getNeighborsMap().begin()->second->getId()));
     
     for (auto node: n.getNodes()) {
         tempN = node->getNumberOfParticles();
@@ -125,6 +126,13 @@ void NodeSetGraphics::NAndFlowMinMax(PositionedNodeSet n) {
                 flowMin = tempFlow;
             } else if (tempFlow > flowMax) {
                 flowMax = tempFlow;
+            }
+            
+            tempCond = node->getConductivity(neighbor.second->getId());
+            if (tempCond < condMin) {
+                condMin = tempCond;
+            } else if (tempCond > condMax) {
+                condMax = tempCond;
             }
         }
     }
@@ -244,7 +252,7 @@ std::vector<unsigned long long> NodeSetGraphics::findSinks(PositionedNodeSet n) 
     return sinksId;
 }
 
-void NodeSetGraphics::drawEdges(PositionedNodeSet n, bool changeFlow) {
+void NodeSetGraphics::drawEdgesFlow(PositionedNodeSet n, bool changeFlow) {
     cr->save();
     double flowMin = this->flowMin;
     double flowMax = this->flowMax;
@@ -297,6 +305,69 @@ void NodeSetGraphics::drawEdges(PositionedNodeSet n, bool changeFlow) {
                 l.r = 1;
                 l.g = 0.5;
                 l.b = 0.1;
+                l.alpha = ((flow - flowMin)/(flowMax - flowMin))*(1 - lineOpacMin) + lineOpacMin;
+                l.lineWidth = ((flow - flowMin)/(flowMax-flowMin))*(lineWidthMax - lineWidthMin) + lineWidthMin;
+            }
+            
+            drawEdge(node, std::dynamic_pointer_cast<PositionedNode<2>>(neighbor.second), l);
+        }
+    }
+    cr->restore();
+}
+
+void NodeSetGraphics::drawEdgesCond(PositionedNodeSet n, bool changeFlow) {
+    cr->save();
+    double flowMin = this->condMin;
+    double flowMax = this->condMax;
+    double flow;
+    // Find min and max Mean Flow
+    if (changeFlow) {
+        flowMin = std::abs(n.getNodes().front()->getConductivity(n.getNodes().front()->getNeighbors().begin()->first));
+        flowMax = flowMin;
+        for (auto node: n.getNodes()) {
+            for (auto neighbor: node->getNeighbors()) {
+                flow = std::abs(node->getConductivity(neighbor.first));
+                if ( flow < flowMin) {
+                    flowMin = flow;
+                } else if (flow > flowMax) {
+                    flowMax = flow;
+                }
+            }
+        }
+    }
+    
+    // TODO:handle the one dim case
+    // Draw lines
+    std::array<double, 2> pos;
+    for (auto node: n.getNodes()) {
+        pos =node->getPosition();
+        
+        for (auto neighbor: node->getNeighbors()) {
+            struct lineSettings l;
+            flow = std::abs(node->getConductivity(neighbor.first));
+            // in no flow set different color for edge
+            if (flow <= flowMax*0.005) { // flowMax*0.0005
+                /*
+                 l.r = 0;
+                 l.g = 0.5;
+                 l.b = 1;
+                 */
+                
+                /*
+                 l.r = 0.2;
+                 l.g = 0.9;
+                 l.b = 0.7;
+                 */
+                
+                l.r = 0;
+                l.g = 0;
+                l.b = 0;
+                l.alpha = 1;
+                l.lineWidth = lineWidthNoFlow;
+            } else {
+                l.r = 1;
+                l.g = 0.4;
+                l.b = 0.9;
                 l.alpha = ((flow - flowMin)/(flowMax - flowMin))*(1 - lineOpacMin) + lineOpacMin;
                 l.lineWidth = ((flow - flowMin)/(flowMax-flowMin))*(lineWidthMax - lineWidthMin) + lineWidthMin;
             }
@@ -362,7 +433,7 @@ void NodeSetGraphics::writeToFile(std::string filename) {
 void NodeSetGraphics::writeToFile(PositionedNodeSet n, std::string filename) {
     this->init();
     this->XYMinMax(n);
-    this->drawEdges(n, 1);
+    this->drawEdgesFlow(n, 1);
     this->drawNodes(n, 1);
     this->writeToFile(filename);
 }
@@ -380,6 +451,9 @@ std::string NodeSetGraphics::toString() {
     
     str += "Minimum flow: " + std::to_string(flowMin) + "\n";
     str += "Maximum flow: " + std::to_string(flowMax) + "\n";
+    
+    str += "Minimum cond.: " + std::to_string(condMin) + "\n";
+    str += "Maximum cond.: " + std::to_string(condMax) + "\n";
     
     str += "Surface height: " + std::to_string(windowHeight) + "\n";
     str += "Surface width: " + std::to_string(windowWidth) + "\n";

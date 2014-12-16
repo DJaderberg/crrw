@@ -115,6 +115,7 @@ protected:
                         std::cout << "ERROR in CurrentWalk, ConductivityMap(): incorrect separator " << separator << ", should be (;)\n";
                     }
                     conductivityMap[neighbor.second->getId()] = cond;
+                    node->conductivityMap[neighbor.second->getId()] = cond;
                     node->meanFlowMap[neighbor.second->getId()] = flow;
                     break;
                 }

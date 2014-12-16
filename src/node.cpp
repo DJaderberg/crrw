@@ -49,5 +49,11 @@ std::string Node::toString() {
 		str += std::to_string(n.first) + ": " + std::to_string(n.second) + ", ";
 	}
 	str += "\n";
+    str += "Neighbors and conductivity: ";
+    for (auto n : conductivityMap) {
+        str += std::to_string(n.first) + ": " + std::to_string(n.second) + ", ";
+    }
+    str += "\n";
+    
     return str;
 }

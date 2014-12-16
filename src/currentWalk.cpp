@@ -97,6 +97,7 @@ void CurrentWalk::updateConductivity(double dt) {
 	for (auto n : conductivityMap) {
         value = n.second + element->q*std::pow(std::abs(node->meanFlowMap[n.first]), element->mu) - element->lambda*n.second*dt;
 		conductivityMap[n.first] = std::max(value, element->Dmin);
+        node->conductivityMap[n.first] = std::max(value, element->Dmin);
 	}
 }
 
