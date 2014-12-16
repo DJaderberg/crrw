@@ -119,7 +119,9 @@ After the conductivity is updated the number of particles and the capacitance ca
 \subsection{Implementation and parallelism} 
 \label{sec:parallel}
 
-The algorithm shown in Algorithm \ref{alg:outline} can be parallelized in each of the outer loops, with synchronization after each preparation step and after each confirmation step. The synchronizations are necessary since the update of the conductivity depends on the flow from the neighboring nodes and since the update of the mean flow depends on the potential of the neighboring nodes. Therefor a node and its neighbors must all have done necessary steps before moving on to the confirmation part. So strictly speaking, global synchronization is not necessary, i.e. all nodes must not wait for all nodes to finish the preparation part, a node must only wait for its neighbors to finish. However, global synchronization is much simpler implementation wise and may not be slower since it avoids complicated synchronization patterns.
+The algorithm shown in Algorithm \ref{alg:outline} can be parallelized in each of the outer loops, with synchronization after each preparation step and after each confirmation step. The synchronizations are necessary since the update of the conductivity depends on the flow from the neighboring nodes and since the update of the mean flow depends on the potential of the neighboring nodes. Therefore, a node and its neighbors must all have done the necessary steps before moving on to the confirmation part. So strictly speaking, global synchronization is not necessary, i.e. all nodes must not wait for all nodes to finish the preparation part, a node must only wait for its neighbors to finish. However, global synchronization is much simpler implementation-wise and may not be slower since it avoids complicated synchronization patterns.
+
+The actual implementation uses OpenMP to parallelize the computations, each of the outer for-loops in Algorithm \ref{alg:outline} is parallelized using the directive \texttt{\#pragma omp parallel for}, which implicitly uses static scheduling where each core is assigned the same number of nodes. This is not perfectly matched with the graph partitioning method that is used (see section \ref{sec:graph_part}), but should only lead to slightly more implicit communication between cores.
 
 {
 \vspace{1em}
@@ -135,6 +137,7 @@ Sync\\
 }
 
 \subsection{Graph partitioning}
+\label{sec:graph_part}
 When utilizing multicore systems it is important to minimize memory invalidation, i.e. communication between cores, in order to get good performance. This can be done in numerous ways but when working with graphs a natural way of minimizing memory invalidation is to partition the graph. Partitioning the graph must be done in a clever way so that there are as few edges as possible connecting nodes belonging to different cores. A rigorous way of partitioning graphs is presented in \cite{Lasalle}. A schematic view of such a graph partitioning is shown in Figure \ref{fig:partitioning}. 
 
 \begin{figure}[H]

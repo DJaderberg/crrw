@@ -7,3 +7,9 @@ Interpretation
 METIS weights, dynamic partitioning
 
 Slowdown for many threads on gullviva
+
+
+
+To improve performance of the implementation, it may be useful to weight each node in the graph partitioning according to the number of neighbors that each node has, since the computational demand scales with the number of neighbors. It may also help to dynamically re-partition the graph, taking advantage of the fact that no computations need to be performed at nodes that do not contain any particles. These changes would increase the difference in number of nodes assigned to each core, which would be problematic, considering that the current implementation assigns an equal number of nodes to each core and there may not be a simple way to assign a different number of nodes to each core using OpenMP.
+
+A natural progression of this work is to introduce communication between cores that do not share memory, e.g. via message passing. This would likely only provide performance improvements for large problems, since it relies on higher-latency communication.
