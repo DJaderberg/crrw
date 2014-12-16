@@ -1,5 +1,6 @@
 %cat data/speedup.txt | grep 10k | awk '{print $1, $2, $3}' > data/speedup_10k.txt
 data = csvread('../data/speedup_10k.txt');
+nThreads = 1:1:16;
 
 unique_data = [];
 nodes = 10000;
@@ -22,4 +23,26 @@ for i = 1:size(unique_data,1)
     speedups(1,i) = unique_data(1,2)/unique_data(i,2);
 end
 
-plot(unique_data(:,1), speedups)
+%plot(unique_data(:,1), speedups)
+
+%--------full screen-----------------
+fig1 = figure;
+set(fig1,'units','normalized','outerposition',[0 0 1 1]);
+%----------------------------------------
+versions = {'Pragma schedule - Static', 'Pragma task', 'Bin-Pack', 'Run time system'};
+
+col={'.--b','.--r','.--g','.--m','.--c','.--y','.--k'};
+
+%name = {'problem size: '};
+%str=sprintf('%d x %d matrices',sizes(i),sizes(i));
+plot(unique_data(:,1), speedups,col{1},'markersize',30,'linewidth',2);
+%s(i)=strcat(name,str);
+
+legend('Speedup', 'Location', 'NorthWest');
+set(gca,'XTick',nThreads);
+set(gca,'FontSize',23) %set scale fontsize
+title('Speedup')
+xlabel('# of threads')
+ylabel('Speed up [ ]')
+set(gca,'XTick',nThreads);
+ylim([0 nThreads(end)/2])
