@@ -43,6 +43,6 @@ set(gca,'XTick',nThreads);
 set(gca,'FontSize',23) %set scale fontsize
 title('Speedup')
 xlabel('# of threads')
-ylabel('Speed up [ ]')
+ylabel('Speedup [ ]')
 set(gca,'XTick',nThreads);
 ylim([0 nThreads(end)/2])
