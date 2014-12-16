@@ -2,7 +2,6 @@
 \label{sec:result}
 
 \subsection{Homogeneous grid}
-
 A homogeneous grid containing $1024$ nodes where each node has been perturbed a small amount was used to execute the algorithm with several different choices of parameters, with a focus on the maintenance parameter, $\mu$. This is shown in Figure \ref{fig:homogeneous}, which shows that when $\mu = 1$, i.e. the linear case, the solution that is found is the shortest path between each source and sink. When $\mu > 1$, the path chosen may not be the shortest path and there also exists a preference to share paths.
 
 \begin{figure}
@@ -27,6 +26,28 @@ A homogeneous grid containing $1024$ nodes where each node has been perturbed a 
 Another grid was created using road data from the city of Uppsala, Sweden.
 
 \subsection{Parallelism}
-\subsubsection{Speedup}
+The measures used to benchmark the performance of the parallel OpenMP implementation was speedup and sizeup. Figure \ref{fig:speed_size} shows the result from the speedup and sizeup measurements. All benchmarking were done on the Uppsala University server \textit{vitsippa.it.uu.se} with specifications: 
 
-\subsubsection{Sizeup}
+\begin{itemize}
+\item CPU: AMD Opteron (Bulldozer) 6282SE, 2.6 GHz, 16-core, dual socket
+\item Memory: 128 GB
+\item OS: Scientifix Linux 6.5
+\end{itemize}
+
+\noindent All \texttt{C++} code was compiled with \texttt{gcc 4.8.2} with the \texttt{-fopenmp}, \texttt{-O3} and  \texttt{-static-libstdc++} flags. 
+
+\begin{figure}
+\centering
+\begin{subfigure}[b]{1\textwidth}
+\includegraphics[width=\textwidth, height=0.5\textwidth]{img/speedup.png}
+\caption{The speedup of the parallel implementation. A uniformly randomized grid containing $10000$ nodes was used for measuring the speedup. The simulation was run for $1000$ iterations with a time step of $0.1$.}
+\end{subfigure}
+
+\begin{subfigure}[b]{1\textwidth}
+\includegraphics[width=\textwidth, height=0.5\textwidth]{img/sizeup.png}
+\caption{The sizeup of the parallel implementation. The reference size, i.e. the size of the problem when sizeup is one was a uniformly randomized grid containing $5000$ nodes. The computation time used for measuring the sizeup was $60~s$ with an allowed variation of $\pm 5~s$. }
+\end{subfigure}
+\caption{Figure shows the different measurements of the parallel implementation of the algorithm presented in Algorithm \ref{alg:outline}. All benchmarking was run three times per data point and the best performance among those data points was extracted and used in these results.}
+\label{fig:speed_size}
+\end{figure}
+

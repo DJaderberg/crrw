@@ -135,7 +135,7 @@ Sync\\
 }
 
 \subsection{Graph partitioning}
-When utilizing multithread systems it is important to minimize memory invalidation, i.e. communication between threads, in order to get good performance. This can be done in numerous ways but when working with graphs a natural way of minimizing memory invalidation is to partition the graph. Partitioning the graph must be done in a clever way so that there are as few edges as possible connecting nodes belonging to different threads. A rigorous way of partitioning graphs is presented in \cite{Lasalle}. A schematic view of such a graph partitioning is shown in Figure \ref{fig:partitioning}. 
+When utilizing multicore systems it is important to minimize memory invalidation, i.e. communication between cores, in order to get good performance. This can be done in numerous ways but when working with graphs a natural way of minimizing memory invalidation is to partition the graph. Partitioning the graph must be done in a clever way so that there are as few edges as possible connecting nodes belonging to different cores. A rigorous way of partitioning graphs is presented in \cite{Lasalle}. A schematic view of such a graph partitioning is shown in Figure \ref{fig:partitioning}. 
 
 \begin{figure}[H]
 \centering
@@ -148,6 +148,6 @@ When utilizing multithread systems it is important to minimize memory invalidati
 \includegraphics[width=\textwidth]{img/partitioning_true.png}
 \caption{Partitioned graph.}
 \end{subfigure}
-\caption{Figure shows the difference in number of edges connecting nodes belonging to different threads for non-partitioned and partitioned graphs. Each color represents nodes belonging to different threads.}
+\caption{Figure shows the difference in number of edges connecting nodes belonging to different cores for non-partitioned and partitioned graphs. Each color represents nodes belonging to different threads.}
 \label{fig:partitioning}
 \end{figure}
