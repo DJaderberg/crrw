@@ -3,7 +3,7 @@
 \subsection{Algorithm}
 The core of modeling current-reinforced random walks is that there are sources, sinks, nodes, particles and edges all organized within a graph representing a network. The fundamental idea is that sources send out information, sinks collect information and particles represent information. Edges are connections between sources, sinks and nodes and represent a path for the information to spread. Sources have a production rate, i.e the rate at which new particles are being injected into the system. Sinks have a removal rate, i.e. the rate at which particles are being removed from the system. Sources, sinks and nodes can all contain particles. For a system to have a viable solution for a minimized cost function the cumulative production rate of all the sources must be less than or equal to the cumulative removal rate of all the sinks, otherwise no flow equilibrium can be established.
 
-There are some necessary parameters for this model to make sense. These parameters and their analogy in both electrical networks and ant trail networks are shown in Table \ref{tab:parameters}.
+There are some necessary parameters for this model to make sense. These parameters and their analogy in both electrical networks and ant trail networks are shown in Table \ref{tab:parameters}. How these parameters are used in the algorithm is in detail explained in Section \ref{sec:preparation} and \ref{sec:confirmation}.
 
 \begin{table}[H]
 \renewcommand{\arraystretch}{1.2}
@@ -65,6 +65,7 @@ Confirmation:\\
 }
 
 \subsubsection{Preparation}
+\label{sec:preparation}
 The preparation begins with each node calculating the mean flow $\bar{I}_{ij}$ to each of its neighbors as
 
 \begin{equation}
@@ -80,6 +81,7 @@ I_{ij} = \text{Poi}(|\bar{I}_{ij}|\Delta t).
 In terms of implementation, it is important that nodes that are connected to the same edge agree on the same number of particles to transfer. This is ensured by allowing only the node with a larger number of particles to randomize the value and then both nodes use that value when updating the number of particles. The order of randomizing the number of particles to move to each neighboring node is uniformly randomized at each time step for each node. This means that there is no bias in choosing flow calculation order, i.e. no node will always have its number of particles randomized first. Since it is also important to ensure that there never are fewer than zero particles at a node the number of particles will continuously decrease while randomizing the amount of particles to move. When a node has a smaller number of particles than a given neighbor, the node always calculates the flow to that neighbor as zero and then waits for the neighboring node to tell it how many particles should be moved. The flow should theoretically be symmetric, but since only one node has randomized a value, and the other has set it to zero, the flow is not symmetric in this implementation. After all nodes have calculated and stored $\bar{I}$ and $I$, the preparation step is finished.
 
 \subsubsection{Confirmation}
+\label{sec:confirmation}
 At the beginning of the confirmation part, all the data regarding how many particles will move along each edge is available. And so each node begins by updating the conductivity, which is calculated as
 
 \begin{equation}
@@ -117,9 +119,7 @@ After the conductivity is updated the number of particles and the capacitance ca
 \subsection{Implementation and parallelism} 
 \label{sec:parallel}
 
-The algorithm shown in Algorithm \ref{alg:outline} can be parallelized in each of the outer loops, with synchronization after each preparation step and after each confirmation step. The synchronizations are necessary since the update of the conductivity depends on the flow from the neighboring nodes and since the update of the mean flow depends on the potential of the neighboring nodes. So strictly speaking, global synchronization is not necessary. However, global synchronization is much simpler and may not be slower since it avoids complicated synchronization patterns.
-
-It is also important to avoid that there are fewer than zero particles at each node. This can be a problem due to the randomness of the flow, but can be avoided by ensuring that each node will not send more particles along all its connected edges than there are at the node at the beginning of the time step.
+The algorithm shown in Algorithm \ref{alg:outline} can be parallelized in each of the outer loops, with synchronization after each preparation step and after each confirmation step. The synchronizations are necessary since the update of the conductivity depends on the flow from the neighboring nodes and since the update of the mean flow depends on the potential of the neighboring nodes. Therefor a node and its neighbors must all have done necessary steps before moving on to the confirmation part. So strictly speaking, global synchronization is not necessary, i.e. all nodes must not wait for all nodes to finish the preparation part, a node must only wait for its neighbors to finish. However, global synchronization is much simpler implementation wise and may not be slower since it avoids complicated synchronization patterns.
 
 {
 \vspace{1em}
@@ -148,6 +148,6 @@ When utilizing multithread systems it is important to minimize memory invalidati
 \includegraphics[width=\textwidth]{img/partitioning_true.png}
 \caption{Partitioned graph.}
 \end{subfigure}
-\caption{Figure shows the difference in number of overlapping edges in between threads for non-partitioned and partitioned graphs. Each color represents nodes belonging to different threads.}
+\caption{Figure shows the difference in number of edges connecting nodes belonging to different threads for non-partitioned and partitioned graphs. Each color represents nodes belonging to different threads.}
 \label{fig:partitioning}
 \end{figure}
