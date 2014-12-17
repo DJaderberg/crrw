@@ -18,7 +18,11 @@ These two groups of classes are then used by the main program to perform simulat
 \label{fig:graphToClass}
 \end{figure}
 
-\subsection{Metis and parallelism}
+\subsubsection{Improvements}
+
+The original program design did not include the \texttt{Algorithm} class, but rather held all computation methods and state in \texttt{Node}s. As such, the current design still has some artifacts, such as \texttt{Node}s still containing a few select members that store the state of the computation. This is currently needed because the tool to draw graphs is unaware of the existence of \texttt{Algorithm}, meaning that it requires all state that it uses (e.g.\@ mean flow or conductivity) to be stored in the \texttt{Node} object. Similarly, \texttt{Node}s are unaware of the \texttt{Algorithm} that computes on them, leading to issues if it is necessary to access algorithm-specific data of ones neighbors, which is the case with current-reinforced random walks if the flow is considered algorithm specific. Allowing each \texttt{Node} to hold a pointer to the \texttt{Algorithm} that operates on it may be preferable, although the na\"{i}ve approach may require dynamically typecasting all \texttt{Algorithm}s every iteration.
+
+Another issue with the current implementation is that it does almost no error handling, which is particularly problematic when dealing with IO, especially when manually specifying which files to use. This should likely be done with use of exceptions, which are not used at all in the current design.
 
 %\subsection{Algorithm}
 %\label{sec:appendix:algorithm}
