@@ -33,14 +33,14 @@ col={'.--b','.--r','.--g','.--m','.--c','.--y','.--k'};
 
 %name = {'problem size: '};
 %str=sprintf('%d x %d matrices',sizes(i),sizes(i));
-plot(unique_data(:,1), sizeups,col{2},'markersize',30,'linewidth',2);
+plot(unique_data(:,1), sizeups,col{2},'markersize',50,'linewidth',4);
 %s(i)=strcat(name,str);
 
 legend('Sizeup', 'Location', 'NorthWest');
 set(gca,'XTick',nThreads);
 set(gca,'FontSize',23) %set scale fontsize
 title('Sizeup')
-xlabel('# of threads')
+xlabel('# of cores')
 ylabel('Sizeup [ ]')
 set(gca,'XTick',nThreads);
 ylim([0 nThreads(end)/2])
