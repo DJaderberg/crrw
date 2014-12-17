@@ -138,7 +138,7 @@ Sync\\
 
 \subsection{Graph partitioning}
 \label{sec:graph_part}
-When utilizing multicore systems it is important to minimize memory invalidation, i.e. communication between cores, in order to get good performance. This can be done in numerous ways but when working with graphs a natural way of minimizing memory invalidation is to partition the graph. Partitioning the graph must be done in a clever way so that there are as few edges as possible connecting nodes belonging to different cores. A rigorous way of partitioning graphs is presented in \cite{Lasalle}. A schematic view of such a graph partitioning is shown in Figure \ref{fig:partitioning}. 
+When utilizing multicore systems it is important to minimize memory invalidation, i.e. communication between cores, in order to get good performance. This can be done in numerous ways but when working with graphs a natural way of minimizing memory invalidation is to partition the graph. Partitioning the graph must be done in a clever way so that there are as few edges as possible connecting nodes belonging to different cores. A rigorous way of partitioning graphs is presented in \cite{Lasalle}. A schematic view of such a graph partitioning is shown in Figure \ref{fig:partitioning}. Graph partitioning is great subject for research, hence many softwares for partitioning graphs in good ways have been developed through the years. The particular software used for the graph partitioning in this project was METIS. 
 
 \begin{figure}[H]
 \centering
@@ -151,6 +151,6 @@ When utilizing multicore systems it is important to minimize memory invalidation
 \includegraphics[width=\textwidth]{img/partitioning_true.png}
 \caption{Partitioned graph.}
 \end{subfigure}
-\caption{Figure shows the difference in number of edges connecting nodes belonging to different cores for non-partitioned and partitioned graphs. Each color represents nodes belonging to different threads.}
+\caption{Figure shows the difference in number of edges connecting nodes belonging to different cores for non-partitioned and partitioned graphs. Each color represents nodes belonging to different threads. The partitioned graph was partitioned with METIS.}
 \label{fig:partitioning}
 \end{figure}

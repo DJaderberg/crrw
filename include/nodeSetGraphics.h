@@ -170,7 +170,7 @@ private:
     /// Size configurations in px
     unsigned long long windowHeight = 1000; //1310*4;
     unsigned long long windowWidth = 1000; //2786*4;
-    unsigned long long borderWidth = 100;
+    unsigned long long borderWidth = 5;
     double nodeMinRadius = 1;
     double nodeMaxRadius = 10;
     double nodeBorder = 2;

@@ -7,18 +7,51 @@ A homogeneous grid containing $1024$ nodes where each node has been perturbed a 
 \begin{figure}
 \centering
 \begin{subfigure}[b]{0.48\textwidth}
-\includegraphics[width=\textwidth]{img/Lin.png}
-\caption{The simulated solution when $\mu=1$. This is the shortest possible path from the source to each sink.
-\\
-\\}
+\includegraphics[width=\textwidth]{{img/nodes_sources_M10_mu1.0}.png}
+\caption{The simulated solution when $\mu=1$.}
 \end{subfigure}
 ~
 \begin{subfigure}[b]{0.48\textwidth}
-\includegraphics[width=\textwidth]{img/NonLin.png}
-\caption{The simulated solution when $\mu=1.5$. This is not the shortest possible path, but rather shows a preference to take the same path as other particles, if it is not too much longer.}
+\includegraphics[width=\textwidth]{{img/nodes_sources_M10_mu1.05}.png}
+\caption{The simulated solution when $\mu=1.05$.}
 \end{subfigure}
-\caption{Figure shows the solutions found by the simulation on a nearly homogeneous grid. The pink lines show the flow along each edge, with the thickness of the line showing the amount of flow. The shortest path from each source to each sinks has been marked with a thin white line. The parameters used are $q = 10^{-4},\lambda = 10^{-3},$ and $D_{min}=5 \cdot 10^{-2}$. Each source (red) produces 1000 particles each time unit and all sinks (blue) can together remove as many particles as are produced each time unit (evenly divided between the sinks).}
-\label{fig:homogeneous}
+
+\begin{subfigure}[b]{0.48\textwidth}
+\includegraphics[width=\textwidth]{{img/nodes_sources_M10_mu1.4}.png}
+\caption{The simulated solution when $\mu=1.4$.}
+\end{subfigure}
+~
+\begin{subfigure}[b]{0.48\textwidth}
+\includegraphics[width=\textwidth]{{img/nodes_sources_M10_mu1.5}.png}
+\caption{The simulated solution when $\mu=1.5$.}
+\end{subfigure}
+\caption{Figure shows the solutions found by the simulation on a homogeneous grid containing $1024$ nodes where each node has been perturbed a small amount. The pink lines show the conductivity along each edge, with the thickness of the line is proportional to the amount of conductivity. The shortest path from each source to each sinks has been marked with a thin white line. The parameters used are $q = 10^{-4},\lambda = 10^{-3},$ and $D_{min}=5 \cdot 10^{-2}$. In this graph there are in total one sink and $20$ sources. Each source (red) produces 1000 particles each time unit and all sinks (blue) can together remove as many particles as are produced each time unit (evenly divided between the sinks).}
+\label{fig:sources}
+\end{figure}
+
+\begin{figure}
+\centering
+\begin{subfigure}[b]{0.48\textwidth}
+\includegraphics[width=\textwidth]{{img/nodes_sinks_M10_mu1.0}.png}
+\caption{The simulated solution when $\mu=1$.}
+\end{subfigure}
+~
+\begin{subfigure}[b]{0.48\textwidth}
+\includegraphics[width=\textwidth]{{img/nodes_sinks_M10_mu1.05}.png}
+\caption{The simulated solution when $\mu=1.05$.}
+\end{subfigure}
+
+\begin{subfigure}[b]{0.48\textwidth}
+\includegraphics[width=\textwidth]{{img/nodes_sinks_M10_mu1.4}.png}
+\caption{The simulated solution when $\mu=1.4$.}
+\end{subfigure}
+~
+\begin{subfigure}[b]{0.48\textwidth}
+\includegraphics[width=\textwidth]{{img/nodes_sinks_M10_mu1.5}.png}
+\caption{The simulated solution when $\mu=1.5$.}
+\end{subfigure}
+\caption{Figure shows the solutions found by the simulation on a homogeneous grid containing $1024$ nodes where each node has been perturbed a small amount. The pink lines show the conductivity along each edge, with the thickness of the line is proportional to the amount of conductivity. The shortest path from each source to each sinks has been marked with a thin white line. The parameters used are $q = 10^{-4},\lambda = 10^{-3},$ and $D_{min}=5 \cdot 10^{-2}$. In this graph there are in total one source and $20$ sinks. Each source (red) produces 1000 particles each time unit and all sinks (blue) can together remove as many particles as are produced each time unit (evenly divided between the sinks).}
+\label{fig:sinks}
 \end{figure}
 
 \subsection{City}
@@ -26,15 +59,15 @@ A homogeneous grid containing $1024$ nodes where each node has been perturbed a 
 Another grid was created using road data from the city of Uppsala, Sweden.
 
 \subsection{Parallelism}
-The measures used to benchmark the performance of the parallel OpenMP implementation was speedup and sizeup. Figure \ref{fig:speed_size} shows the result from the speedup and sizeup measurements. All benchmarking were done on the Uppsala University server \textit{vitsippa.it.uu.se} with specifications: 
+The measures used to benchmark the performance of the parallel OpenMP implementation was speedup and sizeup. Figure \ref{fig:speed_size} shows the result from the speedup and sizeup measurements. All benchmarking were done on the Uppsala University servers \textit{vitsippa.it.uu.se} and \textit{tussilago.it.uu.se}, both with specifications: 
 
 \begin{itemize}
 \item CPU: AMD Opteron (Bulldozer) 6282SE, 2.6 GHz, 16-core, dual socket
 \item Memory: 128 GB
-\item OS: Scientifix Linux 6.5
+\item OS: Scientifix Linux 6.5.
 \end{itemize}
 
-\noindent All \texttt{C++} code was compiled with \texttt{gcc 4.8.2} with the \texttt{-fopenmp}, \texttt{-O3} and  \texttt{-static-libstdc++} flags. 
+\noindent All \texttt{C++} code was compiled with \texttt{gcc 4.8.2} with the \texttt{-fopenmp}, \texttt{-O3} and  \texttt{-static-libstdc++} flags.
 
 \begin{figure}
 \centering
