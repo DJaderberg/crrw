@@ -33,6 +33,14 @@ void CurrentWalk::updateMeanFlow() {
 }
 
 void CurrentWalk::updateFlow(double dt) {
+    // If there are no particles in this node all flows to other nodes are set to zero
+    if (this->node->getNumberOfParticles() == 0) {
+        for (auto n: node->flowMap) {
+            node->flowMap[n.first] = 0;
+        }
+        return;
+    }
+    
 	long long value;
 	long long tempNumberOfParticles = node->getNumberOfParticles();
 	std::uniform_int_distribution<long long> uniformDist(0, node->meanFlowMap.size());
