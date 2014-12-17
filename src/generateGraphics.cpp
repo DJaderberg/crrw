@@ -39,7 +39,7 @@ void generateGraphics(std::string nodePath, std::string dataReadPath, std::strin
     for (long long i = 0; i < nCount; i++) {
         if (i % writeInterval == 0) {
             set.readData(ifsMinMx);
-            graphics.NAndFlowMinMax(set);
+            graphics.NAndFlowCondMinMax(set);
         } else {
             ifsMinMx.ignore(std::numeric_limits<std::streamsize>::max(),'\n');
         }
@@ -81,7 +81,7 @@ void generateGraphics(std::string nodePath, std::string dataReadPath, std::strin
             imgFilename << imageSavePath;
             imgFilename << std::setfill('0') << std::setw(6) << j++ << ".png";
             std::string imgFilenameStr = imgFilename.str();
-            graphics.drawEdges(set, 0);
+            graphics.drawEdgesCond(set, 0);
             
             for (auto pathMap: pathMaps) {
                 graphics.drawShortestPath(set, sinkId, pathMap);
@@ -114,7 +114,5 @@ void generateGraphics(std::string nodePath, std::string dataReadPath, std::strin
     }
     
     ifs.close();
-    
-    
 }
 #endif

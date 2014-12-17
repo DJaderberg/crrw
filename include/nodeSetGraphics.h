@@ -49,7 +49,7 @@ public:
      *
      * @param a PositionedNodeSet
      */
-    void NAndFlowMinMax(PositionedNodeSet n);
+    void NAndFlowCondMinMax(PositionedNodeSet n);
     
     /**
      * Draws all the Nodes in the NodeSet n to cr
@@ -85,12 +85,20 @@ public:
     std::vector<unsigned long long> findSinks(PositionedNodeSet n);
     
     /**
-     * Draws all the edges in the NodeSet n to cr
+     * Draws all the edges in the NodeSet n to cr, flow
      *
      * @param a NodeSet
      * @param boolean to tell if the flow should be statically drawn or of it should be normalized in every frame.
      */
-    void drawEdges(PositionedNodeSet n, bool changeFlow);
+    void drawEdgesFlow(PositionedNodeSet n, bool changeFlow);
+    
+    /**
+     * Draws all the edges in the NodeSet n to cr, cond
+     *
+     * @param a NodeSet
+     * @param boolean to tell if the flow should be statically drawn or of it should be normalized in every frame.
+     */
+    void drawEdgesCond(PositionedNodeSet n, bool changeFlow);
     
     /**
      * Draws all the edges in the NodeSet n to cr
@@ -155,14 +163,14 @@ private:
     /// The active Cairomm surface that the images are beeing drawn upon.
     Cairo::RefPtr<Cairo::ImageSurface> surface;
     /// Help parameters for keeping track of the coordinates and flows
-    double Xmin, Xmax, Ymin, Ymax, flowMin, flowMax;
+    double Xmin, Xmax, Ymin, Ymax, flowMin, flowMax, condMin, condMax;
     /// Help parameters for keeping track of the minimum and maximum number of particles
     long long Nmin, Nmax;
     
     /// Size configurations in px
     unsigned long long windowHeight = 1000; //1310*4;
     unsigned long long windowWidth = 1000; //2786*4;
-    unsigned long long borderWidth = 100;
+    unsigned long long borderWidth = 5;
     double nodeMinRadius = 1;
     double nodeMaxRadius = 10;
     double nodeBorder = 2;

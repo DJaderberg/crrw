@@ -1,5 +1,4 @@
-%cat data/speedup.txt | grep 10k | awk '{print $1, $2, $3}' > data/speedup_10k.txt
-data = csvread('../data/speedup_10k.txt');
+data = csvread('../data/sizeup.txt', 1, 0)
 nThreads = 1:1:16;
 
 unique_data = [];
@@ -20,10 +19,10 @@ for i = 1:length(data)
 end
 unique_data = [unique_data;[threads, insert, nodes]];
 for i = 1:size(unique_data,1)
-    speedups(1,i) = unique_data(1,2)/unique_data(i,2);
+    sizeups(1,i) = unique_data(i,2)/unique_data(1,2);
 end
 
-%plot(unique_data(:,1), speedups)
+%plot(unique_data(:,1), sizeups)
 
 %--------full screen-----------------
 fig1 = figure;
@@ -34,14 +33,14 @@ col={'.--b','.--r','.--g','.--m','.--c','.--y','.--k'};
 
 %name = {'problem size: '};
 %str=sprintf('%d x %d matrices',sizes(i),sizes(i));
-plot(unique_data(:,1), speedups,col{1},'markersize',50,'linewidth',4);
+plot(unique_data(:,1), sizeups,col{2},'markersize',50,'linewidth',4);
 %s(i)=strcat(name,str);
 
-legend('Speedup', 'Location', 'NorthWest');
+legend('Sizeup', 'Location', 'NorthWest');
 set(gca,'XTick',nThreads);
 set(gca,'FontSize',23) %set scale fontsize
-title('Speedup')
+title('Sizeup')
 xlabel('# of cores')
-ylabel('Speedup [ ]')
+ylabel('Sizeup [ ]')
 set(gca,'XTick',nThreads);
 ylim([0 nThreads(end)/2])

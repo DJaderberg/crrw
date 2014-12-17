@@ -100,7 +100,7 @@ public:
 		return lengthMap;
 	}
 
-	///Gets the flow map from the Node
+	///Gets the flow for id from the Node
 	double getMeanFlow(unsigned long long id) {
 		return meanFlowMap[id];
 	}
@@ -109,6 +109,11 @@ public:
 	double getPotential() {
 		return potential;
 	}
+    
+    ///Gets the conductivity for id from the Node
+    double getConductivity(unsigned long long id) {
+        return conductivityMap[id];
+    }
 
     /**
      * Standard toString method
@@ -123,6 +128,8 @@ public:
 	std::unordered_map<unsigned long long, long long> flowMap;
     ///Mean flow rate through the Node
     std::unordered_map<unsigned long long,double> meanFlowMap;
+    ///Cunductivity map
+    std::unordered_map<unsigned long long,double> conductivityMap;
 protected:
     ///Static ID counter
     static unsigned long long idCounter;
