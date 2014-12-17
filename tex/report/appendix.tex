@@ -9,7 +9,7 @@ The class \texttt{NodeSet} exists to model a graph. This is done by storing all 
 
 The class structure allows to implement different computation algorithms using the same framework. To do this, there exists the abstract class \texttt{Algorithm}, which contains a few pure virtual methods that must be implemented by each subclass. The main subclass of \texttt{Algorithm} is \texttt{CurrentWalk}, which implements the current-reinforced random walks. Each instance of \texttt{Algorithm} expects to be given a single \texttt{Node} and uses that as the basis for its calculations.
 
-These two groups of classes are then used by the main program to perform simulations. Given a method to create instances of some subclass of \texttt{Algorithm}, the main program is then able to construct a \texttt{NodeSet} with a set of \texttt{Node}s and an \texttt{Algorithm} for each \texttt{Node}. The algorithm advances using the \texttt{takeStep()} method in \texttt{NodeSet}. A schematic overview of this structure is shown in fig. (\ref{fig:graphToClass}).
+These two groups of classes are then used by the main program to perform simulations. Given a method to create instances of some subclass of \texttt{Algorithm}, the main program is then able to construct a \texttt{NodeSet} with a set of \texttt{Node}s and an \texttt{Algorithm} for each \texttt{Node}. The algorithm advances using the \texttt{takeStep()} method in \texttt{NodeSet}. A schematic overview of this structure is shown in Figure. (\ref{fig:graphToClass}).
 
 \begin{figure}[H]
 \centering
