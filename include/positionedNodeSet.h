@@ -9,6 +9,9 @@
 #include <sstream>
 #include <omp.h>
 
+///The maximum number of random devices allowed. These are opened as files and 
+//since the operating system does not allow us to open an unlimited number of 
+//files at the same time, this limit exists.
 const int NUM_RAND_DEVS = 1000;
 
 /**
