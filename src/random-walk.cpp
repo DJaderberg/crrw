@@ -35,7 +35,10 @@ struct arguments {
 	bool force = false;
 	///True if we should only partition data using METIS
 	bool metis = false;
+	///Path to store METIS file (containing which partition each original node
+	///should be placed in).
 	std::string metisPath = "data/metis.txt";
+	///The number of parts that METIS should divide that graph into.
 	long long metisParts = 1;
 	///True if we should only reduce the number of nodes
 	bool reduce = false;

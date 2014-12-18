@@ -20,7 +20,6 @@ public:
      * Create a Source without neighbors
      *
      * @param p The production rate of the source
-	 * @param e The Element of the Node
      */
     Source(long long p) : Node(), productionRate(p) {};
     /**

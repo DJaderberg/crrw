@@ -31,7 +31,7 @@ public:
 	 * Initialize an Algorithm object
 	 *
 	 * @param node The Node that the Algorithm should hold
-	 * @param e The Element of the Node that the Algorithm should hold
+	 * @param element The Element of the Node that the Algorithm should hold
 	 */
 	virtual void initialize(std::shared_ptr<Node> node, std::shared_ptr<Element> element) = 0;
     

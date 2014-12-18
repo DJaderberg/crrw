@@ -19,7 +19,6 @@ public:
      *
      * @param pos The position of the node
      * @param n Neighbors to the node
-	 * @param e The Element of the Node
      */
     PositionedNode(std::array<double, dimension> pos, std::unordered_map<unsigned long long,std::shared_ptr<PositionedNode>> n) : Node(), position(pos) {
         for (auto& neighbor : n) {
