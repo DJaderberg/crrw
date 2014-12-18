@@ -346,7 +346,7 @@ void NodeSetGraphics::drawEdgesCond(PositionedNodeSet n, bool changeFlow) {
             struct lineSettings l;
             flow = std::abs(node->getConductivity(neighbor.first));
             // in no flow set different color for edge
-            if (flow <= flowMax*0.005) { // flowMax*0.0005
+            if (flow <= flowMax*0.0005) { // flowMax*0.0005
                 /*
                  l.r = 0;
                  l.g = 0.5;
