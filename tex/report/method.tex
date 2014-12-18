@@ -124,19 +124,6 @@ The algorithm shown in Algorithm \ref{alg:outline} can be parallelised in each o
 
 The actual implementation uses OpenMP to parallelise the computations, each of the outer for-loops in Algorithm \ref{alg:outline} is parallelised using the directive \texttt{\#pragma omp parallel for}, which implicitly uses static scheduling where each core is assigned the same number of nodes. This is not perfectly matched with the graph partitioning method that is used (see section \ref{sec:graph_part}), but should only lead to slightly more implicit communication between cores.
 
-{
-\vspace{1em}
-\begin{algorithm}[H]
-Preparation\\
-Sync\\
-Confirmation\\
-Sync\\
-\caption{Outline of the parallel version of the algorithm showed in Algorithm \ref{alg:outline}.}
-\label{alg:parallel}
-\end{algorithm}
-\vspace{1em}
-}
-
 \subsection{Graph partitioning}
 \label{sec:graph_part}
 When utilising multicore systems it is important to minimise memory invalidation, i.e.\@ communication between cores, in order to get good performance. This can be done in numerous ways but when working with graphs a natural way of minimising memory invalidation is to partition the graph. Partitioning the graph must be done in a clever way so that there are as few edges as possible connecting nodes belonging to different cores. A rigorous way of partitioning graphs is presented in \cite{Lasalle}. A schematic view of such a graph partitioning is shown in Figure \ref{fig:partitioning}. Graph partitioning is great subject for research, hence many softwares for partitioning graphs in good ways have been developed through the years. The particular software used for the graph partitioning in this project is METIS. 
