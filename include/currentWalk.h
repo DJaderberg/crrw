@@ -86,7 +86,6 @@ protected:
     /** Helper function for writing conductivityMap to stream
      *
      * @param os Stream to write to
-     * @param func Function for getting the file id from the in memory id
      */
     void writeDataMaps(std::ostream& os)
     {
@@ -99,7 +98,6 @@ protected:
     /** Helper function for reading conductivityMap from stream
      *
      * @param is Stream to read from
-     * @param func Function for getting the memory id from the file id
      */
     void readDataMaps(std::istream& is)
     {
@@ -123,13 +121,21 @@ protected:
         }
     }
     
+	///Updates the mean flow using the current state of the algorithm
     void updateMeanFlow();
+	///Randomises and sets the flow for taking a time step of size dt
+	///@param dt The time step
     void updateFlow(double dt);
+	///Updates the conductivity
+	///@param dt The time step
     void updateConductivity(double dt);
+	///Updates that capacitance
     void updateCapacitance();
+	///Updates that number of particles at the node by reading the flows from and to the node
     virtual void updateNumberOfParticles(double dt);
-    void (*updateFunction)();
+	///Updates the potential
     void updatePotential();
+	///The Node that this Algorithm operates on
     std::shared_ptr<Node> node;
     ///Conductivity of the Node
     std::unordered_map<unsigned long long,double> conductivityMap;
@@ -159,6 +165,7 @@ public:
         node->setNumberOfParticles((long long)(dt*productionRate) + node->getNumberOfParticles());
     }
 private:
+	///The rate at which the source produces particles
     long long productionRate = 0;
 };
 
@@ -187,5 +194,6 @@ public:
         
     }
 private:
+	///The maximal rate at which the sink can remove particles
     long long removalRate = 0;
 };

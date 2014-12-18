@@ -18,7 +18,7 @@ public:
 	 * Create a PositionedSink
 	 *
 	 * @param pos The position of the Sink
-	 * @param e The Element of the Sink
+	 * @param r The maximal removal rate of the Sink
 	 */
 	PositionedSink(std::array<double, dimension> pos, int r) : PositionedNode<dimension>(pos), removalRate(r) {
 	};
@@ -26,6 +26,8 @@ public:
 	unsigned int getId() {
 		return ((PositionedNode<dimension> *) this)->getId();
 	};
+	///Get the maximal removal rate of the sink.
+	//@return The maximal removal rate of the sink.
     int getRemovalRate() {
         return this->removalRate;
     }

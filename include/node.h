@@ -124,7 +124,7 @@ public:
     }
 	///The potential at the node
 	double potential = 0;
-	//Actual flow rate (probabilistic) through the node
+	///Actual flow rate (probabilistic) through the node
 	std::unordered_map<unsigned long long, long long> flowMap;
     ///Mean flow rate through the Node
     std::unordered_map<unsigned long long,double> meanFlowMap;

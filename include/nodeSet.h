@@ -21,6 +21,7 @@ public:
 	 *
 	 * @param input A stream with containing a set fo Nodes specified by TGF.
 	 * @param create The function with which to create the Algorithm for each Node
+	 * @param element The element to use when calling the function create
 	 */
     NodeSet(std::istream input, algorithmCreator create, std::shared_ptr<Element> element) {
 		this->parseTGF(input);
@@ -33,6 +34,7 @@ public:
 	 *
 	 * @param filename The name of the file to use as input
 	 * @param create The function with which to create the Algorithm for each Node
+	 * @param element The element to use when calling the function create
 	 */
     NodeSet(const std::string& filename, algorithmCreator create, std::shared_ptr<Element> element) {
 		std::ifstream stream(filename);
@@ -40,6 +42,12 @@ public:
 		this->initializeAlgorithms(create, element);
 	};
 
+	/**
+	 * Create an Algorithm for each Node currently in the set
+	 *
+	 * @param create A function which returns a shared_ptr to an instance of some subclass of Algorithm when called with parameters with types (Node,Element). See also the typedef of algorithmCreator
+	 * @param element The element to use when calling the function create
+	 */
 	void initializeAlgorithms(algorithmCreator create, std::shared_ptr<Element> element) {
 		for (auto n : nodes) {
 			auto temp = create(n, element);

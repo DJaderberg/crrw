@@ -21,14 +21,14 @@ public:
 	 * other data that is stored in file.
 	 */
 	virtual void reinitialize() = 0;
-    /*
+    /**
      * Function for storing all the algorithms data to a stream
      *
      * @param os The stream into which to store data
      */
     virtual void writeData(std::ostream& os) = 0;
     
-    /*
+    /**
      * Function for storing all the algorithms data to a file
      *
      * @param filename The filename of the file into which to store data
@@ -39,14 +39,14 @@ public:
         ofs.close();
     };
     
-    /*
+    /**
      * Function for reading all the algorithms data from a stream
      *
      * @param is The stream from which to read data
      */
     virtual void readData(std::istream& is) = 0;
     
-    /*
+    /**
      * Function for reading all the algorithms data from a file
      *
      * @param filename The filename of the file from which to read data
