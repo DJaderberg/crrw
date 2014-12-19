@@ -25,8 +25,6 @@ public:
     double mu;
 	///Minimal conductivity
 	double Dmin;
-	///Production rate of each Source
-	unsigned int productionRate;
     /**
      * Construct an element with certain parameters
      *
@@ -39,9 +37,8 @@ public:
      * @param lambda Conductivity decrease rate
      * @param mu Road maintenance cost factor
 	 * @param Dmin Minimum possible conductivity on an edge
-	 * @param productionRate Production rate of each Source
      */
-    Element(const double q, const double lambda, const double mu, const double Dmin, unsigned int productionRate) : q(q), lambda(lambda), mu(mu), Dmin(Dmin), productionRate(productionRate) {};
+    Element(const double q, const double lambda, const double mu, const double Dmin) : q(q), lambda(lambda), mu(mu), Dmin(Dmin) {};
 	/**
 	 * Write the contents of an Element to a file
 	 *
@@ -71,7 +68,6 @@ public:
 		output << lambda << separator;
 		output << mu << separator;
 		output << Dmin << separator;
-		output << productionRate << separator;
 	}
 
 	/**
@@ -81,9 +77,8 @@ public:
 	 * @param line The lne of data to read from
 	 */
 	void readData(std::string line) {
-		char temp;
 		std::istringstream iss(line);
-		iss >> q >> temp >> lambda >> temp >> mu >> temp >> Dmin >> temp >> productionRate >> temp;
+        iss >> q >> lambda >> mu >> Dmin;
 	}
     
     /**
@@ -97,7 +92,6 @@ public:
         str += "lambda: " + std::to_string(lambda) + "\n";
         str += "mu: " + std::to_string(mu) + "\n";
         str += "Dmin: " + std::to_string(Dmin) + "\n";
-        str += "productionRate: " + std::to_string(productionRate) + "\n";
         return str;
     }
 };

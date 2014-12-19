@@ -111,6 +111,8 @@ void NodeSetGraphics::NAndFlowCondMinMax(PositionedNodeSet n) {
     long long tempN = n.getNodes().front()->getNumberOfParticles();
     double tempFlow = std::abs(n.getNodes().front()->getMeanFlow(n.getNodes().front()->getNeighborsMap().begin()->second->getId()));
     double tempCond = std::abs(n.getNodes().front()->getConductivity(n.getNodes().front()->getNeighborsMap().begin()->second->getId()));
+    flowMin = flowMax = tempFlow;
+    condMin = condMax = tempCond;
     
     for (auto node: n.getNodes()) {
         tempN = node->getNumberOfParticles();

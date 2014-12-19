@@ -44,10 +44,12 @@ struct arguments {
 	bool reduce = false;
 	///The maximal distance between nodes that should be joined
 	double reduceDist = 0.0;
-	///The non-linearity parameter mu
-	double mu = 1.0;
+    ///The file path to the element configuration file
+    std::string elementPath = "data/element.txt";
     ///Number of threads to use
     unsigned int threads = 1;
+    /// Boolean for setting if the shortest path should be drawn when generating images
+    bool shortestPaths = false;
 };
 
 /**
@@ -64,7 +66,12 @@ int main(int argc, char* argv[]) {
 	if (args.quitAfterArgs) {
 		return 0;
 	}
-    std::shared_ptr<Element> e(new Element(0.0001, 0.001, args.mu, 5e-2, 0));
+    std::ifstream elementConfigureStream(args.elementPath);
+    std::string line;
+    std::getline(elementConfigureStream, line);
+    std::shared_ptr<Element> e(new Element(0.0001, 0.001, 1.0, 0.05));
+    e->readData(line);
+    elementConfigureStream.close();
     algorithmCreator create = CurrentWalk::create;
     
 #ifdef GRAPHICS
@@ -78,7 +85,7 @@ int main(int argc, char* argv[]) {
 		generateMetis(args.filename, args.dataPath, args.metisPath, e, create, args.metisParts, args.force);
 		return 0;
 	}
-    generateGraphics(args.filename, args.storedDataPath, args.dataPath, e, create, args.nCount, args.writeInterval, args.force);
+    generateGraphics(args.filename, args.storedDataPath, args.dataPath, e, create, args.nCount, args.writeInterval, args.shortestPaths, args.force);
 #else
     omp_set_num_threads(args.threads);
 	if (args.restart) {
@@ -93,7 +100,7 @@ int main(int argc, char* argv[]) {
 arguments parse_args(int argc, char* argv[]) {
 	arguments args;
 	long long c;
-	while ((c = getopt(argc, argv, "i:d:o:n:w:t:fm:q:r:u:p:h")) != -1) {
+	while ((c = getopt(argc, argv, "i:d:o:n:w:t:fm:q:r:e:p:sh")) != -1) {
 		switch (c) {
 			case 'i':
 				args.filename = optarg;
@@ -128,11 +135,14 @@ arguments parse_args(int argc, char* argv[]) {
 				args.reduce = true;
 				args.reduceDist = std::atof(optarg);
 				break;
-			case 'u':
-				args.mu = std::atof(optarg);
+			case 'e':
+				args.elementPath = optarg;
 				break;
             case 'p':
                 args.threads = std::atoi(optarg);
+                break;
+            case 's':
+                args.shortestPaths = true;
                 break;
 			case 'h':
 				std::cout << "usage: " << argv[0] << " <options>\n\n";
@@ -144,6 +154,9 @@ arguments parse_args(int argc, char* argv[]) {
 				std::cout << "  -w\tWith what interval to write to file, e.g. 5 if data should be stored every fifth iteration. When generating graphics, 5 would be interpreted as writing an image to file for every fifth piece of data stored in the input file.\n";
 				std::cout << "  -t\tThe time step to use, only relevant when generating data.\n";
                 std::cout << "  -p\tThe number of threads to use.\n";
+                std::cout << "  -e\tThe file path to the elemet configuration file.";
+                std::cout << "  -m\tFile path to temporary file used for creating partitioned METIS graphs.";
+                std::cout << "  -s\tFlag for setting if the shortest paths should be drawn when generating images.";
 
 				std::cout << "\n";
 				args.quitAfterArgs = true;

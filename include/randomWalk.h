@@ -45,8 +45,11 @@ public:
 	///Update the number of particles at the Node
 	void updateNumberOfParticles() {
 		RandomWalk::updateNumberOfParticles();
-		node->setNumberOfParticles(element->productionRate + node->getNumberOfParticles());
+		node->setNumberOfParticles(productionRate + node->getNumberOfParticles());
 	}
+protected:
+    ///Production rate
+    double productionRate = 100;
 };
 
 ///A sink in the purely random walks

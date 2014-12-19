@@ -16,6 +16,6 @@
 
 class LinearAntElement : public Element {
 public:
-    LinearAntElement() : Element(0.0001, 0.001, 1, 5e-2, 10) {};
+    LinearAntElement() : Element(0.0001, 0.001, 1, 5e-2) {};
 };
 

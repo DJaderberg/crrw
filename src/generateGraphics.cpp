@@ -13,7 +13,7 @@
 /**
  * Function for generating images from data
  */
-void generateGraphics(std::string nodePath, std::string dataReadPath, std::string imageSavePath, std::shared_ptr<Element> e, algorithmCreator create, long long nCount, long long writeInterval, bool force) {
+void generateGraphics(std::string nodePath, std::string dataReadPath, std::string imageSavePath, std::shared_ptr<Element> e, algorithmCreator create, long long nCount, long long writeInterval, bool shortestPaths, bool force) {
     
     NodeSetGraphics graphics = NodeSetGraphics();
     graphics.init();
@@ -21,15 +21,18 @@ void generateGraphics(std::string nodePath, std::string dataReadPath, std::strin
     PositionedNodeSet set = PositionedNodeSet(nodePath, create, e);
     graphics.XYMinMax(set);
     
-    std::vector<unsigned long long> sourceId = graphics.findSources(set);
-    std::vector<unsigned long long> sinkId = graphics.findSinks(set);
-    
+    std::vector<unsigned long long> sourceId;
+    std::vector<unsigned long long> sinkId;
     std::vector<std::unordered_map<unsigned long long, long long>> pathMaps;
     
-    for (auto id: sourceId) {
-        pathMaps.push_back(set.shortestPath(id).second);
+    if (shortestPaths) {
+        sourceId = graphics.findSources(set);
+        sinkId = graphics.findSinks(set);
+        for (auto id: sourceId) {
+            pathMaps.push_back(set.shortestPath(id).second);
+        }
     }
-    
+
     std::ifstream ifsMinMx(dataReadPath);
     std::cout << "Finding min and max...\n";
     
@@ -81,10 +84,12 @@ void generateGraphics(std::string nodePath, std::string dataReadPath, std::strin
             std::string imgFilenameStr = imgFilename.str();
             graphics.drawEdgesCond(set, 0);
             
-            for (auto pathMap: pathMaps) {
-                graphics.drawShortestPath(set, sinkId, pathMap);
+            if (shortestPaths) {
+                for (auto pathMap: pathMaps) {
+                    graphics.drawShortestPath(set, sinkId, pathMap);
+                }
             }
-            
+
             graphics.drawNodes(set, 0);
             graphics.writeToFile(imgFilenameStr);
             graphics.repaint();
