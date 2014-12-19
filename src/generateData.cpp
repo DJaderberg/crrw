@@ -6,6 +6,7 @@
 //
 
 #include "generateData.h"
+#include "omp.h"
 #include <string>
 #include <fstream>
 #include <stdlib.h>
@@ -32,6 +33,7 @@ void generateDataCore(PositionedNodeSet set, std::string dataSavePath, int nCoun
     }
     
     std::ofstream ofs(dataSavePath);
+    double time = omp_get_wtime();
     
     std::string loadBar = "";
     
@@ -62,6 +64,9 @@ void generateDataCore(PositionedNodeSet set, std::string dataSavePath, int nCoun
         std::cout.flush();
     }
     
+    
+    time = omp_get_wtime() - time;
+    std::cout << "Execution time: " << time << "\n";
     ofs.close();
     
     std::ofstream ofsLast(dataSavePathLast);
@@ -91,6 +96,7 @@ void writeInfo(PositionedNodeSet set, std::string dataSavePath, std::shared_ptr<
     ofsInfo << "nCount: " << nCount << "\n";
     ofsInfo << "writeInterval: " << writeInterval << "\n";
     ofsInfo << "Computation length: " << nCount*dt << "\n";
+    ofsInfo << "Number of threads: " << omp_get_max_threads() << "\n";
     
     ofsInfo << "\nELEMENT INFO\n" << e->toString();
     

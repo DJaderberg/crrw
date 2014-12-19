@@ -8,6 +8,7 @@
 #include <unordered_map>
 #include <string>
 #include <memory>
+#include <omp.h>
 
 //TODO: Make this throw exceptions when file is incorrectly formatted
 void PositionedNodeSet::parseTGF(std::istream& input) {
@@ -83,12 +84,22 @@ std::vector<unsigned long long> PositionedNodeSet::numberOfParticles() {
 }
 
 void PositionedNodeSet::takeStep(double dt) {
-	for (auto algo : algorithms) {
-		algo->prepareStep(dt);
+	unsigned int size = algorithms.size();
+	auto algoBegin = algorithms.begin();
+	auto algo = algoBegin;
+#pragma omp parallel
+    {
+#pragma omp for private(algo)
+	for (unsigned int i = 0; i < size; i++) {
+		algo = algoBegin + i;
+		(*algo)->prepareStep(dt);
 	}
-	for (auto algo : algorithms) {
-		algo->takeStep(dt);
+#pragma omp for private(algo)
+	for (unsigned int i = 0; i < size; i++) {
+		algo = algoBegin + i;
+		(*algo)->takeStep(dt);
 	}
+    }
 }
 
 void PositionedNodeSet::reinitialize() {

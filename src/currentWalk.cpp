@@ -3,8 +3,6 @@
  */
 #include "currentWalk.h"
 
-std::random_device CurrentWalk::rd;
-
 void CurrentWalk::prepareStep(double dt) {
 	this->updateMeanFlow();
 	this->updateFlow(dt);
@@ -44,7 +42,7 @@ void CurrentWalk::updateFlow(double dt) {
 	long long value;
 	long long tempNumberOfParticles = node->getNumberOfParticles();
 	std::uniform_int_distribution<long long> uniformDist(0, node->meanFlowMap.size());
-	long long firstNeighbor = uniformDist(this->rd);
+	long long firstNeighbor = uniformDist(*this->rd);
 	auto itBegin = node->meanFlowMap.begin();
 	for (long long i = 0; i < firstNeighbor; i++) {
 		++itBegin;
@@ -57,7 +55,7 @@ void CurrentWalk::updateFlow(double dt) {
 		if (n->second > 0) {
 			double mean = n->second*dt;
 			std::poisson_distribution<long long> rngDist(mean);
-			value = rngDist(this->rd);
+			value = rngDist(*this->rd);
 			node->flowMap[n->first] = std::min(tempNumberOfParticles, value);
 			tempNumberOfParticles -= value;
 			tempNumberOfParticles = std::max((long long)0, tempNumberOfParticles);
@@ -70,7 +68,7 @@ void CurrentWalk::updateFlow(double dt) {
 		if (n->second > 0) {
 			double mean = n->second*dt;
 			std::poisson_distribution<long long> rngDist(mean);
-			value = rngDist(this->rd);
+			value = rngDist(*this->rd);
 			node->flowMap[n->first] = std::min(tempNumberOfParticles, value);
 			tempNumberOfParticles -= value;
 			tempNumberOfParticles = std::max((long long)0, tempNumberOfParticles);

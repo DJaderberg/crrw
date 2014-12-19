@@ -46,6 +46,8 @@ struct arguments {
 	double reduceDist = 0.0;
 	///The non-linearity parameter mu
 	double mu = 1.0;
+    ///Number of threads to use
+    unsigned int threads = 1;
 };
 
 /**
@@ -78,6 +80,7 @@ int main(int argc, char* argv[]) {
 	}
     generateGraphics(args.filename, args.storedDataPath, args.dataPath, e, create, args.nCount, args.writeInterval, args.force);
 #else
+    omp_set_num_threads(args.threads);
 	if (args.restart) {
 		generateData(args.filename, args.dataPath, e, create, args.nCount, args.dt, args.writeInterval, args.force, args.storedDataPath);
 	} else {
@@ -90,7 +93,7 @@ int main(int argc, char* argv[]) {
 arguments parse_args(int argc, char* argv[]) {
 	arguments args;
 	long long c;
-	while ((c = getopt(argc, argv, "i:d:o:n:w:t:fm:q:r:u:h")) != -1) {
+	while ((c = getopt(argc, argv, "i:d:o:n:w:t:fm:q:r:u:p:h")) != -1) {
 		switch (c) {
 			case 'i':
 				args.filename = optarg;
@@ -128,6 +131,9 @@ arguments parse_args(int argc, char* argv[]) {
 			case 'u':
 				args.mu = std::atof(optarg);
 				break;
+            case 'p':
+                args.threads = std::atoi(optarg);
+                break;
 			case 'h':
 				std::cout << "usage: " << argv[0] << " <options>\n\n";
 				std::cout << "Options: \n";
@@ -137,6 +143,7 @@ arguments parse_args(int argc, char* argv[]) {
 				std::cout << "  -n\tThe number of time steps to take, or if generating graphics, the number of images to generate.\n";
 				std::cout << "  -w\tWith what interval to write to file, e.g. 5 if data should be stored every fifth iteration. When generating graphics, 5 would be interpreted as writing an image to file for every fifth piece of data stored in the input file.\n";
 				std::cout << "  -t\tThe time step to use, only relevant when generating data.\n";
+                std::cout << "  -p\tThe number of threads to use.\n";
 
 				std::cout << "\n";
 				args.quitAfterArgs = true;

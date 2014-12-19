@@ -141,8 +141,6 @@ protected:
     std::unordered_map<unsigned long long,double> conductivityMap;
     ///Capacitance of the Node
     double capacitance = 0;
-    ///Random number generation state
-    static std::random_device rd;
     ///The element of the Algorithm
     std::shared_ptr<Element> element;
 };

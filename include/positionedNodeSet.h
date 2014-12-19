@@ -7,6 +7,12 @@
 #include <fstream>
 #include <iostream>
 #include <sstream>
+#include <omp.h>
+
+///The maximum number of random devices allowed. These are opened as files and 
+//since the operating system does not allow us to open an unlimited number of 
+//files at the same time, this limit exists.
+const int NUM_RAND_DEVS = 1000;
 
 /**
  * Represents a graph. This means that it contains a set of Nodes where
@@ -24,6 +30,10 @@ public:
      */
     PositionedNodeSet(std::istream input, algorithmCreator create, std::shared_ptr<Element> element) {
         this->parseTGF(input);
+        for (int i = 0; i < NUM_RAND_DEVS; ++i) {
+            std::shared_ptr<std::random_device> rd(new std::random_device());
+            randVect.push_back(rd);
+        }
         this->initializeAlgorithms(create, element);
     }
     /** Create a NodeSet from a filename
@@ -38,6 +48,10 @@ public:
     PositionedNodeSet(const std::string& filename, algorithmCreator create, std::shared_ptr<Element> element) {
         std::ifstream stream(filename);
         this->parseTGF(stream);
+        for (int i = 0; i < NUM_RAND_DEVS; ++i) {
+            std::shared_ptr<std::random_device> rd(new std::random_device());
+            randVect.push_back(rd);
+        }
         this->initializeAlgorithms(create, element);
         stream.close();
     };
@@ -203,13 +217,18 @@ private:
     std::unordered_map<long long, unsigned long long> idMap;
     ///Map from the actual ids of the Nodes to the ids in the input stream 
     std::unordered_map<unsigned long long, long long> inverseIdMap;
+    ///Vector of random devices, one for each thread
+    std::vector<std::shared_ptr<std::random_device>> randVect;
     ///Helper function to initialize algorithms
     ///@param create The function with which to create the Algorithm for each Node
     ///@param element The Element that the Algorithm should have
     void initializeAlgorithms(algorithmCreator create, std::shared_ptr<Element> element) {
+        int i = 0;
         for (auto n : positionedNodes) {
             auto temp = std::dynamic_pointer_cast<StorableAlgorithm>(create(n, element));
+            temp->setRd(randVect[i*omp_get_max_threads()/positionedNodes.size()]);
             algorithms.push_back(temp);
+            ++i;
         }
     }
 };

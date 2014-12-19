@@ -11,6 +11,7 @@
 #include "positionedNodeSet.h"
 #include "generateGraphics.h"
 #include "generateData.h"
+#include "omp.h"
 #include "generateMetis.h"
 #include "reduceNodes.h"
 
