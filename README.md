@@ -40,15 +40,15 @@ see [Graph format](#graph-format).
 A description of how to use the ```random-walk``` binary can be found by 
 running ```./random-walk -h```. Here, an example is shown and explained.
 
-	./random-walk -i graph.txt -o simulation.txt -n 2000 -w 1000 -t 0.5 -u 1.05 -p 2
+	./random-walk -i graph.txt -o simulation.txt -n 2000 -w 100 -t 0.5 -u 1.05 -p 2
 
 First, the input file is given as an argument, ```-i graph.txt```, then 
 the location to store the data in is given, ```-o simulation.txt```. After 
 that follows several different parameters for the simulation.
 + ```-n 2000``` the number of time steps/iterations to perform. The simulation
 will stop after 2000 iterations.
-+ ```-w 1000``` The algorithm will write data to ```simulation.txt```every 
-1000 iterations. Note that the data from the last iteration will always be 
++ ```-w 100``` The algorithm will write data to ```simulation.txt```every 
+100 iterations. Note that the data from the last iteration will always be 
 stored in another file where _LAST has been added to the filename before the 
 file extension, in this case ```simulation_LAST.txt```.
 + ```-t 0.5``` How large (in time units) each time step is.
@@ -60,6 +60,21 @@ when constructing the Element, but this currently requires recompiling the
 program after each change.
 
 ### graphics ###
+
+The graphics binary has several different modes, the main one generates a 
+sequence of images of different states in a simulation. An example this usage 
+is as follows.
+
+	./graphics -i graph.txt -d simulation.txt -o img/ -n 20 -w 2
+
++ ```-i graph.txt``` This is the graph file, which should be the same one as 
+was used to run the simulation (with ```random-walk```).
++ ```-d simulation.txt``` This is a file containing data from a simulation.
+It can also be a ```_LAST``` file.
++ ```-o img/``` This the beginning of name of each image.
++ ```-n 20``` The number of lines to read from the ```-d```file.
++ ```-w 2``` The program will generate an image for every other line that it 
+reads from the ```-d``` file. 
 
 ## Graph format ##
 
