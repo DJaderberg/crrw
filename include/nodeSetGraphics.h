@@ -168,8 +168,8 @@ private:
     long long Nmin, Nmax;
     
     /// Size configurations in px
-    unsigned long long windowHeight = 1000; //1310*4;
-    unsigned long long windowWidth = 1000; //2786*4;
+    unsigned long long windowHeight = 1000; //1310*1;
+    unsigned long long windowWidth = 1000; //2786*1;
     unsigned long long borderWidth = 5;
     double nodeMinRadius = 0;
     double nodeMaxRadius = 10;
@@ -178,7 +178,7 @@ private:
     double sinkRadius = 10;
     double lineWidthNoFlow = 1;
     double lineWidthMin = 3;
-    double lineWidthMax = 60;
+    double lineWidthMax = 40;
     double lineOpacMin = 1;
     
 };
