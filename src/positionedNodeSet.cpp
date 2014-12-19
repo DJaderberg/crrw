@@ -8,7 +8,9 @@
 #include <unordered_map>
 #include <string>
 #include <memory>
+#ifndef GRAPHICS
 #include <omp.h>
+#endif
 
 //TODO: Make this throw exceptions when file is incorrectly formatted
 void PositionedNodeSet::parseTGF(std::istream& input) {

@@ -6,10 +6,13 @@
 //
 
 #include "generateData.h"
-#include "omp.h"
 #include <string>
 #include <fstream>
 #include <stdlib.h>
+
+#ifndef GRAPHICS
+#include "omp.h"
+#endif
 
 /**
  * Core function for generating data
@@ -33,7 +36,9 @@ void generateDataCore(PositionedNodeSet set, std::string dataSavePath, int nCoun
     }
     
     std::ofstream ofs(dataSavePath);
+#ifndef GRAPHICS
     double time = omp_get_wtime();
+#endif
     
     std::string loadBar = "";
     
@@ -64,9 +69,10 @@ void generateDataCore(PositionedNodeSet set, std::string dataSavePath, int nCoun
         std::cout.flush();
     }
     
-    
+#ifndef GRAPHICS
     time = omp_get_wtime() - time;
     std::cout << "Execution time: " << time << "\n";
+#endif
     ofs.close();
     
     std::ofstream ofsLast(dataSavePathLast);
@@ -96,7 +102,9 @@ void writeInfo(PositionedNodeSet set, std::string dataSavePath, std::shared_ptr<
     ofsInfo << "nCount: " << nCount << "\n";
     ofsInfo << "writeInterval: " << writeInterval << "\n";
     ofsInfo << "Computation length: " << nCount*dt << "\n";
+#ifndef GRAPHICS
     ofsInfo << "Number of threads: " << omp_get_max_threads() << "\n";
+#endif
     
     ofsInfo << "\nELEMENT INFO\n" << e->toString();
     

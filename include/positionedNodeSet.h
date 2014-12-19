@@ -7,7 +7,10 @@
 #include <fstream>
 #include <iostream>
 #include <sstream>
+
+#ifndef GRAPHICS
 #include <omp.h>
+#endif
 
 ///The maximum number of random devices allowed. These are opened as files and 
 //since the operating system does not allow us to open an unlimited number of 
@@ -226,7 +229,11 @@ private:
         int i = 0;
         for (auto n : positionedNodes) {
             auto temp = std::dynamic_pointer_cast<StorableAlgorithm>(create(n, element));
+#ifndef GRAPHICS
             temp->setRd(randVect[i*omp_get_max_threads()/positionedNodes.size()]);
+#else
+			temp->setRd(randVect[0]);
+#endif
             algorithms.push_back(temp);
             ++i;
         }
