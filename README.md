@@ -133,7 +133,7 @@ An example of a small graph file, representing a triangle, is shown below.
 	1 2
 	2 1
 
-### Creating graph files ###
+## Creating graph files ##
 
 There are a few tools included with the random-walk source code that help with 
 generating different graph files.
