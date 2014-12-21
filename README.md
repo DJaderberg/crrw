@@ -12,11 +12,14 @@ which can be done by following the steps listed here.
 [GCC](https://gcc.gnu.org).
 2. Download the source files for random-walk.
 3. Navigate to the newly created folder containing the source files.
-4. If you do not need support for generating graphics, simply run the command 
-```make random-walk```. Otherwise, follow the steps below.
+4. Run the command ```make random-walk```.
+
+To be able to partition graphs, which is not strictly necessary, install 
+[METIS](http://glaros.dtc.umn.edu/gkhome/views/metis). In particular, the 
+stand-alone program ```gpmetis``` should be available.
 
 If you want to be able to generate graphs of the solutions there are few more 
-steps, which are listed below.
+steps.
 1. Install [Cairomm](http://cairographics.org/cairomm/) 
 with C++11 support and all its dependencies.
 2. Run the command ```. ./configure```. This 
@@ -61,9 +64,12 @@ program after each change.
 
 ### graphics ###
 
-The graphics binary has several different modes, the main one generates a 
-sequence of images of different states in a simulation. An example this usage 
-is as follows.
+The graphics binary has several different modes.
+
+#### Image generation ####
+
+The main mode generates a sequence of images of different states in a 
+simulation. An example of thi usage is as follows.
 
 	./graphics -i graph.txt -d simulation.txt -o img/ -n 20 -w 2
 
@@ -74,7 +80,26 @@ It can also be a ```_LAST``` file.
 + ```-o img/``` This the beginning of name of each image.
 + ```-n 20``` The number of lines to read from the ```-d```file.
 + ```-w 2``` The program will generate an image for every other line that it 
-reads from the ```-d``` file. 
+reads from the ```-d``` file.
+
+#### Graph sorting ####
+
+The ```graphics``` binary can be used to partition graphs using 
+[METIS](http://glaros.dtc.umn.edu/gkhome/views/metis). The can be done by 
+calling the program as below.
+
+	./graphics -i graph.txt -o sorted_graph.txt -m metis.txt -q 8
+
++ ```-i graph.txt``` This is the input graph file, which is not partitioned 
+correctly.
++ ```-o sorted_graph.txt``` This is the output graph file, which is partitioned
+using [METIS](http://glaros.dtc.umn.edu/gkhome/views/metis). 
++ ```-m metis.txt``` This is a temporary file which contains the output from 
+when ```graphics``` called ```gpmetis```. This file can be discarded after 
+running the program.
++ ```-q 8``` The number of partitions that 
+[METIS](http://glaros.dtc.umn.edu/gkhome/views/metis) should use for 
+partitioning the graph.
 
 ## Graph format ##
 
