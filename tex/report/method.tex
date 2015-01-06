@@ -8,7 +8,7 @@ There are some necessary parameters for this model to make sense. These paramete
 \begin{table}[H]
 \renewcommand{\arraystretch}{1.2}
 \centering
-\caption{Table shows the necessary parameters for the current-reinforced random walk modelling and their analogy in electrical networks and ant trail networks. $i$ denotes that the parameter corresponds to node $i$ and $ij$ denotes that the parameter corresponds to the edge between node $i$ and node $j$.}
+\caption{Table shows the necessary parameters for the current-reinforced random walk modelling and their analogy in electrical networks and ant trail networks. The index $i$ denotes that the parameter corresponds to node $i$ and $ij$ denotes that the parameter corresponds to the edge between node $i$ and node $j$.}
 \label{tab:parameters}
 \begin{tabular}{ c | c | c }                       
 	\textbf{Parameter} & \textbf{Electrical network} & \textbf{Ant trails} \\
@@ -33,7 +33,7 @@ There are some necessary parameters for this model to make sense. These paramete
 \end{tabular} 
 \end{table}
 
-The underlying algorithm for the current-reinforced random walk can be described by some key steps. At each time step the algorithm can be divided into two parts, one preparation part and one confirmation part. The reason for this that synchronisation is needed when implementing the algorithm in parallel. This is further explained in Section \ref{sec:parallel}. An outline of this algorithm is shown in Algorithm \ref{alg:outline}.
+The underlying algorithm for the current-reinforced random walk can be described by some key steps. At each time step the algorithm can be divided into two parts, one preparation part and one confirmation part. The reason for this is that synchronisation is needed when implementing the algorithm in parallel. This is further explained in Section \ref{sec:parallel}. An outline of this algorithm is shown in Algorithm \ref{alg:outline}.
 
 %The preparation step contains updating of the mean flow $\bar{I}_{ij}$, needed in order to randomise a new number of particles to move from one node to another i.e.\@ the flow $I_{ij}$, and also contains the actual update of the flow $I_{ij}$.
 %
@@ -78,11 +78,11 @@ The preparation begins with each node calculating the mean flow $\bar{I}_{ij}$ t
 I_{ij} = \text{Poi}(|\bar{I}_{ij}|\Delta t).
 \end{equation}
 
-In terms of implementation, it is important that nodes that are connected to the same edge agree on the same number of particles to transfer. This is ensured by allowing only the node with a larger number of particles to randomise the value and then both nodes use that value when updating the number of particles. The order of randomising the number of particles to move to each neighbouring node is uniformly randomised at each time step for each node. This means that there is no bias in choosing flow calculation order, i.e.\@ no node will always have its number of particles randomised first. Since it is also important to ensure that there never are fewer than zero particles at a node the number of particles will continuously decrease while randomising the amount of particles to move. When a node has a smaller number of particles than a given neighbour, the node always calculates the flow to that neighbour as zero and then waits for the neighbouring node to tell it how many particles should be moved. The flow should theoretically be symmetric, but since only one node has randomised a value, and the other has set it to zero, the flow is not symmetric in this implementation. After all nodes have calculated and stored $\bar{I}$ and $I$, the preparation step is finished.
+In terms of implementation, it is important that nodes that are connected to the same edge agree on the same number of particles to transfer. This is ensured by allowing only the node with a larger number of particles to randomise the value and then both nodes use that value when updating the number of particles. The order of randomising the number of particles to move to each neighbouring node is uniformly randomised at each time step for each node. This means that there is no bias in choosing flow calculation order, i.e.\@ no node will always have its number of particles randomised first. Since it is also important to ensure that there never are fewer than zero particles at a node the number of particles will continuously decrease while randomising the amount of particles to move. When a node has a smaller number of particles than a given neighbour, the node always calculates the flow to that neighbour as zero and then waits for the neighbouring node to tell it how many particles should be moved. The flow should theoretically be symmetric, but since only one node has randomised a value, and the other has set it to zero, the flow is not symmetric in this implementation. The symmetry of the flow is however only necessary when proving convergence and does not affect the result \cite{Sumpter}. After all nodes have calculated and stored $\bar{I}$ and $I$, the preparation step is finished.
 
 \subsubsection{Confirmation}
 \label{sec:confirmation}
-At the beginning of the confirmation part, all the data regarding how many particles will move along each edge is available. And so each node begins by updating the conductivity, which is calculated as
+At the beginning of the confirmation part, all the data regarding how many particles will move along each edge is available. And so each node begins the confirmation by updating the conductivity, which is calculated as
 
 \begin{equation}
 D_{ij}(t + \Delta t) = D_{ij}(t) + q|\bar{I}|^\mu - \lambda D_{ij}(t)\Delta t,
@@ -139,6 +139,6 @@ When utilising multicore systems it is important to minimise memory invalidation
 \includegraphics[width=\textwidth]{img/partitioning_true.png}
 \caption{Partitioned graph.}
 \end{subfigure}
-\caption{Figure shows the difference in number of edges connecting nodes belonging to different cores for non-partitioned and partitioned graphs. Each colour represents nodes belonging to different threads. The partitioned graph was partitioned with METIS.}
+\caption{Figure shows the difference in number of edges connecting nodes belonging to different cores for non-partitioned and partitioned graphs. Each colour represents nodes belonging to different cores. The partitioned graph was partitioned with METIS.}
 \label{fig:partitioning}
 \end{figure}
