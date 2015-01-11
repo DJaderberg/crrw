@@ -15,7 +15,7 @@
 ///The maximum number of random devices allowed. These are opened as files and 
 //since the operating system does not allow us to open an unlimited number of 
 //files at the same time, this limit exists.
-const int NUM_RAND_DEVS = 1000;
+const int NUM_RAND_DEVS = 100;
 
 /**
  * Represents a graph. This means that it contains a set of Nodes where
