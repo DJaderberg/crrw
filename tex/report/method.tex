@@ -128,9 +128,9 @@ The actual implementation uses OpenMP \cite{openmp} to parallelise the computati
 
 \subsection{Graph partitioning}
 \label{sec:graph_part}
-When utilising multicore systems it is important to minimise memory invalidation, i.e.\@ communication between cores, in order to get good performance. This can be done in numerous ways but when working with graphs a natural way of minimising memory invalidation is to partition the graph. Partitioning the graph must be done in a clever way so that there are as few edges as possible connecting nodes belonging to different cores. A rigorous way of partitioning graphs is presented in . A schematic view of such a graph partitioning is shown in Figure \ref{fig:partitioning}. Graph partitioning has been studied extensively, hence many softwares for partitioning graphs in good ways have been developed through the years. The particular software used for the graph partitioning in this project is METIS \cite{Lasalle}. 
+When utilising multicore systems it is important to minimise cache invalidation, i.e.\@ communication between cores, in order to get good performance. This can be done in numerous ways but when working with graphs a natural way of minimising cache invalidation is to partition the graph. Partitioning the graph must be done in a clever way so that there are as few edges as possible connecting nodes belonging to different cores. A rigorous way of partitioning graphs is presented in \cite{Lasalle}. A schematic view of such a graph partitioning is shown in Figure \ref{fig:partitioning}. Graph partitioning has been studied extensively, hence many softwares for partitioning graphs in good ways have been developed through the years. The particular software used for the graph partitioning in this project is METIS \cite{Lasalle}. 
 
-\begin{figure}[H]
+\begin{figure}
 \centering
 \begin{subfigure}[b]{0.48\textwidth}
 \includegraphics[width=\textwidth]{img/partitioning_false.png}
@@ -144,3 +144,5 @@ When utilising multicore systems it is important to minimise memory invalidation
 \caption{Figure shows the difference in number of edges connecting nodes belonging to different cores for non-partitioned and partitioned graphs. Each colour represents nodes belonging to different cores. The partitioned graph was partitioned with METIS.}
 \label{fig:partitioning}
 \end{figure}
+
+This method for increasing performance is applied in such a way that each core being used in the simulation is assigned a partition of the graph, hence the number of partitions and the number of cores must be equal. In both the preparation step and the confirmation step in Algorithm \ref{alg:outline} cache is invalidated since nodes write and read data that other nodes use. With the graphs partitioned a lot less cache is invalidated since the number of edges connecting nodes belonging to different cores are much smaller when each core handles a partition rather than nodes scattered all over the graph. The only cache that is invalidated now is the cache used by nodes laying on the boundary of the partitions.
