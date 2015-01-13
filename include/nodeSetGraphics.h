@@ -167,7 +167,7 @@ private:
     /// Help parameters for keeping track of the minimum and maximum number of particles
     long long Nmin, Nmax;
     
-    /*
+    
     /// Size configurations in px
     unsigned long long windowHeight = 1000; //1310*1;
     unsigned long long windowWidth = 1000; //2786*1;
@@ -181,7 +181,7 @@ private:
     double lineWidthMin = 3;
     double lineWidthMax = 40;
     double lineOpacMin = 1;
-    */
+    
     
     /*
     unsigned long long windowHeight = 2000;
@@ -196,7 +196,7 @@ private:
     double lineWidthMin = 6;
     double lineWidthMax = 80;
     double lineOpacMin = 1;
-     */
+    
     
     /// Size configurations in px
     unsigned long long windowHeight = 1310*4;
@@ -211,5 +211,6 @@ private:
     double lineWidthMin = 12;
     double lineWidthMax = 160;
     double lineOpacMin = 1;
+    */
 };
 #endif

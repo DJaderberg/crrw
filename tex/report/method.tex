@@ -45,7 +45,7 @@ The underlying algorithm for the current-reinforced random walk can be described
 Preparation:\\
 \ForEach{node}{
 	\ForEach{neighbour}{
-		update mean flow $\bar{I}_{ij}$\;
+		calculate mean flow $\bar{I}_{ij}$\;
 		randomise new flow $I_{ij}$\;
 	}
 }
@@ -55,7 +55,7 @@ Confirmation:\\
 	\ForEach{neighbour}{
 		update conductivity $D_{ij}$\;
 	}
-	calculate capacitance $C_{i}$ and update number of particles $N_{i}$\;
+	update number of particles $N_{i}$ and calculate capacitance $C_{i}$\;
 	calculate potential $P_{i}$\;
 }
 \caption{Outline of the algorithm used in the current-reinforced random walks in \cite{Sumpter}.}
