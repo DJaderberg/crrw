@@ -52,10 +52,11 @@ Preparation:\\
 \ \\
 Confirmation:\\
 \ForEach{node}{
+	update number of particles $N_{i}$\;
 	\ForEach{neighbour}{
 		update conductivity $D_{ij}$\;
 	}
-	update number of particles $N_{i}$ and calculate capacitance $C_{i}$\;
+ 	calculate capacitance $C_{i}$\;
 	calculate potential $P_{i}$\;
 }
 \caption{Outline of the algorithm used in the current-reinforced random walks in \cite{Sumpter}.}

@@ -64,6 +64,7 @@ Another graph was created using road data from OpenStreetMaps for the city of Up
 \label{fig:uppsala}
 \end{figure}
 
+\begin{samepage}
 \subsection{Parallelism}
 The measurements used to benchmark the performance of the parallel OpenMP implementation was speedup and sizeup. The speedup with $n$ cores is how many times faster the program solves the same problem, compared with using one core. The sizeup is how many times larger the problem can be (measured in number of nodes in the graph), so that the execution time with $n$ cores is the same as with one core. Figure \ref{fig:speed_size} shows the result from the speedup and sizeup measurements. All benchmarking were done on the Uppsala University servers \textit{vitsippa.it.uu.se} and \textit{tussilago.it.uu.se}, both with specifications: 
 
@@ -74,6 +75,7 @@ The measurements used to benchmark the performance of the parallel OpenMP implem
 \end{itemize}
 
 \noindent All \texttt{C++} code was compiled with \texttt{gcc 4.8.2} with the \texttt{-fopenmp} (OpenMp 3.1), \texttt{-O3} and  \texttt{-static-libstdc++} flags. The graphs were partitioned with METIS 5.1.0. 
+\end{samepage}
 
 \begin{figure}
 \centering
