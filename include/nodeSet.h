@@ -67,7 +67,7 @@ public:
 	/**
 	 * Returns the upper limit for the requested partition.
 	 *
-	 * @partition Which partition to get the upper limit for.
+	 * @param partition Which partition to get the upper limit for.
 	 * @return The upper limit of the partition.
 	 */
 	long long partition(long long partition);
