@@ -150,8 +150,21 @@ An example of a small graph file, representing a triangle, is shown below.
 There are a few tools included with the random-walk source code that help with 
 generating different graph files.
 
-Consider that there exists a file simple.node, which contains on its first line the number of nodes 
-and each following line is the node id followed by the node's x and y position.
+### Road data ###
 
-A graph can then be created (in test/nodes.txt) using the following command (if dct has been built)
-```./findEdges.sh test/simple.node test/nodes.txt```
+It is possible to input data from OpenStreetMap and convert it to the graph 
+format that can be handled by ```random-walk```. This is done by using the 
+script ```osm2tgf.sh```located in the folder ```data/osm```. This script has a 
+few dependencies. First of all, ```python``` must be installed, since it makes 
+use of the ```python``` script ``nodesFromWays.py``` (located in the same 
+folder). Furthermore, there are two OSM specific tools that need to be 
+available, the script ```osmconvert```, found 
+[here](http://wiki.openstreetmap.org/wiki/Osmconvert), which must be placed in 
+the same folder as the ```osm2tgf.sh``` script. Furthermore, Osmosis tool, 
+found [here](http://wiki.openstreetmap.org/wiki/Osmosis), must be installed.
+
+When all those depenencies are fulfilled, the script can be run with
+
+	./osm2tgf osm_database.pbf graph.txt
+
+Please note that the input file must be in the PBF format that Osmosis handles.
