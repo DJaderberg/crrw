@@ -1,33 +1,35 @@
 extern crate getopts;
-extern crate core;
 use getopts::{optopt,optflag,getopts,OptGroup};
 use std::os;
 use std::io::fs::File;
 use std::rand;
 
-fn gen_matrix(size: f64, prod_rate: int, nodes: uint, sinks: uint, mut out: Box<Writer>) {
+//Since this is still for the alpha, there's a lot of unstable stuff that is 
+//still used
+#[allow(unstable)]
+fn gen_matrix(size: f64, prod_rate: i64, nodes: u64, sinks: u64, mut out: Box<Writer>) {
     //Define Nodes (id, x-pos, y-pos, opt. production rate)
-    let sqrt_nodes : f64 = core::num::Float::sqrt(nodes as f64);
-    let mut i_range = std::iter::range(0u, sqrt_nodes as uint);
+    let sqrt_nodes : f64 = std::num::Float::sqrt(nodes as f64);
+    let mut i_range = 0u64..(sqrt_nodes as u64);
     match out.write((nodes.to_string() + "\n").as_bytes()) {
         Ok(()) => (),
         Err(e) => panic!(e.desc)
     };
     for i in i_range {
-        let mut j_range = std::iter::range(0u, sqrt_nodes as uint);
+        let mut j_range = 0u64..(sqrt_nodes as u64);
         for j in j_range {
             let x_val = (i as f64)*size/sqrt_nodes + 0.3*size/sqrt_nodes*(rand::random::<f64>() - 0.5) + (if i%2 == 0 { 0.0 } else { 0.0 });
             let y_val = (j as f64)*size/sqrt_nodes + 0.3*size/sqrt_nodes*(rand::random::<f64>() - 0.5) + (if i%2 == 0 { 0.0 } else { size/sqrt_nodes*0.5 });
-            let mut output : String = (i*(sqrt_nodes as uint)+j).to_string() + " " + x_val.to_string() + " " + y_val.to_string();
-            if i<= sinks {
+            let mut output : String = (i*(sqrt_nodes as u64)+j).to_string() + " " + x_val.to_string().as_slice() + " " + y_val.to_string().as_slice();
+            if i as u64 <= sinks {
                 output = output + " ";
             }
             //If Source
             if i+j==0 {
-                output = output + prod_rate.to_string();
+                output = output + prod_rate.to_string().as_slice();
                 //If Sink
-            } else if i==0 && i+j <= sinks {
-                output = output + "-" + (prod_rate/sinks as int).to_string();
+            } else if i==0 && (i+j) as u64 <= sinks {
+                output = output + "-" + (prod_rate/sinks as i64).to_string().as_slice();
             }
             output = output + "\n";
             match out.write(output.as_bytes()) {
@@ -49,6 +51,10 @@ fn print_usage(program: &str, _opts: &[OptGroup]) {
     println!("-h --help\t Usage");
 }
 
+
+//Since this is still for the alpha, there's a lot of unstable stuff that is 
+//still used
+#[allow(unstable)]
 fn main() {
     let args: Vec<String> = os::args();
     let program = args[0].clone();
@@ -73,7 +79,7 @@ fn main() {
     let prod_rate = match matches.opt_str("p") {
         None => { 100 }
         Some(x) => { 
-            match from_str(x.as_slice()) {
+            match x.parse::<i64>() {
                 Some(y) => { y }
                 None => { panic!("Production rate argument, '-p', is not an integer"); }
             }
@@ -82,33 +88,33 @@ fn main() {
     let size : f64 = match matches.opt_str("s") {
         None => { 10.0 }
         Some(x) => { 
-            match from_str(x.as_slice()) {
+            match x.parse::<f64>() {
                 Some(y) => { y }
                 None => { panic!("Size argument, '-s', is not a number"); }
             }
         }
     };
-    let nodes : uint = match matches.opt_str("n") {
+    let nodes : u64 = match matches.opt_str("n") {
         None => { 50 }
         Some(x) => {
-            match from_str(x.as_slice()) {
+            match x.parse::<u64>() {
                 Some(y) => { y }
                 None => { panic!("Argument for number of nodes, '-n', is not an integer"); }
             }
         }
     };
-    let sinks : uint = match matches.opt_str("d") {
+    let sinks : u64 = match matches.opt_str("d") {
         None => { 4 }
         Some(x) => {
-            match from_str(x.as_slice()) {
+            match x.parse::<u64>() {
                 Some(y) => { y }
                 None => { panic!("Argument for number of sinks, '-d', is not an integer"); }
             }
         }
     };
     let output: Box<Writer> = match matches.opt_str("o") {
-        None => { box std::io::stdio::stdout() as Box<Writer> }
-        Some(filename) => { box File::create(&Path::new(filename)).unwrap() as Box<Writer> }
+        None => { Box::new(std::io::stdio::stdout()) as Box<Writer> }
+        Some(filename) => { Box::new(File::create(&Path::new(filename)).unwrap()) as Box<Writer> }
     };
 
     gen_matrix(size, prod_rate, nodes, sinks, output);

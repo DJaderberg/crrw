@@ -9,3 +9,6 @@ authors = [ "David Jäderberg <david@jaderberg.net>" ]
 
 name = "tgf-gen"
 
+[dependencies]
+getopts = ">=0.1.4"
+
