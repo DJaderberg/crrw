@@ -36,14 +36,22 @@ void generateDataCore(PositionedNodeSet set, std::string dataSavePath, int nCoun
     }
     
     std::ofstream ofs(dataSavePath);
+    bool partitioned = false;
 #ifndef GRAPHICS
     double time = omp_get_wtime();
+	if (omp_get_max_threads() == set.partitionSize()) {
+		partitioned = true;
+	}
 #endif
     
     std::string loadBar = "";
-    
+
     for (int i = 0; i < nCount; ++i) {
-        set.takeStep(dt);
+		if (partitioned) {
+			set.takePartitionedStep(dt);
+		} else {
+			set.takeStep(dt);
+		}
         if (i % writeInterval == 0) {
             set.writeData(ofs);
             ofs << "\n";

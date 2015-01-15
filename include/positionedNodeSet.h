@@ -69,11 +69,17 @@ public:
     /// Return the number of particles at each Node in the NodeSet
     std::vector<unsigned long long> numberOfParticles();
     /**
-     * Make one time step
+     * Take one time step
      *
      * @param dt Length of the time step
      */
     void takeStep(double dt);
+    /**
+     * Take one time step, using the partitioning to assign nodes to threads.
+     *
+     * @param dt Length of the time step
+     */
+    void takePartitionedStep(double dt);
 	/**
 	 * Reinitialize the state of the algorithms, so that they may be drawn
 	 *

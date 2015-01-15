@@ -14,7 +14,23 @@
 
 //TODO: Make this throw exceptions when file is incorrectly formatted
 void PositionedNodeSet::parseTGF(std::istream& input) {
+	//Check for partitioned graph
+	long long len = input.tellg();
 	std::string line;
+	std::getline(input, line);
+	//If we find METIS, the graph is partitioned
+	if (line.find("METIS") != line.npos) {
+		line = line.substr(6, line.size());
+		std::istringstream iss(line);
+		long long number;
+		std::vector<long long> partitionVector;
+		while (iss >> number) {
+			partitionVector.push_back(number);
+		}
+		this->setPartitioning(partitionVector);
+	} else {
+		input.seekg(len);
+	}
 	while (std::getline(input, line)) {
 		std::istringstream iss(line);
 		long long number, productionRate;
@@ -70,6 +86,11 @@ void PositionedNodeSet::parseTGF(std::istream& input) {
 
 std::string PositionedNodeSet::toString() {
 	std::string ret = "";
+	ret += "Partitioning: ";
+	for(auto part : partitioning) {
+		ret += std::to_string(part) + ", ";
+	}
+	ret += "\n";
 	for (auto node : positionedNodes) {
 		ret += node->toString();
 	}
@@ -86,6 +107,7 @@ std::vector<unsigned long long> PositionedNodeSet::numberOfParticles() {
 }
 
 void PositionedNodeSet::takeStep(double dt) {
+#ifndef GRAPHICS
 	unsigned int size = algorithms.size();
 	auto algoBegin = algorithms.begin();
 	auto algo = algoBegin;
@@ -102,8 +124,30 @@ void PositionedNodeSet::takeStep(double dt) {
 		(*algo)->takeStep(dt);
 	}
     }
+#endif
 }
 
+void PositionedNodeSet::takePartitionedStep(double dt) {
+#ifndef GRAPHICS
+	unsigned int size = algorithms.size();
+	auto algoBegin = algorithms.begin();
+	auto algo = algoBegin;
+#pragma omp parallel private(algo)
+    {
+	long long threadID = omp_get_thread_num();
+	long long lowerLim = this->partition(threadID);
+	long long upperLim = this->partition(threadID + 1);
+	for (unsigned int i = lowerLim; i < upperLim; i++) {
+		algo = algoBegin + i;
+		(*algo)->prepareStep(dt);
+	}
+	for (unsigned int i = lowerLim; i < upperLim; i++) {
+		algo = algoBegin + i;
+		(*algo)->takeStep(dt);
+	}
+    }
+#endif
+}
 void PositionedNodeSet::reinitialize() {
 	for (auto algo : algorithms) {
 		algo->reinitialize();
@@ -203,6 +247,20 @@ void PositionedNodeSet::readMETIS(std::istream& input, std::ostream& output, uns
 	}
 	//output << positionedNodes.size() << '\n';
 	std::unordered_map<unsigned long long, unsigned long long> oldToNewId;
+	//Print METIS partitioning
+	std::vector<long long> partLims;
+	partLims.push_back(0);
+	for (auto v : partVectors) {
+		partLims.push_back((long long) v.size());
+	}
+	this->setPartitioning(partLims);
+	output << "METIS: ";
+	long long curSum = 0;
+	for (auto partLim : partLims) {
+		curSum += partLim;
+		output << curSum << ' ';
+	}
+	output << '\n';
 	//Add all nodes to the output, in order of partitions
 	unsigned long long id = 0;
 	for (auto v : partVectors) {
@@ -217,6 +275,7 @@ void PositionedNodeSet::readMETIS(std::istream& input, std::ostream& output, uns
 				for (auto pos : posArray) {
 					output << pos << ' ';
 				}
+				//If source or sink, print production/removal rate
 				if (auto source = std::dynamic_pointer_cast<PositionedSource<posArray.size()>>(positionedNodes[n])) {
 					output << source->getProductionRate();
 				} else if (auto sink = std::dynamic_pointer_cast<PositionedSink<posArray.size()>>(positionedNodes[n])) {
