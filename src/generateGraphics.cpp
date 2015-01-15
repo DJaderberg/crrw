@@ -77,7 +77,7 @@ void generateGraphics(std::string nodePath, std::string dataReadPath, std::strin
     for (long long i = 0; i < nCount; i++) {
         if (i % writeInterval == 0) {
             set.readData(ifs);
-            set.reinitialize();
+                set.reinitialize();
             std::stringstream imgFilename(imageSavePath, std::ios_base::in|std::ios_base::out);
             imgFilename << imageSavePath;
             imgFilename << std::setfill('0') << std::setw(6) << j++ << ".png";
