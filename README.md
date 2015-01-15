@@ -105,13 +105,25 @@ partitioning the graph.
 
 The graph format used by random-walk can be considered as consisting of two 
 parts. The first part lists each node and its (2D) position. The second part 
-lists connections between two nodes.
+lists connections between two nodes. There is also an optional way to specify 
+a graph partitioning, which is done before everything else.
 
-More formally each graph file should begin with lines defining all the nodes.
-Each such line starts with an integer number (the ID of the node), followed by
-two real numbers (x and y position of the node), e.g. ```0 0.75 2.32```. It is 
-important to note that the IDs should start at zero and increase by one for 
-each line.
+More formally each graph file can begin with a line defining the graph 
+partitioning, if such a partitioning exist. This one line must begin with
+```METIS``` followed by ```n+1``` integer numbers, when using ```n```
+partitions. Each number specifies the lower (inclusive) or upper (exclusive) 
+limit or the partitions. This means that the first number must be ```0``` and 
+the last number must be the number of nodes in the file. An example for 
+partitioning a graph with 1024 nodes into 4 partitions is 
+
+	METIS: 0 252 509 764 1024
+
+If there is no line describing the partitioning, the file begins with lines 
+defining all the nodes; otherwise, the lines describing the nodes begin on 
+line two. Each such line starts with an integer number (the ID of the node), 
+followed by two real numbers (x and y position of the node), e.g. 
+```0 0.75 2.32```. It is important to note that the IDs should start at zero 
+and increase by one for each line.
 
 After all nodes and positioned have been listed a line containing a single 
 ```#``` follows, as a marker that the next part of the file is about to begin.

@@ -141,6 +141,7 @@ void PositionedNodeSet::takePartitionedStep(double dt) {
 		algo = algoBegin + i;
 		(*algo)->prepareStep(dt);
 	}
+#pragma omp barrier
 	for (unsigned int i = lowerLim; i < upperLim; i++) {
 		algo = algoBegin + i;
 		(*algo)->takeStep(dt);
