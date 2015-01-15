@@ -59,11 +59,23 @@ public:
 	/// Return the number of particles at each Node in the NodeSet
 	virtual std::vector<unsigned long long> numberOfParticles();
 	/**
-	 * Make one time step
+	 * Take one time step
 	 *
 	 * @param dt Length of the time step
 	 */
 	void takeStep(double dt);
+	/**
+	 * Returns the upper limit for the requested partition.
+	 *
+	 * @partition Which partition to get the upper limit for.
+	 * @return The upper limit of the partition.
+	 */
+	long long partition(long long partition);
+	/**
+	 * Returns the number of partitions in the partitioning (zero if no 
+	 * partitioning)
+	 */
+	long long partitionSize();
 protected:
 	/** Create a dummy NodeSet, which shouldn't be used
 	 */
@@ -92,5 +104,12 @@ protected:
 	std::vector<std::shared_ptr<Algorithm>> algorithms;
 	///Map from the ids in the input stream to the actual ids of the Nodes
 	std::unordered_map<long long, unsigned long long> idMap;
+	///A vector containing the upper bounds in the graph partitioning, empty
+	//if no partitioning is set
+	std::vector<long long> partitioning;
+	///Set the partitioningVector to the input
+	void setPartitioning(std::vector<long long> in) {
+		partitioning = in;
+	}
 };
 

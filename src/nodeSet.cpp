@@ -58,6 +58,11 @@ void NodeSet::parseTGF(std::istream& input) {
 
 std::string NodeSet::toString() {
 	std::string ret = "";
+	ret += "Partitioning: ";
+	for(auto part : partitioning) {
+		ret += std::to_string(part) + ", ";
+	}
+	ret += "\n";
 	for (auto node : nodes) {
 		ret += node->toString();
 	}
@@ -81,3 +86,12 @@ void NodeSet::takeStep(double dt) {
 		algo->takeStep(dt);
 	}
 }
+
+long long NodeSet::partition(long long partition) {
+	return this->partitioning[partition];
+}
+
+long long NodeSet::partitionSize() {
+	return this->partitioning.size() ? this->partitioning.size() - 1 : 0;
+}
+
