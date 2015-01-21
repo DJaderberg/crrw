@@ -154,9 +154,9 @@ arguments parse_args(int argc, char* argv[]) {
 				std::cout << "  -w\tWith what interval to write to file, e.g. 5 if data should be stored every fifth iteration. When generating graphics, 5 would be interpreted as writing an image to file for every fifth piece of data stored in the input file.\n";
 				std::cout << "  -t\tThe time step to use, only relevant when generating data.\n";
                 std::cout << "  -p\tThe number of threads to use.\n";
-                std::cout << "  -e\tThe file path to the elemet configuration file.";
-                std::cout << "  -m\tFile path to temporary file used for creating partitioned METIS graphs.";
-                std::cout << "  -s\tFlag for setting if the shortest paths should be drawn when generating images.";
+                std::cout << "  -e\tThe file path to the elemet configuration file.\n";
+                std::cout << "  -m\tFile path to temporary file used for creating partitioned METIS graphs.\n";
+                std::cout << "  -s\tFlag for setting if the shortest paths should be drawn when generating images.\n";
 
 				std::cout << "\n";
 				args.quitAfterArgs = true;
