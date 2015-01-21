@@ -43,7 +43,7 @@ see [Graph format](#graph-format).
 A description of how to use the ```random-walk``` binary can be found by 
 running ```./random-walk -h```. Here, an example is shown and explained.
 
-	./random-walk -i graph.txt -o simulation.txt -n 2000 -w 100 -t 0.5 -p 2
+	./random-walk -i graph.txt -o simulation.txt -n 2000 -w 100 -t 0.5 -p 2 -e data/element.txt
 
 First, the input file is given as an argument, ```-i graph.txt```, then 
 the location to store the data in is given, ```-o simulation.txt```. After 
@@ -56,17 +56,52 @@ stored in another file where _LAST has been added to the filename before the
 file extension, in this case ```simulation_LAST.txt```.
 + ```-t 0.5``` How large (in time units) each time step is.
 + ```-p 2``` The number of threads to perform the computation with.
++ ```-e data/element.txt``` The file to read parameter values from, format 
+specified below.
 
-Other parameters regarding the simulation can be set by changing the parameters
-when constructing the Element, but this currently requires recompiling the 
-program after each change.
+#### Parameter file format ####
 
-#### Parameter values ####
+This format consists of a single line specifying 4 parameters. The order is
 
+	q lambda mu Dmin
 
+So an example file is
+
+	0.0001 0.001 1.0 0.05
 
 #### Output file format ####
 
+The output file format can seem quite complicatied, but is relatively simple 
+for a computer to parse. From a large scale perspective, the file contains 
+data for each node separated by a ```|```. Each node data is then started by 
+listing the number of particles in the node, followed by a semicolon. After 
+this, all the neighbors of the node and the conductivity and mean flow to that 
+neighbor is listed, all neighbors are separated by a semicolon. Such a whole 
+line represents one stored time step in the file. If there are more lines, 
+they represent other, later, time steps.
+
+An example of what one node may be described as is
+
+	12; 1 0.05 0.24; 2 0.07 0.34
+
+This would mean that the node contains ```12``` particles. And on the edge to 
+the node with ID ```1```, the conductivity is ```0.05``` and the mean flow is 
+```0.24```. On the edge to the node with ID ```2```, the conductivity is 
+```0.07``` and the mean flow is ```0.34```.
+
+An example of a whole file could be 
+
+	12; 1 0.05 0.24; 2 0.07 0.34|4; 0 0.03 0|6; 0 0.06 0
+	10; 1 0.06 0.29; 2 0.08 0.39|5; 0 0.03 0|7; 0 0.06 0
+
+This would be a file containing three nodes, where the first node has ```12``` 
+particles and the others have ```4``` and ```5```, in the first time step. 
+In the second time step two particles have moved from the first node to the 
+others, increasing the conductivity and mean flow along the edges from the 
+first node to the others.
+
+NOTE: This format implicitly numbers the nodes by the order that they appear 
+in the file. The first node has ID 0, the second ID 1 and so on.
 
 
 ### graphics ###
