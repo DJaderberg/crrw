@@ -43,7 +43,7 @@ see [Graph format](#graph-format).
 A description of how to use the ```random-walk``` binary can be found by 
 running ```./random-walk -h```. Here, an example is shown and explained.
 
-	./random-walk -i graph.txt -o simulation.txt -n 2000 -w 100 -t 0.5 -u 1.05 -p 2
+	./random-walk -i graph.txt -o simulation.txt -n 2000 -w 100 -t 0.5 -p 2
 
 First, the input file is given as an argument, ```-i graph.txt```, then 
 the location to store the data in is given, ```-o simulation.txt```. After 
@@ -55,12 +55,19 @@ will stop after 2000 iterations.
 stored in another file where _LAST has been added to the filename before the 
 file extension, in this case ```simulation_LAST.txt```.
 + ```-t 0.5``` How large (in time units) each time step is.
-+ ```-u 1.05```The value of the non-linearity parameter μ.
 + ```-p 2``` The number of threads to perform the computation with.
 
 Other parameters regarding the simulation can be set by changing the parameters
 when constructing the Element, but this currently requires recompiling the 
 program after each change.
+
+#### Parameter values ####
+
+
+
+#### Output file format ####
+
+
 
 ### graphics ###
 
