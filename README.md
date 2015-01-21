@@ -168,3 +168,13 @@ When all those depenencies are fulfilled, the script can be run with
 	./osm2tgf osm_database.pbf graph.txt
 
 Please note that the input file must be in the PBF format that Osmosis handles.
+
+## Generating documentation ##
+
+To generate the documentation, make sure that you have 
+[Doxygen](http://www.doxygen.org) installed and then run
+
+	make docs
+
+After this you can open the file ```documentation/html/index.html``` in a web 
+browser to read the documentation.

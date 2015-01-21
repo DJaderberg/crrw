@@ -26,6 +26,11 @@ gfx/%.o: src/%.cpp include/%.h
 
 directories:
 	mkdir -p bin gfx
+
+documentation: docs
+
+docs: $(wildcard src/*.cpp) $(wildcard include/*.h) README.md Doxyfile
+	doxygen Doxyfile
 	
 
 .PHONY: clean cleanest all directories
