@@ -1,7 +1,7 @@
 CXX     		= g++-4.9
 LD				= g++-4.9
-CXX_GRAPHICS 	= g++-4.9
-LD_GRAPHICS		= g++-4.9
+CXX_GRAPHICS 	= g++
+LD_GRAPHICS		= g++
 CFLAGS_BASE  = -Wall -Wextra -std=c++11 -Isrc/include -O3 -Wno-overloaded-virtual
 CFLAGS = $(CFLAGS_BASE) -fopenmp  
 LDFLAGS_BASE = -O3
@@ -38,4 +38,4 @@ clean:
 	rm bin/*.o bin/gfx/*.o
 
 cleanest: clean
-	rm crrw img/*
+	rm crrw graphics

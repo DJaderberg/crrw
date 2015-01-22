@@ -113,13 +113,13 @@ The graphics binary has several different modes.
 The main mode generates a sequence of images of different states in a 
 simulation. An example of thi usage is as follows.
 
-	./graphics -i input/graph/lattice_example.txt -d output/result.txt -o img/ -n 20 -w 2
+	./graphics -i input/graph/lattice_example.txt -d output/result.txt -o output/images/ -n 20 -w 2
 
 + ```-i input/graph/lattice_example.txt``` This is the graph file, which should be the same one as 
 was used to run the simulation (with ```crrw```).
 + ```-d output/result.txt``` This is a file containing data from a simulation.
 It can also be a ```_LAST``` file.
-+ ```-o img/``` This the beginning of name of each image.
++ ```-o output/images/``` This the beginning of name of each image.
 + ```-n 20``` The number of lines to read from the ```-d```file.
 + ```-w 2``` The program will generate an image for every other line that it 
 reads from the ```-d``` file.
@@ -196,18 +196,19 @@ generating different graph files.
 
 It is possible to input data from OpenStreetMap and convert it to the graph 
 format that can be handled by ```crrw```. This is done by using the 
-script ```osm2tgf.sh```located in the folder ```data/osm```. This script has a 
+script ```map2graph.sh```located in the folder ```input/graph/maps```. This script has a 
 few dependencies. First of all, ```python``` must be installed, since it makes 
 use of the ```python``` script ``nodesFromWays.py``` (located in the same 
 folder). Furthermore, there are two OSM specific tools that need to be 
 available, the script ```osmconvert```, found 
 [here](http://wiki.openstreetmap.org/wiki/Osmconvert), which must be placed in 
-the same folder as the ```osm2tgf.sh``` script. Furthermore, Osmosis tool, 
+the same folder as the ```map2graph.sh``` script. Furthermore, Osmosis tool, 
 found [here](http://wiki.openstreetmap.org/wiki/Osmosis), must be installed.
 
-When all those depenencies are fulfilled, the script can be run with
+When all those depenencies are fulfilled and you have downloaded OpenStreetMap 
+data in the file ```osm_database.pbf```, the script can be run with
 
-	./osm2tgf osm_database.pbf graph.txt
+	input/graph/maps/map2graph.sh osm_database.pbf graph.txt
 
 Please note that the input file must be in the PBF format that Osmosis handles.
 
