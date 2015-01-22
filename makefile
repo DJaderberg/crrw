@@ -25,7 +25,7 @@ bin/gfx/%.o: src/%.cpp src/include/%.h
 	$(CXX_GRAPHICS) -c $(CFLAGS) $< -o $@
 
 directories:
-	mkdir -p bin bin/gfx
+	mkdir -p bin bin/gfx output output/images
 
 documentation: docs
 

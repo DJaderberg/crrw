@@ -1,18 +1,18 @@
-random-walk
+crrw
 ===========
 
 Shortest path finder using current reinforced random walks
 
 ## Installation ##
 
-Currently, the only option to install random-walk is to build from source, 
+Currently, the only option to install crrw is to build from source, 
 which can be done by following the steps listed here.
 
 1. Install a C++ compiler with support for C++11 and OpenMP, such as 
 [GCC](https://gcc.gnu.org).
-2. Download the source files for random-walk.
+2. Download the source files for crrw.
 3. Navigate to the newly created folder containing the source files.
-4. Run the command ```make random-walk```.
+4. Run the command ```make crrw```.
 
 To be able to partition graphs, which is not strictly necessary, install 
 [METIS](http://glaros.dtc.umn.edu/gkhome/views/metis). In particular, the 
@@ -22,7 +22,7 @@ If you want to be able to generate graphs of the solutions there are few more
 steps.
 1. Install [Cairomm](http://cairographics.org/cairomm/) 
 with C++11 support and all its dependencies.
-2. Run the command ```. ./configure```. This 
+2. Run the command ```. src/configure```. This 
 attempts to add all necessary libraries to the path.
 3. Run the command ```make clean```.
 4. Run the command ```make all```, which builds the graphics 
@@ -33,30 +33,30 @@ generating tool as well as the computation tool.
 The installation may create two different binary files (depending on if it's 
 build with graphic capabilities or not), which have different usage.
 
-### random-walk ###
+### crrw ###
 
-After installation, the binary file ```random-walk``` will have been created. 
+After installation, the binary file ```crrw``` will have been created. 
 This file is used for performing simulations of random walks, but before this 
 can be done, you will probably have to create a graph in the correct format, 
 see [Graph format](#graph-format).
 
-A description of how to use the ```random-walk``` binary can be found by 
-running ```./random-walk -h```. Here, an example is shown and explained.
+A description of how to use the ```crrw``` binary can be found by 
+running ```./crrw -h```. Here, an example is shown and explained.
 
-	./random-walk -i graph.txt -o simulation.txt -n 2000 -w 100 -t 0.5 -p 2 -e data/element.txt
+	./crrw -i input/graph/lattice_example.txt -o output/result.txt -n 2000 -w 100 -t 0.5 -p 2 -e input/parameters/parameters_example.txt
 
-First, the input file is given as an argument, ```-i graph.txt```, then 
-the location to store the data in is given, ```-o simulation.txt```. After 
+First, the input file is given as an argument, ```-i input/graph/lattice_example.txt```, then 
+the location to store the data in is given, ```-o output/result.txt```. After 
 that follows several different parameters for the simulation.
 + ```-n 2000``` the number of time steps/iterations to perform. The simulation
 will stop after 2000 iterations.
-+ ```-w 100``` The algorithm will write data to ```simulation.txt```every 
++ ```-w 100``` The algorithm will write data to ```output/result.txt```every 
 100 iterations. Note that the data from the last iteration will always be 
 stored in another file where _LAST has been added to the filename before the 
 file extension, in this case ```simulation_LAST.txt```.
 + ```-t 0.5``` How large (in time units) each time step is.
 + ```-p 2``` The number of threads to perform the computation with.
-+ ```-e data/element.txt``` The file to read parameter values from, format 
++ ```-e input/parameters/parameters_example.txt``` The file to read parameter values from, format 
 specified below.
 
 #### Parameter file format ####
@@ -113,11 +113,11 @@ The graphics binary has several different modes.
 The main mode generates a sequence of images of different states in a 
 simulation. An example of thi usage is as follows.
 
-	./graphics -i graph.txt -d simulation.txt -o img/ -n 20 -w 2
+	./graphics -i input/graph/lattice_example.txt -d output/result.txt -o img/ -n 20 -w 2
 
-+ ```-i graph.txt``` This is the graph file, which should be the same one as 
-was used to run the simulation (with ```random-walk```).
-+ ```-d simulation.txt``` This is a file containing data from a simulation.
++ ```-i input/graph/lattice_example.txt``` This is the graph file, which should be the same one as 
+was used to run the simulation (with ```crrw```).
++ ```-d output/result.txt``` This is a file containing data from a simulation.
 It can also be a ```_LAST``` file.
 + ```-o img/``` This the beginning of name of each image.
 + ```-n 20``` The number of lines to read from the ```-d```file.
@@ -130,13 +130,13 @@ The ```graphics``` binary can be used to partition graphs using
 [METIS](http://glaros.dtc.umn.edu/gkhome/views/metis). The can be done by 
 calling the program as below.
 
-	./graphics -i graph.txt -o sorted_graph.txt -m metis.txt -q 8
+	./graphics -i input/graph/lattice_example.txt -o input/graph/sorted_lattice_example.txt -m output/metis.txt -q 8
 
-+ ```-i graph.txt``` This is the input graph file, which is not partitioned 
++ ```-i input/graph/lattice_example.txt``` This is the input graph file, which is not partitioned 
 correctly.
-+ ```-o sorted_graph.txt``` This is the output graph file, which is partitioned
++ ```-o input/graph/sorted_lattice_example.txt``` This is the output graph file, which is partitioned
 using [METIS](http://glaros.dtc.umn.edu/gkhome/views/metis). 
-+ ```-m metis.txt``` This is a temporary file which contains the output from 
++ ```-m output/metis.txt``` This is a temporary file which contains the output from 
 when ```graphics``` called ```gpmetis```. This file can be discarded after 
 running the program.
 + ```-q 8``` The number of partitions that 
@@ -145,7 +145,7 @@ partitioning the graph.
 
 ## Graph format ##
 
-The graph format used by random-walk can be considered as consisting of two 
+The graph format used by crrw can be considered as consisting of two 
 parts. The first part lists each node and its (2D) position. The second part 
 lists connections between two nodes. There is also an optional way to specify 
 a graph partitioning, which is done before everything else.
@@ -189,13 +189,13 @@ An example of a small graph file, representing a triangle, is shown below.
 
 ## Creating graph files ##
 
-There are a few tools included with the random-walk source code that help with 
+There are a few tools included with the crrw source code that help with 
 generating different graph files.
 
 ### Road data ###
 
 It is possible to input data from OpenStreetMap and convert it to the graph 
-format that can be handled by ```random-walk```. This is done by using the 
+format that can be handled by ```crrw```. This is done by using the 
 script ```osm2tgf.sh```located in the folder ```data/osm```. This script has a 
 few dependencies. First of all, ```python``` must be installed, since it makes 
 use of the ```python``` script ``nodesFromWays.py``` (located in the same 
