@@ -15,7 +15,7 @@ class CurrentWalkSource;
 class CurrentWalkSink;
 
 /**
- * An algorithm that implments current-reinforced random-walks as a means to 
+ * An algorithm that implments current-reinforced random walks as a means to 
  * find shortest paths.
  */
 class CurrentWalk : public StorableAlgorithm {
