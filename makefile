@@ -31,8 +31,6 @@ documentation: docs
 
 docs: $(wildcard src/*.cpp) $(wildcard src/include/*.h) README.md .Doxyfile
 	doxygen .Doxyfile
-	ln documentation/html/index.html documentation/index.html 
-	
 
 .PHONY: clean cleanest all directories
 
