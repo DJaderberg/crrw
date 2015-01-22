@@ -1,7 +1,7 @@
 CXX     		= g++-4.9
 LD				= g++-4.9
-CXX_GRAPHICS 	= g++
-LD_GRAPHICS		= g++
+CXX_GRAPHICS 	= g++-4.9
+LD_GRAPHICS		= g++-4.9
 CFLAGS_BASE  = -Wall -Wextra -std=c++11 -Isrc/include -O3 -Wno-overloaded-virtual
 CFLAGS = $(CFLAGS_BASE) -fopenmp  
 LDFLAGS_BASE = -O3
@@ -16,7 +16,7 @@ graphics: LDFLAGS = $(LDFLAGS_BASE) -DGRAPHICS $(shell pkg-config --libs cairomm
 graphics: $(OBJECTS_GRAPHICS) directories
 	$(LD_GRAPHICS) -o graphics $(OBJECTS_GRAPHICS) $(LDFLAGS)
 
-crrw: $(OBJECTS) directories
+crrw: directories $(OBJECTS)
 	$(LD) -o crrw $(OBJECTS) $(LDFLAGS)
 
 bin/%.o: src/%.cpp src/include/%.h
