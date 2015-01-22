@@ -2,41 +2,42 @@ CXX     		= g++-4.9
 LD				= g++-4.9
 CXX_GRAPHICS 	= g++-4.9
 LD_GRAPHICS		= g++-4.9
-CFLAGS_BASE  = -Wall -Wextra -std=c++11 -Iinclude -O3 -Wno-overloaded-virtual
+CFLAGS_BASE  = -Wall -Wextra -std=c++11 -Isrc/include -O3 -Wno-overloaded-virtual
 CFLAGS = $(CFLAGS_BASE) -fopenmp  
 LDFLAGS_BASE = -O3
 LDFLAGS = $(LDFLAGS_BASE) -fopenmp   
 OBJECTS = $(patsubst src/%.cpp,bin/%.o,$(wildcard src/*.cpp)) $(patsubst src/%.c,bin/%.o,$(wildcard src/*.c))
-OBJECTS_GRAPHICS = $(patsubst src/%.cpp,gfx/%.o,$(wildcard src/*.cpp)) $(patsubst src/%.c,gfx/%.o,$(wildcard src/*.c))
-all: directories random-walk graphics
-VPATH := src:include
+OBJECTS_GRAPHICS = $(patsubst src/%.cpp,bin/gfx/%.o,$(wildcard src/*.cpp)) $(patsubst src/%.c,bin/gfx/%.o,$(wildcard src/*.c))
+all: directories crrw graphics
+VPATH := src:src/include
 
 graphics: CFLAGS = $(CFLAGS_BASE) -DGRAPHICS $(shell pkg-config --cflags cairomm-1.0 cairo cairomm-png-1.0 cairo-png)
 graphics: LDFLAGS = $(LDFLAGS_BASE) -DGRAPHICS $(shell pkg-config --libs cairomm-1.0 cairo cairomm-png-1.0 cairo-png)
 graphics: $(OBJECTS_GRAPHICS) directories
 	$(LD_GRAPHICS) -o graphics $(OBJECTS_GRAPHICS) $(LDFLAGS)
 
-random-walk: $(OBJECTS) directories
-	$(LD) -o random-walk $(OBJECTS) $(LDFLAGS)
+crrw: $(OBJECTS) directories
+	$(LD) -o crrw $(OBJECTS) $(LDFLAGS)
 
-bin/%.o: src/%.cpp include/%.h
+bin/%.o: src/%.cpp src/include/%.h
 	$(CXX) -c $(CFLAGS) $< -o $@
-gfx/%.o: src/%.cpp include/%.h
+bin/gfx/%.o: src/%.cpp src/include/%.h
 	$(CXX_GRAPHICS) -c $(CFLAGS) $< -o $@
 
 directories:
-	mkdir -p bin gfx
+	mkdir -p bin bin/gfx
 
 documentation: docs
 
-docs: $(wildcard src/*.cpp) $(wildcard include/*.h) README.md Doxyfile
-	doxygen Doxyfile
+docs: $(wildcard src/*.cpp) $(wildcard src/include/*.h) README.md .Doxyfile
+	doxygen .Doxyfile
+	ln documentation/html/index.html documentation/index.html 
 	
 
 .PHONY: clean cleanest all directories
 
 clean:
-	rm bin/*.o gfx/*.o
+	rm bin/*.o bin/gfx/*.o
 
 cleanest: clean
-	rm random-walk img/*
+	rm crrw img/*
