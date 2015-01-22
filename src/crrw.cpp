@@ -1,4 +1,4 @@
-#include "random-walk.h"
+#include "crrw.h"
 #include <sstream>
 #include <ios>
 #include <iomanip>
@@ -9,17 +9,17 @@
  */
 struct arguments {
 	///Filename of the graph file (containing nodes and edges)
-    std::string filename = "data/nodes.txt";
+    std::string filename = "example.txt";
 #ifdef GRAPHICS
 	///Path to where the data from computation has been stored
-	std::string storedDataPath = "data/save.txt";
+	std::string storedDataPath = "example.txt";
 	///Beginning of the path to which images should be written
-    std::string dataPath = "data/img/a";
+    std::string dataPath = "example";
 #else
 	///Path to file containing only the data to restart from
-	std::string storedDataPath = "data/saveLAST.txt";
+	std::string storedDataPath = "example_LAST.txt";
 	///Path to where data should be stored
-    std::string dataPath = "data/save.txt";
+    std::string dataPath = "example.txt";
 #endif
 	///Number of steps to take/read
     long long nCount = 50;
@@ -37,7 +37,7 @@ struct arguments {
 	bool metis = false;
 	///Path to store METIS file (containing which partition each original node
 	///should be placed in).
-	std::string metisPath = "data/metis.txt";
+	std::string metisPath = "example.txt";
 	///The number of parts that METIS should divide that graph into.
 	long long metisParts = 1;
 	///True if we should only reduce the number of nodes
@@ -45,7 +45,7 @@ struct arguments {
 	///The maximal distance between nodes that should be joined
 	double reduceDist = 0.0;
     ///The file path to the element configuration file
-    std::string elementPath = "data/element.txt";
+    std::string elementPath = "example.txt";
     ///Number of threads to use
     unsigned int threads = 1;
     /// Boolean for setting if the shortest path should be drawn when generating images
